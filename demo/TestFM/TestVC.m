@@ -27,12 +27,16 @@
 
 @implementation TestVC
 
-- (IBAction)fm3option {
-    
-    
+- (void)viewWillAppear:(BOOL)animated {
     // PLEASE SPECIFY A VALID public key and password. Contact developers@rumblefish.com for more info.
-    
-    FriendlyMusic *friendlyMusic = [[FriendlyMusic alloc] initWithEnvironment:RFAPIEnvProduction publicKey:@"PUBLIC_KEY" andPassword:@"PASSWORD"];
+    [RFAPI rumbleWithEnvironment:RFAPIEnvProduction 
+                       publicKey:@"PUBLIC_KEY" 
+                        password:@"PASSWORD"
+                        callback:^ { button.enabled = TRUE; }];
+}
+
+- (IBAction)start {
+    FriendlyMusic *friendlyMusic = [[FriendlyMusic alloc] init];
     [friendlyMusic setOptions:friendlyMusic.FMMOODMAP | friendlyMusic.FMOCCASION | friendlyMusic.FMEDITORSPICKS];
     [self.navigationController pushViewController:friendlyMusic animated:YES];
     [friendlyMusic release];

@@ -32,7 +32,7 @@ RFAPI *api = NULL;
 {
     [super setUp];
     
-    api = [RFAPI initSingletonWithEnvironment:RFAPIEnvSandbox version:RFAPIVersion2 publicKey:@"sandbox" password:@"sandbox"];
+    //api = [RFAPI initSingletonWithEnvironment:RFAPIEnvSandbox version:RFAPIVersion2 publicKey:@"sandbox" password:@"sandbox"];
 }
 
 - (void)tearDown
@@ -47,39 +47,39 @@ RFAPI *api = NULL;
 
 - (void)testQueryStrings
 {
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setObject:@"loves beer" forKey:@"jeff"];
-    
-    NSString *expected = @"?jeff=loves%20beer";
-    
-    STAssertTrue( [expected isEqualToString:[api queryStringFor:params]], @"Didn't produce correct query string." );
+//    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+//    [params setObject:@"loves beer" forKey:@"jeff"];
+//    
+//    NSString *expected = @"?jeff=loves%20beer";
+//    
+//    STAssertTrue( [expected isEqualToString:[api queryStringFor:params]], @"Didn't produce correct query string." );
 }
 
 - (void)testResourceURLGeneration
 {
-    NSString *base = @"https://sandbox.rumblefish.com/v2/media";
-    STAssertTrue( [base isEqualToString:[api urlStringForResource:RFAPIResourceMedia]], @"Didn't produce matching URLs."); 
-
-    NSString *withQueryString = @"https://sandbox.rumblefish.com/v2/media?jeff=loves%20beer";
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setObject:@"loves beer" forKey:@"jeff"];
-    
-    STAssertTrue( [withQueryString isEqualToString:[api urlStringForResource:RFAPIResourceMedia withParameters:params]], @"Didn't produce matching URLs."); 
+//    NSString *base = @"https://sandbox.rumblefish.com/v2/media";
+//    STAssertTrue( [base isEqualToString:[api urlStringForResource:RFAPIResourceMedia]], @"Didn't produce matching URLs."); 
+//
+//    NSString *withQueryString = @"https://sandbox.rumblefish.com/v2/media?jeff=loves%20beer";
+//    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+//    [params setObject:@"loves beer" forKey:@"jeff"];
+//    
+//    STAssertTrue( [withQueryString isEqualToString:[api urlStringForResource:RFAPIResourceMedia withParameters:params]], @"Didn't produce matching URLs."); 
 
 }
 
 - (void)testNotATest
 {
-    NSURLRequest *request = [api requestResource:RFAPIResourceMedia withMethod:RFAPIMethodGET];
-    
-    NSURLResponse *response;
-    NSError *error;
-    
-    // Make synchronous request
-    NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    
-    NSString *resultString = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
-    NSLog( @"RECEIVED %@", resultString );
+//    NSURLRequest *request = [api requestResource:RFAPIResourceMedia withMethod:RFAPIMethodGET];
+//    
+//    NSURLResponse *response;
+//    NSError *error;
+//    
+//    // Make synchronous request
+//    NSData *urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+//    
+//    NSString *resultString = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
+//    NSLog( @"RECEIVED %@", resultString );
 }
 
 

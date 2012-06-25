@@ -24,6 +24,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "Async.h"
 
 typedef enum RFAPIEnv {
     RFAPIEnvSandbox = 0,
@@ -64,9 +65,9 @@ typedef enum RFAPIMethod {
 @property (nonatomic,strong) NSError *lastError;
 @property (nonatomic,strong) NSHTTPURLResponse *lastResponse;
 
-+(RFAPI *) initSingletonWithEnvironment:(RFAPIEnv)environment version:(RFAPIVersion)version publicKey:(NSString *)publicKey password:(NSString *)password; 
++ (void)rumbleWithEnvironment:(RFAPIEnv)env publicKey:(NSString *)publicKey password:(NSString *)password callback:(void (^)())callback;
+
 +(RFAPI *) singleton;
-+(NSString *) discoverIPAddress;
 
 // synchronous resource methods! These all return JSON NSObjects, or nil if the request failed. Please see lastResponse and lastError in the case of failure.
 -(NSObject *) resource:(RFAPIResource)resource withParams:(NSDictionary *)params;

@@ -31,7 +31,6 @@
 
 @property(nonatomic, readonly) int FMMOODMAP, FMOCCASION, FMEDITORSPICKS; 
 
-- (id)initWithEnvironment:(RFAPIEnv)environment publicKey:(NSString *)publicKey andPassword:(NSString *)password;
 - (IBAction)close;
 - (void)setOptions:(int)options;
 

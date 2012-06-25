@@ -24,10 +24,12 @@
 
 #import "RFAPI.h"
 #import "SBJson.h"
+#import "SMWebRequest+Async.h"
+
 
 @interface RFAPI ()
 
-+ (NSString *)discoverIPAddress;
++ (Producer)apiWithEnvironment:(RFAPIEnv)environment version:(RFAPIVersion)version publicKey:(NSString *)publicKey password:(NSString *)password;
 
 @end
 
@@ -45,21 +47,47 @@
 static RFAPI *rfAPIObject = nil; // use [RFAPI singleton]
 static int RFAPI_TIMEOUT = 30.0; // request timeout
 
-+(RFAPI *) initSingletonWithEnvironment:(RFAPIEnv)environment version:(RFAPIVersion)version publicKey:(NSString *)publicKey password:(NSString *)password {
-    @synchronized(self) {
-        if (!rfAPIObject) {
-            rfAPIObject = [[RFAPI alloc] init];
-            rfAPIObject.environment = environment;
-            rfAPIObject.publicKey = publicKey;
-            rfAPIObject.password = password;
-            rfAPIObject.version = version;
-            rfAPIObject.ipAddress = [self discoverIPAddress];
-            
-            NSLog(@"Initialized RFAPI singleton for host %@, publicKey %@, and ipAddress %@", [rfAPIObject host], publicKey, [rfAPIObject ipAddress]);
-        }
-    }
++ (Producer)retrieveIPAddress {
+    return [SMWebRequest producerWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://checkip.dyndns.org/"]] dataParser:^ id (NSData *data) {
+        
+        NSString *resultString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        
+        // in the structure of 
+        // <html><head><title>Current IP Check</title></head><body>Current IP Address: 199.223.126.116</body></html>
+        
+        // split at the : to get the trailing IP and HTML.
+        NSArray *ipSplit = [resultString componentsSeparatedByString:@": "];
+        
+        // split at the < to separate the IP from the HTML. 
+        NSArray *resultArray = [(NSString *)[ipSplit objectAtIndex:1] componentsSeparatedByString:@"<"];
+        
+        // return the IP section
+        return [resultArray objectAtIndex:0];
+    }];
+}
+
++ (Producer)apiWithEnvironment:(RFAPIEnv)environment version:(RFAPIVersion)version publicKey:(NSString *)publicKey password:(NSString *)password {
     
-    return rfAPIObject;
+    return [Async mapResultOfProducer:[self retrieveIPAddress] withSelector:^ (id result) {
+        RFAPI *api = [[RFAPI alloc] init];
+        api.environment = environment;
+        api.publicKey = publicKey;
+        api.password = password;
+        api.version = version;
+        api.ipAddress = result;
+        NSLog(@"Initialized RFAPI singleton for host %@, publicKey %@, and ipAddress %@", api.host, publicKey, api.ipAddress);
+        return api;
+    }];
+    
+}
+
+
++ (void)rumbleWithEnvironment:(RFAPIEnv)env publicKey:(NSString *)publicKey password:(NSString *)password callback:(void (^)())callback {
+    [self apiWithEnvironment:env version:RFAPIVersion2 publicKey:publicKey password:password](^ (id api) {
+        rfAPIObject = api;
+    }, ^ (id error) {
+        
+    });
 }
 
 
@@ -69,25 +97,6 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
         
     return rfAPIObject;
 }
-
-+(NSString *) discoverIPAddress {
-    // pull public address from dyndns.org
-    NSData *resultData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://checkip.dyndns.org/"]];
-    NSString *resultString = [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
-    
-    // in the structure of 
-    // <html><head><title>Current IP Check</title></head><body>Current IP Address: 199.223.126.116</body></html>
-    
-    // split at the : to get the trailing IP and HTML.
-    NSArray *ipSplit = [resultString componentsSeparatedByString:@": "];
-    
-    // split at the < to separate the IP from the HTML. 
-    NSArray *resultArray = [(NSString *)[ipSplit objectAtIndex:1] componentsSeparatedByString:@"<"];
-        
-    // return the IP section
-    return [resultArray objectAtIndex:0];
-}
-
 
 #pragma mark URL building methods.
 

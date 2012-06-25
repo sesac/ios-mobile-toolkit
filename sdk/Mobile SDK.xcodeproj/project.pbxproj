@@ -32,6 +32,14 @@
 		066073D014F5B4DF0012E9DE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 066073CE14F5B4DF0012E9DE /* InfoPlist.strings */; };
 		066073D314F5B4DF0012E9DE /* RFAPITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 066073D214F5B4DF0012E9DE /* RFAPITests.m */; };
 		067D5F8F151ABBC30077C3FD /* occasion_image_cache.plist in Resources */ = {isa = PBXBuildFile; fileRef = 067D5F8E151ABBC30077C3FD /* occasion_image_cache.plist */; };
+		41B5E2661598E3BF009E5F53 /* SMWebRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 41B5E2641598E3BF009E5F53 /* SMWebRequest.h */; };
+		41B5E2671598E3BF009E5F53 /* SMWebRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B5E2651598E3BF009E5F53 /* SMWebRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		41B5E26F1598E7FD009E5F53 /* Async.h in Headers */ = {isa = PBXBuildFile; fileRef = 41B5E26D1598E7FD009E5F53 /* Async.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		41B5E2701598E7FD009E5F53 /* Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B5E26E1598E7FD009E5F53 /* Async.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		41B5E2731598EA2F009E5F53 /* SMWebRequest+Async.h in Headers */ = {isa = PBXBuildFile; fileRef = 41B5E2711598EA2E009E5F53 /* SMWebRequest+Async.h */; };
+		41B5E2741598EA2F009E5F53 /* SMWebRequest+Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B5E2721598EA2E009E5F53 /* SMWebRequest+Async.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		41B5E2771599063B009E5F53 /* UIApplication+NetworkActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = 41B5E2751599063A009E5F53 /* UIApplication+NetworkActivity.h */; };
+		41B5E2781599063B009E5F53 /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 41B5E2761599063A009E5F53 /* UIApplication+NetworkActivity.m */; };
 		BAB8A0D714A72CF80094B5B7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB8A0D614A72CF80094B5B7 /* Foundation.framework */; };
 		BAB8A0DD14A72CF80094B5B7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BAB8A0DB14A72CF80094B5B7 /* InfoPlist.strings */; };
 		BAB8A16B14A730B90094B5B7 /* AlbumLandscapeVC.h in Headers */ = {isa = PBXBuildFile; fileRef = BAB8A0F014A730B80094B5B7 /* AlbumLandscapeVC.h */; };
@@ -197,6 +205,14 @@
 		066073D214F5B4DF0012E9DE /* RFAPITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RFAPITests.m; sourceTree = "<group>"; };
 		066073D414F5B4DF0012E9DE /* RFAPITests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RFAPITests-Prefix.pch"; sourceTree = "<group>"; };
 		067D5F8E151ABBC30077C3FD /* occasion_image_cache.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = occasion_image_cache.plist; sourceTree = "<group>"; };
+		41B5E2641598E3BF009E5F53 /* SMWebRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMWebRequest.h; sourceTree = "<group>"; };
+		41B5E2651598E3BF009E5F53 /* SMWebRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMWebRequest.m; sourceTree = "<group>"; };
+		41B5E26D1598E7FD009E5F53 /* Async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Async.h; sourceTree = "<group>"; };
+		41B5E26E1598E7FD009E5F53 /* Async.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Async.m; sourceTree = "<group>"; };
+		41B5E2711598EA2E009E5F53 /* SMWebRequest+Async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SMWebRequest+Async.h"; sourceTree = "<group>"; };
+		41B5E2721598EA2E009E5F53 /* SMWebRequest+Async.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SMWebRequest+Async.m"; sourceTree = "<group>"; };
+		41B5E2751599063A009E5F53 /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
+		41B5E2761599063A009E5F53 /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
 		BAB8A0D314A72CF80094B5B7 /* Mobile SDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework.static; includeInIndex = 0; path = "Mobile SDK.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAB8A0D614A72CF80094B5B7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BAB8A0DA14A72CF80094B5B7 /* Mobile SDK-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mobile SDK-Info.plist"; sourceTree = "<group>"; };
@@ -441,6 +457,14 @@
 				BAB8A0D914A72CF80094B5B7 /* Supporting Files */,
 				066073B214F5A83A0012E9DE /* RFAPI.h */,
 				066073B314F5A83A0012E9DE /* RFAPI.m */,
+				41B5E26D1598E7FD009E5F53 /* Async.h */,
+				41B5E26E1598E7FD009E5F53 /* Async.m */,
+				41B5E2751599063A009E5F53 /* UIApplication+NetworkActivity.h */,
+				41B5E2761599063A009E5F53 /* UIApplication+NetworkActivity.m */,
+				41B5E2711598EA2E009E5F53 /* SMWebRequest+Async.h */,
+				41B5E2721598EA2E009E5F53 /* SMWebRequest+Async.m */,
+				41B5E2641598E3BF009E5F53 /* SMWebRequest.h */,
+				41B5E2651598E3BF009E5F53 /* SMWebRequest.m */,
 			);
 			path = FriendlyMusic;
 			sourceTree = "<group>";
@@ -625,6 +649,7 @@
 			files = (
 				BAB8A17114A730B90094B5B7 /* FriendlyMusic.h in Headers */,
 				066073B414F5A83A0012E9DE /* RFAPI.h in Headers */,
+				41B5E26F1598E7FD009E5F53 /* Async.h in Headers */,
 				BAB8A16B14A730B90094B5B7 /* AlbumLandscapeVC.h in Headers */,
 				BAB8A16D14A730B90094B5B7 /* CoverFlowVC.h in Headers */,
 				BAB8A16F14A730B90094B5B7 /* FilterVC.h in Headers */,
@@ -654,6 +679,9 @@
 				063720E9150018450085E588 /* TKGlobal.h in Headers */,
 				063720EB150018450085E588 /* UIImage+TKCategory.h in Headers */,
 				063720ED150018450085E588 /* UIView+TKCategory.h in Headers */,
+				41B5E2661598E3BF009E5F53 /* SMWebRequest.h in Headers */,
+				41B5E2731598EA2F009E5F53 /* SMWebRequest+Async.h in Headers */,
+				41B5E2771599063B009E5F53 /* UIApplication+NetworkActivity.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -688,7 +716,7 @@
 				BAB8A0CE14A72CF80094B5B7 /* Frameworks */,
 				BAB8A0CF14A72CF80094B5B7 /* Headers */,
 				BAB8A0D014A72CF80094B5B7 /* Resources */,
-				BAB8A0D114A72CF80094B5B7 /* ShellScript */,
+				BAB8A0D114A72CF80094B5B7 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -850,13 +878,14 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nset +u\nif [[ $UFW_MASTER_SCRIPT_RUNNING ]]\nthen\n    # Nothing for the slave script to do\n    exit 0\nfi\nset -u\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\n    UFW_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\n    echo \"Could not find platform name from SDK_NAME: $SDK_NAME\"\n    exit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\n\tUFW_SDK_VERSION=${BASH_REMATCH[1]}\nelse\n    echo \"Could not find sdk version  from SDK_NAME: $SDK_NAME\"\n    exit 1\nfi\n\nif [[ \"$UFW_SDK_PLATFORM\" = \"iphoneos\" ]]\nthen\n    UFW_OTHER_PLATFORM=iphonesimulator\nelse\n    UFW_OTHER_PLATFORM=iphoneos\nfi\n\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$UFW_SDK_PLATFORM$ ]]\nthen\n    UFW_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${UFW_OTHER_PLATFORM}\"\nelse\n    echo \"Could not find $UFW_SDK_PLATFORM in $BUILT_PRODUCTS_DIR\"\n    exit 1\nfi\n\nONLY_ACTIVE_PLATFORM=${ONLY_ACTIVE_PLATFORM:-$ONLY_ACTIVE_ARCH}\n\n# Short-circuit if all binaries are up to date\n\nif [[ -f \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" ]] && \\\n   [[ -f \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/${EXECUTABLE_PATH}\" ]] && \\\n   [[ ! \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" -nt \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/${EXECUTABLE_PATH}\" ]] && \\\n  ([[ \"${ONLY_ACTIVE_PLATFORM}\" == \"YES\" ]] || \\\n    ([[ -f \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" ]] && \\\n     [[ -f \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/${EXECUTABLE_PATH}\" ]] && \\\n     [[ ! \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" -nt \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/${EXECUTABLE_PATH}\" ]]\n    )\n  )\nthen\n    exit 0\nfi\n\n\n# Clean other platform if needed\n\nif [[ ! -f \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" ]] && [[ \"${ONLY_ACTIVE_PLATFORM}\" != \"YES\" ]]\nthen\n\techo \"Platform \\\"$UFW_SDK_PLATFORM\\\" was cleaned recently. Cleaning \\\"$UFW_OTHER_PLATFORM\\\" as well\"\n\techo xcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${UFW_OTHER_PLATFORM}${UFW_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" CONFIGURATION_TEMP_DIR=\"${PROJECT_TEMP_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\" clean\n\txcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${UFW_OTHER_PLATFORM}${UFW_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" CONFIGURATION_TEMP_DIR=\"${PROJECT_TEMP_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\" clean\nfi\n\n\n# Make sure we are building from fresh binaries\n\nrm -rf \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\"\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework\"\n\nif [[ \"${ONLY_ACTIVE_PLATFORM}\" != \"YES\" ]]\nthen\n    rm -rf \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\"\n    rm -rf \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework\"\nfi\n";
 		};
-		BAB8A0D114A72CF80094B5B7 /* ShellScript */ = {
+		BAB8A0D114A72CF80094B5B7 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -907,6 +936,10 @@
 				063720EA150018450085E588 /* TKGlobal.m in Sources */,
 				063720EC150018450085E588 /* UIImage+TKCategory.m in Sources */,
 				063720EE150018450085E588 /* UIView+TKCategory.m in Sources */,
+				41B5E2701598E7FD009E5F53 /* Async.m in Sources */,
+				41B5E2671598E3BF009E5F53 /* SMWebRequest.m in Sources */,
+				41B5E2741598EA2F009E5F53 /* SMWebRequest+Async.m in Sources */,
+				41B5E2781599063B009E5F53 /* UIApplication+NetworkActivity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -996,6 +1029,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Benjamin van der Veen (XJ66L4JBY9)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
@@ -1004,6 +1038,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PROVISIONING_PROFILE = "87BC98DB-7554-4C0F-A09B-712E91745FB2";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1012,11 +1047,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Benjamin van der Veen (XJ66L4JBY9)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PROVISIONING_PROFILE = "87BC98DB-7554-4C0F-A09B-712E91745FB2";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
@@ -1036,7 +1073,10 @@
 				HEADER_SEARCH_PATHS = "${SRCROOT}/TapkuLibrary";
 				INFOPLIST_FILE = "FriendlyMusic/Mobile SDK-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "Mobile SDK";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
@@ -1058,7 +1098,10 @@
 				HEADER_SEARCH_PATHS = "${SRCROOT}/TapkuLibrary";
 				INFOPLIST_FILE = "FriendlyMusic/Mobile SDK-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "Mobile SDK";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;

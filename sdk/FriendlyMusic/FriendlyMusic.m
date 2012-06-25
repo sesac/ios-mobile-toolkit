@@ -33,15 +33,12 @@
 
 NSMutableArray *optionArray;
 
-- (id)initWithEnvironment:(RFAPIEnv)environment publicKey:(NSString *)publicKey andPassword:(NSString *)password {
+- (id)init {
     self = [super initWithNibName:@"FriendlyMusic" bundle:nil];
     if (self) {
         FMMOODMAP = 1;
         FMOCCASION = 2;
         FMEDITORSPICKS = 4;
-
-        // setup the RFAPI singleton
-        [RFAPI initSingletonWithEnvironment:environment version:RFAPIVersion2 publicKey:publicKey password:password];
         
         // copy plist files to user directory
         bool failed = NO;

@@ -26,9 +26,10 @@
 
 
 @interface TestVC : UIViewController {
-    
+    IBOutlet UIButton *button;    
 }
 
-- (IBAction)fm3option;
+
+- (IBAction)start;
 
 @end

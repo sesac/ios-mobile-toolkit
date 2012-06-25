@@ -148,7 +148,7 @@
 		069D1B8D151D433500EEE0A5 /* editorspick_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "editorspick_logo@2x.png"; sourceTree = "<group>"; };
 		069D1B8E151D433500EEE0A5 /* filters_coming_soon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filters_coming_soon.png; sourceTree = "<group>"; };
 		069D1B8F151D433500EEE0A5 /* filters_coming_soon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "filters_coming_soon@2x.png"; sourceTree = "<group>"; };
-		069D1B90151D433500EEE0A5 /* FriendlyMusic.nib */ = {isa = PBXFileReference; lastKnownFileType = file; path = FriendlyMusic.nib; sourceTree = "<group>"; };
+		069D1B90151D433500EEE0A5 /* FriendlyMusic.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = FriendlyMusic.nib; sourceTree = "<group>"; };
 		069D1B91151D433500EEE0A5 /* friendlymusic_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friendlymusic_logo.png; sourceTree = "<group>"; };
 		069D1B92151D433500EEE0A5 /* friendlymusic_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friendlymusic_logo@2x.png"; sourceTree = "<group>"; };
 		069D1B93151D433500EEE0A5 /* holiday.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = holiday.png; sourceTree = "<group>"; };
@@ -169,7 +169,7 @@
 		069D1BA2151D433500EEE0A5 /* moodmap_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "moodmap_logo@2x.png"; sourceTree = "<group>"; };
 		069D1BA3151D433500EEE0A5 /* moodmap_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moodmap_ring.png; sourceTree = "<group>"; };
 		069D1BA4151D433500EEE0A5 /* moodmap_ring@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "moodmap_ring@2x.png"; sourceTree = "<group>"; };
-		069D1BA5151D433500EEE0A5 /* MoodMapVC.nib */ = {isa = PBXFileReference; lastKnownFileType = file; path = MoodMapVC.nib; sourceTree = "<group>"; };
+		069D1BA5151D433500EEE0A5 /* MoodMapVC.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = MoodMapVC.nib; sourceTree = "<group>"; };
 		069D1BA6151D433500EEE0A5 /* occasion_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = occasion_bg.png; sourceTree = "<group>"; };
 		069D1BA7151D433500EEE0A5 /* occasion_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "occasion_bg@2x.png"; sourceTree = "<group>"; };
 		069D1BA8151D433500EEE0A5 /* occasion_header_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = occasion_header_bg.png; sourceTree = "<group>"; };
@@ -178,7 +178,7 @@
 		069D1BAB151D433500EEE0A5 /* occasion_images.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = occasion_images.plist; sourceTree = "<group>"; };
 		069D1BAC151D433500EEE0A5 /* occasion_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = occasion_logo.png; sourceTree = "<group>"; };
 		069D1BAD151D433500EEE0A5 /* occasion_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "occasion_logo@2x.png"; sourceTree = "<group>"; };
-		069D1BAE151D433500EEE0A5 /* OccasionVC.nib */ = {isa = PBXFileReference; lastKnownFileType = file; path = OccasionVC.nib; sourceTree = "<group>"; };
+		069D1BAE151D433500EEE0A5 /* OccasionVC.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = OccasionVC.nib; sourceTree = "<group>"; };
 		069D1BAF151D433500EEE0A5 /* playlist.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = playlist.plist; sourceTree = "<group>"; };
 		069D1BB0151D433500EEE0A5 /* selector.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selector.png; sourceTree = "<group>"; };
 		069D1BB1151D433500EEE0A5 /* selector@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selector@2x.png"; sourceTree = "<group>"; };
@@ -586,6 +586,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Benjamin van der Veen (XJ66L4JBY9)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -594,6 +595,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "87BC98DB-7554-4C0F-A09B-712E91745FB2";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
@@ -603,8 +605,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -620,6 +622,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/TestFlightSDK0.8.2\"",
 				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "Friendly Music";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -632,6 +638,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Benjamin van der Veen (XJ66L4JBY9)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -642,6 +649,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PROVISIONING_PROFILE = "87BC98DB-7554-4C0F-A09B-712E91745FB2";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
@@ -651,6 +659,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Benjamin van der Veen (XJ66L4JBY9)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -659,6 +668,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "87BC98DB-7554-4C0F-A09B-712E91745FB2";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
@@ -668,8 +678,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -686,6 +696,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/TestFlightSDK0.8.2\"",
 				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "Friendly Music";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -697,8 +711,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -713,6 +727,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/TestFlightSDK0.8.2\"",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
 				);
 				PRODUCT_NAME = "Friendly Music";
 				PROVISIONING_PROFILE = "";
