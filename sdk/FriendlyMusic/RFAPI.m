@@ -174,10 +174,6 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
     return queryString;
 }
 
--(NSString *) urlStringForResource:(RFAPIResource)resource {
-    return [self urlStringForResource:resource withParameters:nil];
-}
-
 -(NSString *) urlStringForResource:(RFAPIResource)resource withParameters:(NSDictionary *)parameters {
     
     NSString *baseURL = [NSString stringWithFormat:@"https://%@%@", [self host], [self pathToResource:resource]];
@@ -202,13 +198,6 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
     NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:RFAPI_TIMEOUT];
     NSLog(@"RFAPI: %@", url);
     return request;
-}
-
-
--(NSURLRequest *) requestResource:(RFAPIResource)resource withMethod:(RFAPIMethod)method {
-    NSURL *url = [NSURL URLWithString:[self urlStringForResource:resource]];
-    
-    return [self requestWithURL:url];
 }
 
 -(NSURLRequest *) requestResource:(RFAPIResource)resource withMethod:(RFAPIMethod)method andParameters:(NSDictionary *)parameters {
@@ -266,11 +255,7 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
     NSURLRequest *request;
     
     // make the request
-    if (params) {
-        request = [self requestResource:resource withMethod:RFAPIMethodGET andParameters:params];
-    } else {
-        request = [self requestResource:resource withMethod:RFAPIMethodGET];
-    }
+    request = [self requestResource:resource withMethod:RFAPIMethodGET andParameters:params];
     
     // execute the request
     NSString *responseString = [self doRequest:request];
@@ -303,11 +288,7 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
     NSURLRequest *request;
     
     // make the request
-    if (params) {
-        request = [self requestResource:resource withMethod:RFAPIMethodGET andParameters:params];
-    } else {
-        request = [self requestResource:resource withMethod:RFAPIMethodGET];
-    }
+    request = [self requestResource:resource withMethod:RFAPIMethodGET andParameters:params];
     
     // execute the request
     return [self doRequest:request delegate:delegate];
