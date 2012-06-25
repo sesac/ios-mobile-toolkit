@@ -25,6 +25,12 @@
 #import "RFAPI.h"
 #import "SBJson.h"
 
+@interface RFAPI ()
+
++ (NSString *)discoverIPAddress;
+
+@end
+
 @implementation RFAPI
 
 @synthesize environment = _environment;
