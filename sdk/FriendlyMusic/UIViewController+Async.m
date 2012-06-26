@@ -29,7 +29,6 @@
 static void *CancellationKey;
 
 - (void)associateProducer:(Producer)producer callback:(ResultCallback)callback {
-    
     CancelCallback cancellation = producer(callback, ^ (id error) {
         // TODO display something, retry, etc
     });

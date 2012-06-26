@@ -34,6 +34,10 @@ static LocalPlaylist *shared;
     return [[[NSMutableDictionary dictionaryWithContentsOfFile:playlistFilePath] objectForKey:@"media"] mutableCopy];
 }
 
+- (void)flushPlaylist {
+    [[NSDictionary dictionaryWithObject:contents forKey:@"media"] writeToFile:playlistFilePath atomically:YES];
+}
+
 - (id)init {
     if (self = [super init]) {
         self.contents = [self readPlaylist];
@@ -42,10 +46,6 @@ static LocalPlaylist *shared;
             self.contents = [NSArray array];
     }
     return self;
-}
-
-- (void)flushPlaylist {
-    [[NSDictionary dictionaryWithObject:contents forKey:@"media"] writeToFile:playlistFilePath atomically:YES];
 }
 
 - (void)addToPlaylist:(Media *)media {

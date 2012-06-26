@@ -127,15 +127,9 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         tabView.frame = CGRectMake(0, 320, 320, 140);
     }
     
-    // set playlist/filter image
-    NSDictionary *dic = [[NSDictionary alloc] initWithContentsOfFile:filePath];
-    NSMutableArray *playlistArray = [dic objectForKey:@"songs"];
-    if ([playlistArray count] == 0) {
-        [playlistButton setImage:[UIImage imageNamed:@"btn_playlist_OFF.png"] forState:UIControlStateNormal];
-    }
-    else {
-        [playlistButton setImage:[UIImage imageNamed:@"btn_playlist_ON.png"] forState:UIControlStateNormal];
-    }
+    NSString *imageName = [NSString stringWithFormat:@"btn_playlist_%@.png", [LocalPlaylist sharedPlaylist].count ? @"ON" : @"OFF"];
+    
+    [playlistButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
 
     [tabView reloadData];
 }
