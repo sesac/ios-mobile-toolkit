@@ -26,13 +26,22 @@
 #import "PlaylistVC.h"
 #import "FilterVC.h"
 #import "SBJson.h"
+#import "UIViewController+Async.h"
+#import "LocalPlaylist.h"
+
+@interface MoodMapVC ()
+
+@property (nonatomic, copy) NSArray *media;
+
+@end
 
 @implementation MoodMapVC
+
+@synthesize media;
 
 UIColor *selectedColor;
 NSMutableArray *adjacentColors;
 NSString *filePath, *srv;
-NSMutableArray *filteredSongs;
 NSMutableData *serverData;
 int playingRow;
 AVPlayer *audioPlayer;
@@ -59,8 +68,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    songsArray = [[NSMutableArray alloc] init];
-    filteredSongs = [[NSMutableArray alloc] init];
+    
     adjacentColors = [[NSMutableArray alloc] init];
     self.navigationItem.title = @"Back";
     self.navigationController.navigationBarHidden = YES;
@@ -105,8 +113,6 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     playlistIsLoading = NO;
     
     selectedColor = nil;
-    [songsArray removeAllObjects];
-    [filteredSongs removeAllObjects];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -131,15 +137,6 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         [playlistButton setImage:[UIImage imageNamed:@"btn_playlist_ON.png"] forState:UIControlStateNormal];
     }
 
-    if ([self haveFilter:dic]) {
-        [filterButton setImage:[UIImage imageNamed:@"btn_filters_ON.png"] forState:UIControlStateNormal];
-    }
-    else {
-        [filterButton setImage:[UIImage imageNamed:@"btn_filters_OFF.png"] forState:UIControlStateNormal];
-    }
-    
-    // set filtered songs array
-    [self setFilteredSongs];
     [tabView reloadData];
 }
 
@@ -197,51 +194,14 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         }];
     }];
     return;
-    ////////
-    
-    filter = [[FilterVC alloc] init];
-    [self.navigationController pushViewController:filter animated:YES];
-}
-
-- (BOOL)haveFilter:(NSDictionary *)dic {
-    return [[dic valueForKey:@"instrumental"] boolValue] ||
-    [[dic valueForKey:@"vocal"] boolValue] ||
-    [[dic valueForKey:@"classical"] boolValue] ||
-    [[dic valueForKey:@"country"] boolValue] ||
-    [[dic valueForKey:@"electronic"] boolValue] ||
-    [[dic valueForKey:@"jazz"] boolValue] ||
-    [[dic valueForKey:@"rock/pop"] boolValue] ||
-    [[dic valueForKey:@"urban"] boolValue] ||
-    [[dic valueForKey:@"explicit"] boolValue];
-}
-
-- (void)setFilteredSongs {
-    // filter songs
-    NSDictionary *filters = [[NSDictionary alloc] initWithContentsOfFile:filePath];
-    [filteredSongs removeAllObjects];
-    for (NSDictionary *song in songsArray) {
-        NSString *genre = (NSString *)[song valueForKey:@"genre"];
-        if ((![[filters valueForKey:@"explicit"] boolValue] || ([[filters valueForKey:@"explicit"] boolValue] && ![[song valueForKey:@"explicit"] boolValue]))
-            && (![[filters valueForKey:@"classical"] boolValue] || ([[filters valueForKey:@"classical"] boolValue] && ![genre isEqualToString:@"Classical"])) 
-            && (![[filters valueForKey:@"country"] boolValue] || ([[filters valueForKey:@"country"] boolValue] && ![genre isEqualToString:@"Country"]))
-            && (![[filters valueForKey:@"electronic"] boolValue] || ([[filters valueForKey:@"electronic"] boolValue] && ![genre isEqualToString:@"Electronic"]))
-            && (![[filters valueForKey:@"jazz"] boolValue] || ([[filters valueForKey:@"jazz"] boolValue] && ![genre isEqualToString:@"Jazz"]))
-            && (![[filters valueForKey:@"rock/pop"] boolValue] || ([[filters valueForKey:@"rock/pop"] boolValue] && ![genre isEqualToString:@"Rock/Pop"]))
-            && (![[filters valueForKey:@"urban"] boolValue] || ([[filters valueForKey:@"urban"] boolValue] && ![genre isEqualToString:@"Urban"]))) {
-            [filteredSongs addObject:song];
-        }
-    }
 }
 
 - (void)addToPlaylist:(UIButton *)button {
     int row = [[tabView indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
-    NSMutableDictionary *playlistDic = [[NSMutableDictionary alloc] initWithDictionary:[NSMutableDictionary dictionaryWithContentsOfFile:filePath]];
-    NSMutableArray *playlistArray = [[NSMutableArray alloc] initWithArray:[playlistDic objectForKey:@"songs"]];
     
-    [playlistArray addObject:[filteredSongs objectAtIndex:row]];
-    [playlistDic setObject:playlistArray forKey:@"songs"];
-    [playlistDic writeToFile:filePath atomically:YES];
-    
+    Media *currentMedia = [media objectAtIndex:row];
+    [[LocalPlaylist sharedPlaylist] addToPlaylist:currentMedia];
+
     button.hidden = YES;
     [[button superview] viewWithTag:8].hidden = NO;
     [playlistButton setImage:[UIImage imageNamed:@"btn_playlist_ON.png"] forState:UIControlStateNormal];
@@ -249,24 +209,15 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 
 - (void)removeFromPlaylist:(UIButton *)button {
     int row = [[tabView indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
-    NSMutableDictionary *playlistDic = [[NSMutableDictionary alloc] initWithDictionary:[NSMutableDictionary dictionaryWithContentsOfFile:filePath]];
-    NSMutableArray *playlistArray = [[NSMutableArray alloc] initWithArray:[playlistDic objectForKey:@"songs"]];
-    [playlistArray removeObject:[filteredSongs objectAtIndex:row]];
-    for (NSDictionary *dic in playlistArray) {
-        if ([[dic valueForKey:@"ID"] intValue] == [[[filteredSongs objectAtIndex:row] valueForKey:@"ID"] intValue]) {
-            [playlistArray removeObject:dic];
-            break;
-        }
-    }
-    [playlistDic setObject:playlistArray forKey:@"songs"];
-    [playlistDic writeToFile:filePath atomically:YES];
+    
+    Media *currentMedia = [media objectAtIndex:row];
+    [[LocalPlaylist sharedPlaylist] removeFromPlaylist:currentMedia];
     
     button.hidden = YES;
     [[button superview] viewWithTag:5].hidden = NO;
     
-    if ([playlistArray count] == 0) {
+    if (![LocalPlaylist sharedPlaylist].count)
         [playlistButton setImage:[UIImage imageNamed:@"btn_playlist_OFF.png"] forState:UIControlStateNormal];
-    }
 }
 
 
@@ -279,7 +230,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [filteredSongs count];
+    return media.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -381,24 +332,22 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         [cell.contentView viewWithTag:8].frame = CGRectMake(280, 12, 22, 19);
     }
     
+    Media *currentMedia = (Media *)[self.media objectAtIndex:indexPath.row];
     
     UILabel *index = (UILabel *)[cell.contentView viewWithTag:3];
     index.text = [NSString stringWithFormat:@"%i", indexPath.row+1];
     UILabel *title = (UILabel *)[cell.contentView viewWithTag:4];
-    title.text = [((NSDictionary *)[filteredSongs objectAtIndex:indexPath.row]) objectForKey:@"title"];
-    
-    NSDictionary *playlistDic = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    NSMutableArray *playlistArray = [[NSMutableArray alloc] initWithArray:[playlistDic objectForKey:@"songs"]];
+    title.text = currentMedia.title;
     
     [cell.contentView viewWithTag:5].hidden = NO;
     [cell.contentView viewWithTag:8].hidden = YES;
-    for (NSDictionary *dic in playlistArray) {
-        if ([[dic valueForKey:@"ID"] intValue] == [[[filteredSongs objectAtIndex:indexPath.row] valueForKey:@"ID"] intValue]) {
-            [cell.contentView viewWithTag:5].hidden = YES;
-            [cell.contentView viewWithTag:8].hidden = NO;
-            break;
-        }
+
+    
+    if ([[LocalPlaylist sharedPlaylist] existsInPlaylist:currentMedia]) {
+        [cell.contentView viewWithTag:5].hidden = YES;
+        [cell.contentView viewWithTag:8].hidden = NO;
     }
+    
     
     if (indexPath.row == playingRow) {
         [cell.contentView viewWithTag:3].hidden = YES;
@@ -420,13 +369,13 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     }
     
     // set color bars
-    int diff = [filteredSongs count] - [adjacentColors count];
-    if (indexPath.row < diff) {
+    //int diff = [filteredSongs count] - [adjacentColors count];
+    //if (indexPath.row < diff) {
         [cell.contentView viewWithTag:9].backgroundColor = selectedColor;
-    }
-    else {
-        [cell.contentView viewWithTag:9].backgroundColor = (UIColor *)[adjacentColors objectAtIndex:indexPath.row - diff];
-    }
+    //}
+    //else {
+    //    [cell.contentView viewWithTag:9].backgroundColor = (UIColor *)[adjacentColors objectAtIndex:indexPath.row - diff];
+    //}
     
     return cell;
 }
@@ -464,8 +413,8 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     selectedCellID = indexPath.row;
     playingRow = indexPath.row;
     
-    NSDictionary *song = (NSDictionary *)[filteredSongs objectAtIndex:indexPath.row];
-    playerItem = [[AVPlayerItem alloc] initWithURL:[NSURL URLWithString:[song objectForKey:@"url"]]];
+    Media *currentMedia = (Media *)[media objectAtIndex:indexPath.row];
+    playerItem = [[AVPlayerItem alloc] initWithURL:currentMedia.previewURL];
     [playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     [playerItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
@@ -825,69 +774,25 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 
 // server API
 - (void)getPlaylistFromServer {
-    if (playlistIsLoading) {
-        return;
-    }
+    Producer getMedia = [[RFAPI singleton] getMediaForPlaylist:playlistID + 187];
     
-    // disable done button
-    doneButton.enabled = NO;
-    
-    serverConnection = [[RFAPI singleton] resource:RFAPIResourcePlaylist withID:[NSString stringWithFormat:@"%u", (playlistID+187)] delegate:self];
-    
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    serverData = [[NSMutableData alloc] init];
-    playlistIsLoading = YES;
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [serverData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    playlistIsLoading = NO;
-
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Service not available" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Retry", nil];
-    [alert show];
-    doneButton.enabled = YES;
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection 
-{
-    playlistIsLoading = NO;
-    NSString *resultString = [[NSString alloc] initWithData:serverData encoding:NSUTF8StringEncoding];
-    SBJsonParser *jsonParser = [SBJsonParser new];
-	NSObject *json = [jsonParser objectWithString:resultString error:NULL];
-    
-    [songsArray removeAllObjects];
-    NSDictionary *pl = (NSDictionary *)[json valueForKey:@"playlist"];
-    NSArray *mediaArray = (NSArray *)[pl objectForKey:@"media"];
-    for (NSDictionary *media in mediaArray) {
-        NSDictionary *album = (NSDictionary *)[media valueForKey:@"album"];
-        NSMutableDictionary *song = [[NSMutableDictionary alloc] init];
-        [song setValue:[album valueForKey:@"title"] forKey:@"album"];
-        [song setValue:[media valueForKey:@"genre"] forKey:@"genre"];
-        [song setValue:[media valueForKey:@"explicit"] forKey:@"explicit"];
-        [song setValue:[media valueForKey:@"id"] forKey:@"ID"];
-        [song setValue:[media valueForKey:@"title"] forKey:@"title"];
-        [song setValue:[media valueForKey:@"preview_url"] forKey:@"url"];
-        [songsArray addObject:song];
-    }
-    
-    [self setFilteredSongs];
-    
-    // play first/current song
-    if ([filteredSongs count] > 0) {
-        int row = playingRow == -1 ? 0 : playingRow;
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-        [tabView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-        [tabView.delegate tableView:tabView didSelectRowAtIndexPath:indexPath];
-        if (row == 0) {
-            [tabView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    [self associateProducer:getMedia callback:^ (id result) {
+        self.media = (NSArray *)result;
+        
+        
+        // play first/current song
+        if (media.count) {
+            int row = playingRow == -1 ? 0 : playingRow;
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+            [tabView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+            [tabView.delegate tableView:tabView didSelectRowAtIndexPath:indexPath];
+            if (row == 0) {
+                [tabView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            }
         }
-    }
-    doneButton.enabled = YES;
+        doneButton.enabled = YES;
+    }];
+
 }
 
 

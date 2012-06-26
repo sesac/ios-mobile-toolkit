@@ -30,9 +30,8 @@
     IBOutlet UIImageView *glow, *ring, *selector, *moodmap, *welcome;
     IBOutlet UIButton *doneButton, *playlistButton, *filterButton;
     IBOutlet UITableView *tabView;
-    NSMutableArray *songsArray;
+    NSArray *media;
     int playlistID, selectedCellID;
-    NSURLConnection *serverConnection;
 }
 
 - (IBAction)doneButtonPressed;
@@ -42,8 +41,6 @@
 - (void)colorOfPoint:(CGPoint)point;
 - (void)addToPlaylist:(UIButton *)button;
 - (void)getPlaylistFromServer;
-- (BOOL)haveFilter:(NSDictionary *)dic;
-- (void)setFilteredSongs;
 - (void)stop;
 
 @end

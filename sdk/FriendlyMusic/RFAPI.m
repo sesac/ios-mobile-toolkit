@@ -25,11 +25,44 @@
 #import "RFAPI.h"
 #import "SBJson.h"
 #import "SMWebRequest+Async.h"
+#import "Sequence.h"
 
+@implementation Media
+
+@synthesize title, albumTitle, genre, isExplicit, ID, previewURL;
+
+- (id)initWithDictionary:(NSDictionary *)dictionary {
+    if (self = [super init]) {
+        self.title = [dictionary objectForKey:@"title"];
+        self.albumTitle = [[dictionary objectForKey:@"album"] objectForKey:@"title"];
+        self.genre = [dictionary objectForKey:@"genre"];
+        self.isExplicit = [[dictionary objectForKey:@"explicit"] boolValue];
+        self.ID = [[dictionary objectForKey:@"id"] intValue];
+        self.previewURL = [NSURL URLWithString:[dictionary objectForKey:@"preview_url"]];
+    }
+    return self;
+}
+
+@end
 
 @interface RFAPI ()
 
 + (Producer)apiWithEnvironment:(RFAPIEnv)environment version:(RFAPIVersion)version publicKey:(NSString *)publicKey password:(NSString *)password;
+
+@end
+
+@interface NSData (ParseJson)
+
+- (id)parseJson;
+
+@end
+
+@implementation NSData (ParseJson)
+
+- (id)parseJson {
+    SBJsonParser *parser = [SBJsonParser new];
+    return [parser objectWithData:self];
+}
 
 @end
 
@@ -45,6 +78,8 @@
 @synthesize ipAddress = _ipAddress;
 
 static RFAPI *rfAPIObject = nil; // use [RFAPI singleton]
+static CancelCallback cancellation;
+
 static int RFAPI_TIMEOUT = 30.0; // request timeout
 
 + (Producer)retrieveIPAddress {
@@ -83,10 +118,12 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
 
 
 + (void)rumbleWithEnvironment:(RFAPIEnv)env publicKey:(NSString *)publicKey password:(NSString *)password callback:(void (^)())callback {
-    [self apiWithEnvironment:env version:RFAPIVersion2 publicKey:publicKey password:password](^ (id api) {
+    cancellation = [self apiWithEnvironment:env version:RFAPIVersion2 publicKey:publicKey password:password](^ (id api) {
         rfAPIObject = api;
+        cancellation = nil;
+        callback();
     }, ^ (id error) {
-        
+        cancellation = nil;
     });
 }
 
@@ -157,6 +194,8 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
 }
 
 -(NSString *) queryStringFor:(NSDictionary *)parameters {
+    parameters = [parameters mutableCopy];
+    
     // ensure dictionary
     if (!parameters) {
         parameters = [[NSMutableDictionary alloc] init];
@@ -321,6 +360,18 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
 
 -(NSURLConnection *) resource:(RFAPIResource)resource delegate:(NSObject <NSURLConnectionDelegate> *)delegate {
     return [self resource:resource withParams:nil delegate:delegate];
+}
+
+- (Producer)getMediaForPlaylist:(NSInteger)playlistID {
+    NSString *idString = [NSString stringWithFormat:@"%u", playlistID];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:idString, @"id", nil];
+    NSURLRequest *request = [self requestResource:RFAPIResourcePlaylist withMethod:RFAPIMethodGET andParameters:params];
+    
+    return [SMWebRequest producerWithURLRequest:request dataParser:^ id (NSData *data) {
+        NSDictionary *json = [data parseJson];
+        NSArray *media = [[json objectForKey:@"playlist"] objectForKey:@"media"];
+        return [media map:^ id (id m) { return [[Media alloc] initWithDictionary:m]; }];
+    }];
 }
 
 @end

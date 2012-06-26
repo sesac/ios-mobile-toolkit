@@ -26,6 +26,15 @@
 #import <UIKit/UIKit.h>
 #import "Async.h"
 
+@interface Media : NSObject
+
+@property (nonatomic, copy) NSString *title, *albumTitle, *genre;
+@property (nonatomic, assign) BOOL isExplicit;
+@property (nonatomic, assign) NSInteger ID;
+@property (nonatomic, strong) NSURL *previewURL;
+
+@end
+
 typedef enum RFAPIEnv {
     RFAPIEnvSandbox = 0,
     RFAPIEnvProduction
@@ -79,5 +88,7 @@ typedef enum RFAPIMethod {
 -(NSURLConnection *) resource:(RFAPIResource)resource withID:(NSObject *)resourceId delegate:(NSObject <NSURLConnectionDelegate> *)delegate;
 -(NSURLConnection *) resource:(RFAPIResource)resource delegate:(NSObject <NSURLConnectionDelegate> *)delegate;
 
+
+- (Producer)getMediaForPlaylist:(NSInteger)playlistID;
 
 @end
