@@ -33,6 +33,9 @@
 @property (nonatomic, assign) NSInteger ID;
 @property (nonatomic, strong) NSURL *previewURL;
 
+- (id)initWithDictionary:(NSDictionary *)dictionary;
+- (NSDictionary *)dictionaryRepresentation;
+
 @end
 
 typedef enum RFAPIEnv {

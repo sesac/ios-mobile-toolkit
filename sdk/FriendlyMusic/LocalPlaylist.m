@@ -1,5 +1,6 @@
 #import "LocalPlaylist.h"
 #import "Sequence.h"
+#import "RFAPI.h"
 
 static NSString *playlistFilePath;
 static LocalPlaylist *shared;
@@ -30,12 +31,14 @@ static LocalPlaylist *shared;
     return contents.count;
 }
 
-- (NSMutableArray *)readPlaylist {
-    return [[[NSMutableDictionary dictionaryWithContentsOfFile:playlistFilePath] objectForKey:@"media"] mutableCopy];
+- (NSArray *)readPlaylist {
+    return [[[NSMutableDictionary dictionaryWithContentsOfFile:playlistFilePath] objectForKey:@"media"] map:^ id (id m) {
+        return [[Media alloc] initWithDictionary:m];
+    }];
 }
 
 - (void)flushPlaylist {
-    [[NSDictionary dictionaryWithObject:contents forKey:@"media"] writeToFile:playlistFilePath atomically:YES];
+    [[NSDictionary dictionaryWithObject:[contents map:^ id (id m) { return [((Media *)m) dictionaryRepresentation]; }] forKey:@"media"] writeToFile:playlistFilePath atomically:YES];
 }
 
 - (id)init {
@@ -49,17 +52,32 @@ static LocalPlaylist *shared;
 }
 
 - (void)addToPlaylist:(Media *)media {
-    self.contents = [self.contents arrayByAddingObject:[NSNumber numberWithInt:media.ID]];
+    self.contents = [self.contents arrayByAddingObject:media];
     [self flushPlaylist];
 }
 
+- (void)removeAtIndex:(NSUInteger)index {
+    NSMutableArray *mutableCopy = [self.contents mutableCopy];
+    [mutableCopy removeObjectAtIndex:index];
+    self.contents = [mutableCopy copy];
+}
+
 - (void)removeFromPlaylist:(Media *)media {
-    self.contents = [contents filter:^ BOOL (id i) { return [((NSNumber *)i) intValue] != media.ID; }];
+    self.contents = [contents filter:^ BOOL (id m) { return ![((Media *)m) isEqual:media]; }];
     [self flushPlaylist];
 }
 
 - (BOOL)existsInPlaylist:(Media *)media {
-    return [contents any:^ BOOL (id i) { return [((NSNumber *)i) intValue] == media.ID; }];
+    return [contents any:^ BOOL (id m) { return [((Media *)m) isEqual:media]; }];
+}
+
+- (Media *)mediaAtIndex:(NSUInteger)index {
+    return (Media *)[self.contents objectAtIndex:index];
+}
+
+- (void)clear {
+    self.contents = [NSArray array];
+    [self flushPlaylist];
 }
 
 @end

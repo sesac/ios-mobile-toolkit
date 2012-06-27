@@ -43,6 +43,24 @@
     return self;
 }
 
+- (NSDictionary *)dictionaryRepresentation {
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+        [NSNumber numberWithInt:self.ID], @"id",
+        self.title, @"title",
+        [self.previewURL absoluteString], @"preview_url", nil];
+}
+
+- (NSUInteger)hash {
+    return self.ID;
+}
+
+- (BOOL)isEqual:(id)object {
+    if (![object isKindOfClass:[Media class]])
+        return NO;
+    
+    return self.ID == ((Media *)object).ID;
+}
+
 @end
 
 @interface RFAPI ()

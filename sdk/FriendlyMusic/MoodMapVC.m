@@ -168,7 +168,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         [self stop];
     }
 
-    PlaylistVC *playlist = [[PlaylistVC alloc] initWithServer:srv];
+    PlaylistVC *playlist = [[PlaylistVC alloc] init];
     [self.navigationController pushViewController:playlist animated:YES];
 }
 

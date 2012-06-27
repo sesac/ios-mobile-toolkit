@@ -27,16 +27,12 @@
 #import "RFAPI.h"
 
 @interface PlaylistVC : UITableViewController <NSURLConnectionDelegate> {
-    NSMutableArray *playlistArray;
-    NSMutableDictionary *playlistDic;
-    NSURLConnection *serverConnection;
+    
 }
 
-- (id)initWithServer:(NSString *)server;
 - (void)play;
 - (void)stop;
 - (void)removeAll;
 - (void)remove:(UIButton *)button;
-- (void)playerItemDidReachEnd:(NSNotification *)notification;
 
 @end

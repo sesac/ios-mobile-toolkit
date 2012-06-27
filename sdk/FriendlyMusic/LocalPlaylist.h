@@ -10,6 +10,9 @@
 
 - (void)addToPlaylist:(Media *)media;
 - (void)removeFromPlaylist:(Media *)media;
+- (void)removeAtIndex:(NSUInteger)index;
+- (Media *)mediaAtIndex:(NSUInteger)index;
 - (BOOL)existsInPlaylist:(Media *)media;
+- (void)clear;
 
 @end

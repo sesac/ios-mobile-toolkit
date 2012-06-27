@@ -731,7 +731,7 @@ NSTimer *rotateImagesTimer;
         [self stop];
     }
     if (playlist == nil) {
-        playlist = [[PlaylistVC alloc] initWithServer:srv];
+        playlist = [[PlaylistVC alloc] init];
     }
     [self.navigationController pushViewController:playlist animated:YES];
 //    NSLog(@"end gotoPlaylist");
