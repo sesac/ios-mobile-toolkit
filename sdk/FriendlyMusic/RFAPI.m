@@ -65,7 +65,7 @@
 
 @implementation Playlist
 
-@synthesize title, editorial, ID, imageURL, media;
+@synthesize title, editorial, ID, imageURL, image, media;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {
     if (self = [super init]) {
@@ -76,7 +76,7 @@
         // XXX dirty hack! but it should be okay-ish since this method will always
         // be called on a background thread.
         if (self.imageURL) {
-            self.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:playlist.imageURL]];
+            self.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.imageURL]];
         }
         self.editorial = [dictionary objectForKey:@"editorial"];
         self.media = [[dictionary objectForKey:@"media"] map:^ id (id m) { return [[Media alloc] initWithDictionary:m]; }];
