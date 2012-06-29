@@ -44,7 +44,6 @@ typedef enum RFOccasion {
     UIButton *firstButton, *thirdButton;
     IBOutlet UIScrollView *scroller;
     IBOutlet UITableView *table;
-    NSMutableArray *allSongsArray;
     IBOutlet UIActivityIndicatorView *loadingIndicator;
     
     NSArray *occasionKeys;
@@ -54,6 +53,11 @@ typedef enum RFOccasion {
     IBOutlet UIActivityIndicatorView *bigSpinner;
     
     NSString *occasionImageCachePath;
+    
+    NSArray *occasions;
+    NSMutableArray *occasionStack;
+    Occasion *displayedOccasion;
+    NSArray *displayedPlaylists;
     
 }
 
@@ -65,14 +69,11 @@ typedef enum RFOccasion {
 - (void)stop;
 - (void)goBack;
 
-- (void)fetchOccasionImages;
 - (void)loadOccasionImages;
 - (void)saveOccasionImages;
 
 - (void)updateOccasionImage;
 - (void)switchImageForOccasion:(RFOccasion)occasion;
 - (UIButton *)buttonForOccasion:(RFOccasion)occasion;
-
-- (void)alertWithError:(NSString *)error;
 
 @end

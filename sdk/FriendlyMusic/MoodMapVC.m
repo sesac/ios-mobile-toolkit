@@ -31,13 +31,13 @@
 
 @interface MoodMapVC ()
 
-@property (nonatomic, copy) NSArray *media;
+@property (nonatomic, copy) Playlist *playlist;
 
 @end
 
 @implementation MoodMapVC
 
-@synthesize media;
+@synthesize playlist;
 
 UIColor *selectedColor;
 NSMutableArray *adjacentColors;
@@ -168,8 +168,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         [self stop];
     }
 
-    PlaylistVC *playlist = [[PlaylistVC alloc] init];
-    [self.navigationController pushViewController:playlist animated:YES];
+    [self.navigationController pushViewController:[[PlaylistVC alloc] init] animated:YES];
 }
 
 - (IBAction)filterButtonPressed {
@@ -193,7 +192,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 - (void)addToPlaylist:(UIButton *)button {
     int row = [[tabView indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
     
-    Media *currentMedia = [media objectAtIndex:row];
+    Media *currentMedia = [playlist.media objectAtIndex:row];
     [[LocalPlaylist sharedPlaylist] addToPlaylist:currentMedia];
 
     button.hidden = YES;
@@ -204,7 +203,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 - (void)removeFromPlaylist:(UIButton *)button {
     int row = [[tabView indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
     
-    Media *currentMedia = [media objectAtIndex:row];
+    Media *currentMedia = [playlist.media objectAtIndex:row];
     [[LocalPlaylist sharedPlaylist] removeFromPlaylist:currentMedia];
     
     button.hidden = YES;
@@ -224,7 +223,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return media.count;
+    return playlist.media.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -326,7 +325,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         [cell.contentView viewWithTag:8].frame = CGRectMake(280, 12, 22, 19);
     }
     
-    Media *currentMedia = (Media *)[self.media objectAtIndex:indexPath.row];
+    Media *currentMedia = (Media *)[playlist.media objectAtIndex:indexPath.row];
     
     UILabel *index = (UILabel *)[cell.contentView viewWithTag:3];
     index.text = [NSString stringWithFormat:@"%i", indexPath.row+1];
@@ -407,7 +406,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     selectedCellID = indexPath.row;
     playingRow = indexPath.row;
     
-    Media *currentMedia = (Media *)[media objectAtIndex:indexPath.row];
+    Media *currentMedia = (Media *)[playlist.media objectAtIndex:indexPath.row];
     playerItem = [[AVPlayerItem alloc] initWithURL:currentMedia.previewURL];
     [playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     [playerItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:nil];
@@ -768,14 +767,14 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 
 // server API
 - (void)getPlaylistFromServer {
-    Producer getMedia = [[RFAPI singleton] getMediaForPlaylist:playlistID + 187];
+    Producer getMedia = [[RFAPI singleton] getPlaylist:playlistID + 187];
     
     [self associateProducer:getMedia callback:^ (id result) {
-        self.media = (NSArray *)result;
+        self.playlist = (Playlist *)result;
         
         
         // play first/current song
-        if (media.count) {
+        if (playlist.media.count) {
             int row = playingRow == -1 ? 0 : playingRow;
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
             [tabView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];

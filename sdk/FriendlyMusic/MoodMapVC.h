@@ -30,7 +30,7 @@
     IBOutlet UIImageView *glow, *ring, *selector, *moodmap, *welcome;
     IBOutlet UIButton *doneButton, *playlistButton, *filterButton;
     IBOutlet UITableView *tabView;
-    NSArray *media;
+    Playlist *playlist;
     int playlistID, selectedCellID;
 }
 

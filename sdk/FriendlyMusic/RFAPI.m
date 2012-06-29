@@ -63,6 +63,58 @@
 
 @end
 
+@implementation Playlist
+
+@synthesize title, editorial, ID, imageURL, media;
+
+- (id)initWithDictionary:(NSDictionary *)dictionary {
+    if (self = [super init]) {
+        self.title = [dictionary objectForKey:@"title"];
+        self.ID = [[dictionary objectForKey:@"id"] intValue];
+        self.imageURL = [NSURL URLWithString:[dictionary objectForKey:@"image_url"]];
+        self.media = [[dictionary objectForKey:@"media"] map:^ id (id m) { return [[Media alloc] initWithDictionary:m]; }];
+    }
+    return self;
+}
+
+- (NSString *)strippedEditorial {
+    NSRange h2range = [editorial rangeOfString:@"<h2>"];
+    NSRange h3range = [editorial rangeOfString:@"<h3>"];
+    NSRange notFound = NSMakeRange(NSNotFound, 0);
+    if (NSEqualRanges(notFound, h2range) || NSEqualRanges(notFound, h3range)) {
+        return @"";
+    }
+    else {
+        NSString *h2 = [editorial substringFromIndex:h2range.location+4];
+        h2 = [h2 substringToIndex:[h2 rangeOfString:@"</h2"].location];
+        NSString *h3 = [editorial substringFromIndex:h3range.location+4];
+        h3 = [h3 substringToIndex:[h3 rangeOfString:@"</h3"].location];
+        return [NSString stringWithFormat:@"%@. %@", h2, h3];
+    }
+}
+
+@end
+
+@implementation Occasion
+
+@synthesize name, ID, children, playlists;
+
+- (id)initWithDictionary:(NSDictionary *)dictionary {
+    if (self = [super init]) {
+        self.name = [dictionary objectForKey:@"name"];
+        self.ID = [[dictionary objectForKey:@"id"] intValue];
+        self.children = [[dictionary objectForKey:@"children"] map:^ id (id c) { 
+            return [[Occasion alloc] initWithDictionary:c]; }];
+        
+        if ([[dictionary allKeys] containsObject:@"playlists"])
+            self.playlists = [[dictionary objectForKey:@"playlists"] map:^ id (id p) {
+                return [[Playlist alloc] initWithDictionary:p]; }];
+    }
+    return self;
+}
+
+@end
+
 @interface RFAPI ()
 
 + (Producer)apiWithEnvironment:(RFAPIEnv)environment version:(RFAPIVersion)version publicKey:(NSString *)publicKey password:(NSString *)password;
@@ -268,7 +320,6 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
 
 -(NSURLRequest *) requestWithURL:(NSURL *)url {
     NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:RFAPI_TIMEOUT];
-    NSLog(@"RFAPI: %@", url);
     return request;
 }
 
@@ -380,15 +431,34 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
     return [self resource:resource withParams:nil delegate:delegate];
 }
 
-- (Producer)getMediaForPlaylist:(NSInteger)playlistID {
+- (Producer)getPlaylist:(NSInteger)playlistID {
     NSString *idString = [NSString stringWithFormat:@"%u", playlistID];
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:idString, @"id", nil];
     NSURLRequest *request = [self requestResource:RFAPIResourcePlaylist withMethod:RFAPIMethodGET andParameters:params];
     
     return [SMWebRequest producerWithURLRequest:request dataParser:^ id (NSData *data) {
-        NSDictionary *json = [data parseJson];
-        NSArray *media = [[json objectForKey:@"playlist"] objectForKey:@"media"];
-        return [media map:^ id (id m) { return [[Media alloc] initWithDictionary:m]; }];
+        NSDictionary *playlist = [[data parseJson] objectForKey:@"playlist"];
+        return [[Playlist alloc] initWithDictionary:playlist];
+    }];
+}
+
+- (Producer)getOccasions {
+    NSURLRequest *request = [self requestResource:RFAPIResourceOccasion withMethod:RFAPIMethodGET andParameters:nil];
+    
+    return [SMWebRequest producerWithURLRequest:request dataParser:^ id (NSData *data) {
+        NSArray *occasions = [[data parseJson] objectForKey:@"occasions"];
+        return [occasions map: ^ id (id o) { return [[Occasion alloc] initWithDictionary:o]; }];
+    }];
+}
+
+- (Producer)getOccasion:(NSInteger)occasionID {
+    NSString *idString = [NSString stringWithFormat:@"%u", occasionID];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:idString, @"id", nil];
+    NSURLRequest *request = [self requestResource:RFAPIResourceOccasion withMethod:RFAPIMethodGET andParameters:params];
+    
+    return [SMWebRequest producerWithURLRequest:request dataParser:^ id (NSData *data) {
+        NSDictionary *occasion = [[data parseJson] objectForKey:@"occasion"];
+        return [[Occasion alloc] initWithDictionary:occasion];
     }];
 }
 

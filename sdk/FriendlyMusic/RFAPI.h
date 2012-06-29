@@ -38,6 +38,26 @@
 
 @end
 
+@interface Playlist : NSObject
+
+@property (nonatomic, assign) NSInteger ID;
+@property (nonatomic, copy) NSString *title, *editorial;
+@property (nonatomic, readonly) NSString *strippedEditorial;
+@property (nonatomic, strong) NSURL *imageURL;
+@property (nonatomic, copy) NSArray *media;
+
+@end
+
+@interface Occasion : NSObject
+
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, assign) NSInteger ID;
+@property (nonatomic, copy) NSArray 
+    *children, // of Occasion
+    *playlists; // of Playlist
+
+@end
+
 typedef enum RFAPIEnv {
     RFAPIEnvSandbox = 0,
     RFAPIEnvProduction
@@ -92,6 +112,8 @@ typedef enum RFAPIMethod {
 -(NSURLConnection *) resource:(RFAPIResource)resource delegate:(NSObject <NSURLConnectionDelegate> *)delegate;
 
 
-- (Producer)getMediaForPlaylist:(NSInteger)playlistID;
+- (Producer)getPlaylist:(NSInteger)playlistID;
+- (Producer)getOccasions;
+- (Producer)getOccasion:(NSInteger)occasionID;
 
 @end

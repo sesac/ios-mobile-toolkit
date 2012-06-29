@@ -27,13 +27,25 @@
 #import "OccasionVC.h"
 #import "SBJson.h"
 #import "PlaylistVC.h"
+#import "UIViewController+Async.h"
+#import "Sequence.h"
+#import "LocalPlaylist.h"
+
+@interface OccasionVC ()
+
+@property (nonatomic, copy) NSArray *occasions;
+@property (nonatomic, strong) NSMutableArray *occasionStack;
+@property (nonatomic, strong) Occasion *displayedOccasion;
+@property (nonatomic, copy) NSArray *displayedPlaylists;
+
+@end
 
 @implementation OccasionVC
 
+@synthesize displayedOccasion, displayedPlaylists, occasions, occasionStack;
+
 NSMutableArray *secondButtons, *thirdButtons;
-NSMutableArray *titles, *descriptions, *images;
-NSDictionary *firstLevelDic, *secondLevelDic;
-int level, sections, plRow, plSection;
+int level, plRow, plSection;
 bool isPlaying;
 NSString *filePath, *srv;
 UITableViewCell *selectedCell;
@@ -50,6 +62,13 @@ NSTimer *rotateImagesTimer;
 
 #pragma mark - View lifecycle
 
+- (id)init {
+    if (self = [super init]) {
+        self.occasionStack = [NSMutableArray array];
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
 //    NSLog(@"start viewDidLoad");
@@ -57,7 +76,6 @@ NSTimer *rotateImagesTimer;
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.145f green:0.145f blue:0.145f alpha:1.0];
     
-    sections = 0;
     plRow = -1;
     plSection = -1;
     level = 1;
@@ -80,7 +98,7 @@ NSTimer *rotateImagesTimer;
     firstButton.alpha = 0;
     firstButton.titleLabel.font = [UIFont systemFontOfSize:32];
     [firstButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [firstButton addTarget:self action:@selector(loadSecondLevel:) forControlEvents:UIControlEventTouchUpInside];
+    [firstButton addTarget:self action:@selector(animateToHomeScreen) forControlEvents:UIControlEventTouchUpInside];
     [firstButton setContentEdgeInsets:UIEdgeInsetsMake(0, 3, 0, 0)];
     [[firstButton layer] setMasksToBounds:YES];
     [[firstButton layer] setBorderWidth:0.5];
@@ -89,10 +107,6 @@ NSTimer *rotateImagesTimer;
     
     secondButtons = [[NSMutableArray alloc] init];
     thirdButtons = [[NSMutableArray alloc] init];
-    allSongsArray = [[NSMutableArray alloc] init];
-    titles = [[NSMutableArray alloc] init];
-    descriptions = [[NSMutableArray alloc] init];
-    images = [[NSMutableArray alloc] init];
     
     bigSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
                   UIActivityIndicatorViewStyleWhiteLarge];
@@ -123,7 +137,7 @@ NSTimer *rotateImagesTimer;
         
     rotateImagesTimer = [NSTimer scheduledTimerWithTimeInterval:OCCASION_IMAGE_SWITCH_DELAY target:self selector:@selector(updateOccasionImage) userInfo:nil repeats:YES];
     
-    [self performSelectorInBackground:@selector(getOccasionsFromServer) withObject:nil];
+    [self getOccasionsFromServer];
     
     // Registers this class as the delegate of the audio session.
     [[AVAudioSession sharedInstance] setDelegate: self];    
@@ -144,14 +158,10 @@ NSTimer *rotateImagesTimer;
     for (UIButton *b in thirdButtons) {
         [b removeFromSuperview];
     }
-    [allSongsArray removeAllObjects];
     [thirdButtons removeAllObjects];
     [secondButtons removeAllObjects];
     thirdFontColor = nil;
     thirdLevelColor = nil;
-    [titles removeAllObjects];
-    [descriptions removeAllObjects];
-    [images removeAllObjects];
     [super viewDidUnload];
     
 //    NSLog(@"end viewDidUnload");
@@ -235,12 +245,63 @@ NSTimer *rotateImagesTimer;
 
 }
 
+- (void)pushOccasionNamed:(NSString *)name {
+    Occasion *occasion = [[occasions filter:^ BOOL (id o) { return [((Occasion *)o).name isEqual:name]; }] objectAtIndex:0];
+    [occasionStack addObject:occasion];
+    
+    NSArray *children = occasion.children;
+    
+    for (int i=0; i < children.count; i++) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.tag = i;
+        button.frame = CGRectMake(0, 381+i*129, 320, 129);
+        button.alpha = 0;
+        button.backgroundColor = secondLevelColor;
+        button.titleLabel.font = [UIFont systemFontOfSize:100];
+        button.titleLabel.adjustsFontSizeToFitWidth = YES;
+        [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+        [button setContentEdgeInsets:UIEdgeInsetsMake(0, 3, 0, 0)];
+        [button setTitleColor:secondFontColor forState:UIControlStateNormal];
+        [button setTitle:[((Occasion *)[children objectAtIndex:i]).name lowercaseString] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(showThirdLevel:) forControlEvents:UIControlEventTouchUpInside];
+        [[button layer] setMasksToBounds:YES];
+        [[button layer] setBorderWidth:0.5];
+        [[button layer] setBorderColor:[[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f] CGColor]];
+        [scroller addSubview:button];
+        [secondButtons addObject:button];
+    }
+    scroller.contentSize = CGSizeMake(320, children.count * 129);
+}
+
+- (void)pushOccasion:(Occasion *)occasion {
+    
+    for (int i=0; i< occasion.children.count; i++) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.tag = i;
+        button.frame = CGRectMake(0, 381+i*56, 320, 56);
+        button.backgroundColor = thirdLevelColor;
+        button.titleLabel.font = [UIFont systemFontOfSize:50];
+        button.titleLabel.adjustsFontSizeToFitWidth = YES;
+        [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+        [button setContentEdgeInsets:UIEdgeInsetsMake(0, 3, 0, 0)];
+        button.alpha = 0;
+        [button setTitleColor:thirdFontColor forState:UIControlStateNormal];
+        [button setTitle:[((Occasion *)[occasion.children objectAtIndex:i]).name lowercaseString] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(loadPlaylist:) forControlEvents:UIControlEventTouchUpInside];
+        [[button layer] setMasksToBounds:YES];
+        [[button layer] setBorderWidth:0.5];
+        [[button layer] setBorderColor:[[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f] CGColor]];
+        [scroller addSubview:button];
+        [thirdButtons addObject:button];
+    }
+    scroller.contentSize = CGSizeMake(320, 35 + occasion.children.count * 56);
+
+}
+
 - (IBAction)loadSecondLevel:(UIButton *)button {
 //    NSLog(@"start loadSecondLevel");
 
     if (level == 1) {
-        NSArray *children;
-        
         switch ([button tag]) {
             case 1:
                 firstLevelColor = [UIColor colorWithRed:0.55f green:0.32f blue:0.68f alpha:1.0f];
@@ -249,7 +310,7 @@ NSTimer *rotateImagesTimer;
                 secondFontColor = [UIColor colorWithRed:0.26f green:0.219f blue:0.278f alpha:1.0f];
                 thirdFontColor = [[UIColor alloc] initWithRed:0.26f green:0.223f blue:0.282f alpha:1.0f];
                 [firstButton setTitle:@"mood" forState:UIControlStateNormal];
-                firstLevelDic = [occasionData objectForKey:[NSNumber numberWithInt:RFOccasionMood]];
+                [self pushOccasionNamed:@"Moods"];
                 break;
                 
             case 2:
@@ -259,7 +320,7 @@ NSTimer *rotateImagesTimer;
                 secondFontColor = [UIColor colorWithRed:0.235f green:0.337f blue:0.152f alpha:1.0f];
                 thirdFontColor = [[UIColor alloc] initWithRed:0.231f green:0.278f blue:0.192f alpha:1.0f];
                 [firstButton setTitle:@"celebration" forState:UIControlStateNormal];
-                firstLevelDic = [occasionData objectForKey:[NSNumber numberWithInt:RFOccasionCelebration]];
+                [self pushOccasionNamed:@"Celebrations"];
                 break;
                 
             case 3:
@@ -269,7 +330,7 @@ NSTimer *rotateImagesTimer;
                 secondFontColor = [UIColor colorWithRed:0.455f green:0.4f blue:0.157f alpha:1.0f];
                 thirdFontColor = [[UIColor alloc] initWithRed:0.443f green:0.4f blue:0.21f alpha:1.0f];
                 [firstButton setTitle:@"themes" forState:UIControlStateNormal];
-                firstLevelDic = [occasionData objectForKey:[NSNumber numberWithInt:RFOccasionThemes]];
+                [self pushOccasionNamed:@"Themes"];
                 break;
                 
             case 4:
@@ -279,7 +340,7 @@ NSTimer *rotateImagesTimer;
                 secondFontColor = [UIColor colorWithRed:0.28f green:0.46f blue:0.455f alpha:1.0f];
                 thirdFontColor = [[UIColor alloc] initWithRed:0.35f green:0.44f blue:0.435f alpha:1.0f];
                 [firstButton setTitle:@"current events" forState:UIControlStateNormal];
-                firstLevelDic = [occasionData objectForKey:[NSNumber numberWithInt:RFOccasionCurrentEvents]];
+                [self pushOccasionNamed:@"Current Events"];
                 break;
                 
             case 5:
@@ -289,7 +350,7 @@ NSTimer *rotateImagesTimer;
                 secondFontColor = [UIColor colorWithRed:0.168f green:0.282f blue:0.427f alpha:1.0f];
                 thirdFontColor = [[UIColor alloc] initWithRed:0.274f green:0.34f blue:0.423f alpha:1.0f];
                 [firstButton setTitle:@"sports" forState:UIControlStateNormal];
-                firstLevelDic = [occasionData objectForKey:[NSNumber numberWithInt:RFOccasionSports]];
+                [self pushOccasionNamed:@"Sports"];
                 break;
                 
             case 6:
@@ -299,44 +360,26 @@ NSTimer *rotateImagesTimer;
                 secondFontColor = [UIColor colorWithRed:0.51f green:0.172f blue:0.172f alpha:1.0f];
                 thirdFontColor = [[UIColor alloc] initWithRed:0.5f green:0.21f blue:0.21f alpha:1.0f];
                 [firstButton setTitle:@"holiday" forState:UIControlStateNormal];
-                firstLevelDic = [occasionData objectForKey:[NSNumber numberWithInt:RFOccasionHoliday]];
+                [self pushOccasionNamed:@"Holidays"];
                 break;
         }
                 
-        children = (NSArray *)[firstLevelDic objectForKey:@"children"];
         
         firstButton.backgroundColor = firstLevelColor;
         firstButton.titleLabel.textColor = [UIColor whiteColor];
-        
-        for (int i=0; i<[children count]; i++) {
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-            button.tag = i;
-            button.frame = CGRectMake(0, 381+i*129, 320, 129);
-            button.alpha = 0;
-            button.backgroundColor = secondLevelColor;
-            button.titleLabel.font = [UIFont systemFontOfSize:100];
-            button.titleLabel.adjustsFontSizeToFitWidth = YES;
-            [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-            [button setContentEdgeInsets:UIEdgeInsetsMake(0, 3, 0, 0)];
-            [button setTitleColor:secondFontColor forState:UIControlStateNormal];
-            [button setTitle:[[[children objectAtIndex:i] valueForKey:@"name"] lowercaseString] forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(showThirdLevel:) forControlEvents:UIControlEventTouchUpInside];
-            [[button layer] setMasksToBounds:YES];
-            [[button layer] setBorderWidth:0.5];
-            [[button layer] setBorderColor:[[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f] CGColor]];
-            [scroller addSubview:button];
-            [secondButtons addObject:button];
-        }
-        scroller.contentSize = CGSizeMake(320, [children count]*129);
         [self showSecondLevel];
     }
-    else {  //opposite direction of level 1
-        // stop if playing
-        if (plRow >= 0) {
-            [self stop];
-        }
-        
-        [UIView animateWithDuration:0.5 animations:^{
+//    NSLog(@"end loadSecondLevel");
+}
+
+
+- (void)animateToHomeScreen {
+    // stop if playing
+    if (plRow >= 0) {
+        [self stop];
+    }
+    
+    [UIView animateWithDuration:0.5 animations:^ {
             firstButton.alpha = 0;
             table.alpha = 0;
             for (UIButton *b in secondButtons) {
@@ -372,15 +415,11 @@ NSTimer *rotateImagesTimer;
                 sportButton.alpha = 1;
                 holidayButton.alpha = 1;
             }];
-            [allSongsArray removeAllObjects];
-            sections = 0;
             [thirdButtons removeAllObjects];
             [secondButtons removeAllObjects];
             [table reloadData];
         }];
-        level = 1;
-    }
-//    NSLog(@"end loadSecondLevel");
+    level = 1;
 }
 
 
@@ -437,30 +476,9 @@ NSTimer *rotateImagesTimer;
     
     if (level == 2) {
         replaySong = NO;
-        NSArray *parent = (NSArray *)[firstLevelDic objectForKey:@"children"];
-        NSDictionary *childDic = (NSDictionary *)[parent objectAtIndex:[button tag]];
-        secondLevelDic = childDic;
-        NSArray *child = (NSArray *)[childDic objectForKey:@"children"];
-        for (int i=0; i<[child count]; i++) {
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-            button.tag = i;
-            button.frame = CGRectMake(0, 381+i*56, 320, 56);
-            button.backgroundColor = thirdLevelColor;
-            button.titleLabel.font = [UIFont systemFontOfSize:50];
-            button.titleLabel.adjustsFontSizeToFitWidth = YES;
-            [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-            [button setContentEdgeInsets:UIEdgeInsetsMake(0, 3, 0, 0)];
-            button.alpha = 0;
-            [button setTitleColor:thirdFontColor forState:UIControlStateNormal];
-            [button setTitle:[[[child objectAtIndex:i] valueForKey:@"name"] lowercaseString] forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(loadPlaylist:) forControlEvents:UIControlEventTouchUpInside];
-            [[button layer] setMasksToBounds:YES];
-            [[button layer] setBorderWidth:0.5];
-            [[button layer] setBorderColor:[[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:1.0f] CGColor]];
-            [scroller addSubview:button];
-            [thirdButtons addObject:button];
-        }
-        scroller.contentSize = CGSizeMake(320, 35+[child count]*56);
+        Occasion *parent = [occasionStack objectAtIndex:0];
+        Occasion *child = [parent.children objectAtIndex:[button tag]];
+        [self pushOccasion:child];
         
         button.titleLabel.font = [UIFont systemFontOfSize:32];
         [UIView animateWithDuration:0.5 animations:^{
@@ -512,8 +530,6 @@ NSTimer *rotateImagesTimer;
                 scroller.contentSize = CGSizeMake(320, [secondButtons count]*129);
             }];
             button.titleLabel.font = [UIFont systemFontOfSize:100];
-            [allSongsArray removeAllObjects];
-            sections = 0;
             [table reloadData];
             [thirdButtons removeAllObjects];
         }];
@@ -523,93 +539,28 @@ NSTimer *rotateImagesTimer;
 
 }
 
-- (void)fetchPlaylistsForOccasion:(NSString *)occasionID {
-    NSObject *json = [[RFAPI singleton] resource:RFAPIResourceOccasion withID:occasionID];
+- (void)fetchPlaylistsForOccasion:(Occasion *)occasion {
     
-    if (!json) {
-        [self alertWithError:@"Could not load playlist. Please try again."];
-        NSLog(@"No JSON in response to occasionWithID:%@", occasionID);
-        return;
-    }
-    
-    NSDictionary *pl = (NSDictionary *)[json valueForKey:@"occasion"];
-    NSArray *plistArray = (NSArray *)[pl objectForKey:@"playlists"];
-    
-    sections = 0;
-    [titles removeAllObjects];
-    [descriptions removeAllObjects];
-    [images removeAllObjects];
-    [allSongsArray removeAllObjects];
-    
-    for (NSDictionary *plist in plistArray) {            
-        NSObject *json = [[RFAPI singleton] resource:RFAPIResourcePlaylist withID:[plist valueForKey:@"id"]];
-        
-        if (!json) continue;
-        
-        NSDictionary *pl = (NSDictionary *)[json valueForKey:@"playlist"];
-        NSArray *mediaArray = (NSArray *)[pl objectForKey:@"media"];
-        sections++;
-        NSMutableArray *songsArray = [[NSMutableArray alloc] init];
-        for (NSDictionary *media in mediaArray) {
-            NSMutableDictionary *song = [[NSMutableDictionary alloc] init];
+    Producer mediaForOccasion = 
+        [Async continueAfterProducer:[[RFAPI singleton] getOccasion:occasion.ID] withSelector:^ Producer (id result) {
+            self.displayedOccasion = (Occasion *)result;
             
-            NSDictionary *album = (NSDictionary *)[media valueForKey:@"album"];
-            
-            if (album) {
-                [song setValue:[album valueForKey:@"title"] forKey:@"album"];
-            }
-            
-            [song setValue:[media valueForKey:@"genre"] forKey:@"genre"];
-            [song setValue:[media valueForKey:@"explicit"] forKey:@"explicit"];
-            [song setValue:[media valueForKey:@"id"] forKey:@"ID"];
-            [song setValue:[media valueForKey:@"title"] forKey:@"title"];
-            [song setValue:[media valueForKey:@"preview_url"] forKey:@"url"];
-            [songsArray addObject:song];
-        }
+            return [[displayedOccasion.playlists map:^ id (id p) {
+                return [[RFAPI singleton] getPlaylist:((Playlist *)p).ID];
+            }] parallelProducer];
+        }];
+    
+    [self associateProducer:mediaForOccasion callback:^ void (id result) {
+        self.displayedPlaylists = (NSArray *)result;
+        [table reloadData];
         
-        [allSongsArray addObject:songsArray];
-        
-        
-        // adding title and description
-        NSString *title = [plist objectForKey:@"title"];
-        if (title != nil) {
-            [titles addObject:title];
+        // play same song if needed
+        if (replaySong && plRow>=0 && plSection>=0) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:plRow inSection:plSection];
+            [table selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+            [table.delegate tableView:table didSelectRowAtIndexPath:indexPath];
         }
-        else {
-            [titles addObject:@""];
-        }
-        
-        NSString *editorial = [plist objectForKey:@"editorial"];
-        if (editorial != nil && ![editorial isEqualToString:@""]) {
-            NSRange h2range = [editorial rangeOfString:@"<h2>"];
-            NSRange h3range = [editorial rangeOfString:@"<h3>"];
-            NSRange notFound = NSMakeRange(NSNotFound, 0);
-            if (NSEqualRanges(notFound, h2range) || NSEqualRanges(notFound, h3range)) {
-                [descriptions addObject:@""];
-            }
-            else {
-                NSString *h2 = [editorial substringFromIndex:h2range.location+4];
-                h2 = [h2 substringToIndex:[h2 rangeOfString:@"</h2"].location];
-                NSString *h3 = [editorial substringFromIndex:h3range.location+4];
-                h3 = [h3 substringToIndex:[h3 rangeOfString:@"</h3"].location];
-                [descriptions addObject:[NSString stringWithFormat:@"%@. %@", h2, h3]];
-            }
-        }
-        else {
-            [descriptions addObject:@""];
-        }
-        
-        // adding images
-        NSString *image_url = [pl objectForKey:@"image_url"];
-        if (image_url != nil && ![image_url isEqualToString:@""]) {
-            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[image_url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-            [images addObject:imageData];
-        }   
-        else {
-            [images addObject:@""];
-        }
-    }
-
+    }];
 }
 
 
@@ -620,12 +571,12 @@ NSTimer *rotateImagesTimer;
     thirdButton = button;
     int tag = [button tag];
     if (level == 3) {
-        NSArray *parent = (NSArray *)[secondLevelDic objectForKey:@"children"];
-        NSDictionary *childDic = (NSDictionary *)[parent objectAtIndex:tag];
         
-        [self fetchPlaylistsForOccasion:[childDic valueForKey:@"id"]];
-                
-        [table reloadData];
+        
+        Occasion *parent = [occasionStack objectAtIndex:1];
+        Occasion *child = [parent.children objectAtIndex:tag];
+        
+        [self fetchPlaylistsForOccasion:child];
         
         button.titleLabel.font = [UIFont systemFontOfSize:32];
         [UIView animateWithDuration:0.5 animations:^{
@@ -642,13 +593,6 @@ NSTimer *rotateImagesTimer;
             scroller.contentSize = CGSizeMake(320, 381);
         }];
         level = 4;
-        
-        // play same song if needed
-        if (replaySong && plRow>=0 && plSection>=0) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:plRow inSection:plSection];
-            [table selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-            [table.delegate tableView:table didSelectRowAtIndexPath:indexPath];
-        }
     }
     else {  // opposite direction of level 3
         // stop if playing
@@ -669,8 +613,8 @@ NSTimer *rotateImagesTimer;
             }
         }
         completion:^(BOOL finished) {
-            [allSongsArray removeAllObjects];
-            sections = 0;
+            self.displayedOccasion = nil;
+            self.displayedPlaylists = nil;
             [table reloadData];
             scroller.contentSize = CGSizeMake(320, 35+[thirdButtons count]*56);
         }];
@@ -686,14 +630,10 @@ NSTimer *rotateImagesTimer;
 
     int row = [[table indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
     int section = [[table indexPathForCell:(UITableViewCell *)[[button superview] superview]] section];
-    NSMutableDictionary *playlistDic = [[NSMutableDictionary alloc] initWithDictionary:[NSMutableDictionary dictionaryWithContentsOfFile:filePath]];
-    NSMutableArray *playlistArray = [[NSMutableArray alloc] initWithArray:[playlistDic objectForKey:@"songs"]];
     
-    NSArray *songsArray = [allSongsArray objectAtIndex:section];
-    [playlistArray addObject:[songsArray objectAtIndex:row]];
-    [playlistDic setObject:playlistArray forKey:@"songs"];
-    [playlistDic writeToFile:filePath atomically:YES];
-        
+    Media *currentMedia = [((Playlist *)[displayedPlaylists objectAtIndex:section]).media objectAtIndex:row];
+    [[LocalPlaylist sharedPlaylist] addToPlaylist:currentMedia];
+    
     button.hidden = YES;
     [[button superview] viewWithTag:8].hidden = NO;
 //    NSLog(@"end addToPlaylist");
@@ -704,19 +644,9 @@ NSTimer *rotateImagesTimer;
 
     int row = [[table indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
     int section = [[table indexPathForCell:(UITableViewCell *)[[button superview] superview]] section];
-    NSMutableDictionary *playlistDic = [[NSMutableDictionary alloc] initWithDictionary:[NSMutableDictionary dictionaryWithContentsOfFile:filePath]];
-    NSMutableArray *playlistArray = [[NSMutableArray alloc] initWithArray:[playlistDic objectForKey:@"songs"]];
     
-    NSArray *songsArray = [allSongsArray objectAtIndex:section];
-    [playlistArray removeObject:[songsArray objectAtIndex:row]];
-    for (NSDictionary *dic in playlistArray) {
-        if ([[dic valueForKey:@"ID"] intValue] == [[[songsArray objectAtIndex:row] valueForKey:@"ID"] intValue]) {
-            [playlistArray removeObject:dic];
-            break;
-        }
-    }
-    [playlistDic setObject:playlistArray forKey:@"songs"];
-    [playlistDic writeToFile:filePath atomically:YES];
+    Media *currentMedia = [((Playlist *)[displayedPlaylists objectAtIndex:section]).media objectAtIndex:row];
+    [[LocalPlaylist sharedPlaylist] removeFromPlaylist:currentMedia];
     
     button.hidden = YES;
     [[button superview] viewWithTag:5].hidden = NO;
@@ -737,63 +667,6 @@ NSTimer *rotateImagesTimer;
 //    NSLog(@"end gotoPlaylist");
 }
 
-- (void)fetchOccasionImages {
-//    NSLog(@"start fetchOccasionImages");
-    
-    NSDictionary *tmpOccasionData = nil;
-    NSMutableArray *tmpImageUrls = nil;
-    
-    for ( NSNumber *occasion in occasionKeys ) {
-//        NSLog(@"-- loadOccasionImages, occasion: %@", occasion);
-        
-        tmpOccasionData = [occasionData objectForKey:occasion];
-        tmpImageUrls = [[NSMutableArray alloc] init];
-
-        // dive down into occasions to retrieve the playlist image URLs for the grandchild occasions.
-        NSArray *children = [tmpOccasionData objectForKey:@"children"];
-
-        for (NSDictionary *child in children) {
-            NSArray *grandChildren = [child objectForKey:@"children"];
-            for (NSDictionary *grandChild in grandChildren) {                
-                NSObject *json = [[RFAPI singleton] resource:RFAPIResourceOccasion withID:[grandChild valueForKey:@"id"]];
-                NSDictionary *occasion = (NSDictionary *)[json valueForKey:@"occasion"];
-                NSArray *playlists = [occasion objectForKey:@"playlists"];
-                for (NSDictionary *playlist in playlists) {
-                    NSString *image_url = [playlist objectForKey:@"image_url"];
-                    if (image_url != nil && ![image_url isEqualToString:@""]) {
-                        [tmpImageUrls addObject:[image_url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-                    }
-                    
-                }
-            }
-        }
-        // randomize order of tmpImageUrls
-        for (int i = 0; i < [tmpImageUrls count]; i++) {
-            
-            [tmpImageUrls exchangeObjectAtIndex:i withObjectAtIndex:(arc4random() % ([tmpImageUrls count] - 1))];
-        }
-
-        NSMutableArray *tmpImageData = [[NSMutableArray alloc] init];
-        
-        // retrieve the first OCCASION_IMAGE_DEPTH images
-        for (NSString *url in tmpImageUrls) {
-            if ([tmpImageData count] >= OCCASION_IMAGE_DEPTH) { break; }
-            
-            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-            if (data) {
-                [tmpImageData addObject:data];
-            }
-        }
-        
-        // set the images for the occasion
-        [occasionImageDict setObject:tmpImageData forKey:occasion];
-
-    }
-    
-    [self saveOccasionImages];
-    
-//    NSLog(@"end fetchOccasionImages");
-}
 
 - (UIButton *)buttonForOccasion:(RFOccasion)occasion {
     UIButton *targetButton;
@@ -848,76 +721,34 @@ NSTimer *rotateImagesTimer;
     // NSLog(@"end updateOccasionImage");
 }
 
-
-// server API
 - (void)getOccasionsFromServer {
-//    NSLog(@"start getOccasionsFromServer");
+    [loadingIndicator startAnimating];
     
-    occasionData = [[NSMutableDictionary alloc] init];
-
-    self.view.userInteractionEnabled = NO;
+    // we're going to filter out occasions whose names aren't among these:
+    NSArray *displayedOccasionNames = [NSArray arrayWithObjects:@"Celebrations", @"Current Events", @"Holidays", @"Moods", @"Sports", @"Themes", nil];
     
-    NSObject *json = [[RFAPI singleton] resource:RFAPIResourceOccasion];    
-    NSArray *occasions = (NSArray *)[json valueForKey:@"occasions"];
-    
-    for (NSDictionary *occasion in occasions) {
-        NSString *targetName = [occasion valueForKey:@"name"];
-        NSNumber *occasionKey = nil;
+    [self associateProducer:[[RFAPI singleton] getOccasions] callback:^ (id results) {
+        self.occasions = [((NSArray *)results) filter:^ BOOL (id o) { 
+            return [displayedOccasionNames any:^ BOOL (id n) {
+                return [((Occasion *)o).name isEqual:n];
+            }];
+        }];
         
-        if ([targetName isEqualToString:@"Celebrations"]) {
-            occasionKey = [NSNumber numberWithInt:RFOccasionCelebration];
-        }
-        else if ([targetName isEqualToString:@"Current Events"]) {
-            occasionKey = [NSNumber numberWithInt:RFOccasionCurrentEvents];
-        }
-        else if ([targetName isEqualToString:@"Holidays"]) {
-            occasionKey = [NSNumber numberWithInt:RFOccasionHoliday];
-        }
-        else if ([targetName isEqualToString:@"Moods"]) {
-            occasionKey = [NSNumber numberWithInt:RFOccasionMood];
-        }
-        else if ([targetName isEqualToString:@"Sports"]) {
-            occasionKey = [NSNumber numberWithInt:RFOccasionSports];
-        }
-        else if ([targetName isEqualToString:@"Themes"]) {
-            occasionKey = [NSNumber numberWithInt:RFOccasionThemes];
-        }
-        
-        if (occasionKey) {
-            [occasionData setObject:[[NSDictionary alloc] initWithDictionary:occasion] forKey:occasionKey];
-        }
-    }
-    
-    [loadingIndicator stopAnimating];
-    self.view.userInteractionEnabled = YES;
-    
-    // DISABLED FOR NOW
-    // [self performSelectorInBackground:@selector(fetchOccasionImages) withObject:nil];
-    
-//    NSLog(@"end getOccasionsFromServer");
+        [loadingIndicator stopAnimating];
+    }];
 }
-
 
 
 #pragma mark - TableView methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-//    NSLog(@"start numberOfSelectionsInTableView");
-
-    return sections;
-    
-//    NSLog(@"end numberOfSelectionsInTableView");
+    return displayedPlaylists.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//    NSLog(@"start tableView: numberOfRowsInSection:");
-
-    return [[allSongsArray objectAtIndex:section] count];
-    
-//    NSLog(@"end tableView: numberOfRowsInSection:");
-
+    return ((Playlist *)[displayedPlaylists objectAtIndex:section]).media.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1000,20 +831,16 @@ NSTimer *rotateImagesTimer;
     UILabel *index = (UILabel *)[cell.contentView viewWithTag:3];
     index.text = [NSString stringWithFormat:@"%i", indexPath.row+1];
     UILabel *title = (UILabel *)[cell.contentView viewWithTag:4];
-    NSArray *songsArray = [allSongsArray objectAtIndex:indexPath.section];
-    title.text = [((NSDictionary *)[songsArray objectAtIndex:indexPath.row]) objectForKey:@"title"];
-    
-    NSDictionary *playlistDic = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    NSMutableArray *playlistArray = [[NSMutableArray alloc] initWithArray:[playlistDic objectForKey:@"songs"]];
+    Playlist *playlist = [displayedPlaylists objectAtIndex:indexPath.section];
+    Media *media = ((Media *)[playlist.media objectAtIndex:indexPath.row]);
+    title.text = media.title;
     
     [cell.contentView viewWithTag:5].hidden = NO;
     [cell.contentView viewWithTag:8].hidden = YES;
-    for (NSDictionary *dic in playlistArray) {
-        if ([[dic valueForKey:@"ID"] intValue] == [[[songsArray objectAtIndex:indexPath.row] valueForKey:@"ID"] intValue]) {
-            [cell.contentView viewWithTag:5].hidden = YES;
-            [cell.contentView viewWithTag:8].hidden = NO;
-            break;
-        }
+    
+    if ([[LocalPlaylist sharedPlaylist] existsInPlaylist:media]) {
+        [cell.contentView viewWithTag:5].hidden = YES;
+        [cell.contentView viewWithTag:8].hidden = NO;
     }
     
     if (indexPath.row == plRow && indexPath.section == plSection) {
@@ -1063,9 +890,9 @@ NSTimer *rotateImagesTimer;
     plRow = indexPath.row;
     plSection = indexPath.section;
     
-    NSArray *songsArray = [allSongsArray objectAtIndex:indexPath.section];
-    NSDictionary *song = (NSDictionary *)[songsArray objectAtIndex:indexPath.row];
-    playerItem = [[AVPlayerItem alloc] initWithURL:[NSURL URLWithString:[song objectForKey:@"url"]]];
+    Playlist *playlist = [displayedPlaylists objectAtIndex:indexPath.section];
+    Media *media = [playlist.media objectAtIndex:indexPath.row];
+    playerItem = [[AVPlayerItem alloc] initWithURL:media.previewURL];
     [playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     [playerItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
@@ -1078,26 +905,29 @@ NSTimer *rotateImagesTimer;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 //    NSLog(@"start tableView: viewForHeaderInSection:");
 
+    Playlist *playlist = [displayedPlaylists objectAtIndex:section];
+    
     UIImageView *header = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
     header.image = [UIImage imageNamed:@"occasion_header_bg.png"];
     UIImageView *art = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-    if ([images objectAtIndex:section] != @"") {
-        art.image = [UIImage imageWithData:[images objectAtIndex:section]];
-    }
+    
+    // XXX synchronous image download. gonna need to extract a view class here.
+    if (playlist.imageURL)
+        art.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:playlist.imageURL]];
     [header addSubview:art];
     
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, 260, 20)];
     title.textColor = [UIColor whiteColor];
     title.font = [UIFont boldSystemFontOfSize:16];
     title.backgroundColor = [UIColor clearColor];
-    title.text = [titles objectAtIndex:section];
+    title.text = playlist.title;
     [header addSubview:title];
 
     UILabel *description = [[UILabel alloc] initWithFrame:CGRectMake(60, 20, 260, 40)];
     description.textColor = [UIColor whiteColor];
     description.font = [UIFont systemFontOfSize:16];
     description.backgroundColor = [UIColor clearColor];
-    description.text = [descriptions objectAtIndex:section];
+    description.text = playlist.strippedEditorial;
     description.numberOfLines = 0;
     [header addSubview:description];
     
@@ -1184,21 +1014,6 @@ NSTimer *rotateImagesTimer;
 //    NSLog(@"end observeValueForKeyPath");
 }
 
-
-// Alert delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-//    NSLog(@"start alertView");
-    if (buttonIndex == 1) {
-        [loadingIndicator startAnimating];
-        [self performSelectorInBackground:@selector(getOccasionsFromServer) withObject:nil];
-    }
-//    NSLog(@"end alertView");
-}
-
-- (void)alertWithError:(NSString *)error {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];    
-}
 
 
 @end
