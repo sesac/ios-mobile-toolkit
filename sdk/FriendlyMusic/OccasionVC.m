@@ -274,6 +274,7 @@ NSTimer *rotateImagesTimer;
 }
 
 - (void)pushOccasion:(Occasion *)occasion {
+    [occasionStack addObject:occasion];
     
     for (int i=0; i< occasion.children.count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -571,7 +572,6 @@ NSTimer *rotateImagesTimer;
     thirdButton = button;
     int tag = [button tag];
     if (level == 3) {
-        
         
         Occasion *parent = [occasionStack objectAtIndex:1];
         Occasion *child = [parent.children objectAtIndex:tag];

@@ -78,6 +78,9 @@
 }
 
 - (NSString *)strippedEditorial {
+    if (!editorial)
+        return @"";
+    
     NSRange h2range = [editorial rangeOfString:@"<h2>"];
     NSRange h3range = [editorial rangeOfString:@"<h3>"];
     NSRange notFound = NSMakeRange(NSNotFound, 0);
