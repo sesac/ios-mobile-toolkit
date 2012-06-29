@@ -71,7 +71,14 @@
     if (self = [super init]) {
         self.title = [dictionary objectForKey:@"title"];
         self.ID = [[dictionary objectForKey:@"id"] intValue];
-        self.imageURL = [NSURL URLWithString:[dictionary objectForKey:@"image_url"]];
+        self.imageURL = [NSURL URLWithString:[[dictionary objectForKey:@"image_url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        // XXX dirty hack! but it should be okay-ish since this method will always
+        // be called on a background thread.
+        if (self.imageURL) {
+            self.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:playlist.imageURL]];
+        }
+        self.editorial = [dictionary objectForKey:@"editorial"];
         self.media = [[dictionary objectForKey:@"media"] map:^ id (id m) { return [[Media alloc] initWithDictionary:m]; }];
     }
     return self;

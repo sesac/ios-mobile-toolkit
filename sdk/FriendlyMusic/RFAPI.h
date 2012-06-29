@@ -45,6 +45,7 @@
 @property (nonatomic, readonly) NSString *strippedEditorial;
 @property (nonatomic, strong) NSURL *imageURL;
 @property (nonatomic, copy) NSArray *media;
+@property (nonatomic, strong) UIImage *image;
 
 @end
 

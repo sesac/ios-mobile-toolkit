@@ -69,6 +69,15 @@ NSTimer *rotateImagesTimer;
     return self;
 }
 
+- (void)setButtonsHidden:(BOOL)hidden {
+    moodButton.hidden = hidden;
+    celebButton.hidden = hidden;
+    themeButton.hidden = hidden;
+    eventButton.hidden = hidden;
+    sportButton.hidden = hidden;
+    holidayButton.hidden = hidden;
+}
+
 - (void)viewDidLoad
 {
 //    NSLog(@"start viewDidLoad");
@@ -136,6 +145,8 @@ NSTimer *rotateImagesTimer;
     [self loadOccasionImages];
         
     rotateImagesTimer = [NSTimer scheduledTimerWithTimeInterval:OCCASION_IMAGE_SWITCH_DELAY target:self selector:@selector(updateOccasionImage) userInfo:nil repeats:YES];
+    
+    [self setButtonsHidden:YES];
     
     [self getOccasionsFromServer];
     
@@ -551,10 +562,13 @@ NSTimer *rotateImagesTimer;
             }] parallelProducer];
         }];
     
+    [loadingIndicator startAnimating];
+    
     [self associateProducer:mediaForOccasion callback:^ void (id result) {
         self.displayedPlaylists = (NSArray *)result;
         [table reloadData];
-        
+        table.alpha = 1.0;
+        [loadingIndicator stopAnimating];
         // play same song if needed
         if (replaySong && plRow>=0 && plSection>=0) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:plRow inSection:plSection];
@@ -580,7 +594,6 @@ NSTimer *rotateImagesTimer;
         
         button.titleLabel.font = [UIFont systemFontOfSize:32];
         [UIView animateWithDuration:0.5 animations:^{
-            table.alpha = 1.0;
             //move
             thirdRect = button.frame;
             button.frame = CGRectMake(0, 35, 320, 35);
@@ -735,6 +748,7 @@ NSTimer *rotateImagesTimer;
         }];
         
         [loadingIndicator stopAnimating];
+        [self setButtonsHidden:NO];
     }];
 }
 
@@ -912,8 +926,8 @@ NSTimer *rotateImagesTimer;
     UIImageView *art = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
     
     // XXX synchronous image download. gonna need to extract a view class here.
-    if (playlist.imageURL)
-        art.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:playlist.imageURL]];
+    if (playlist.image)
+        art.image = playlist.image;
     [header addSubview:art];
     
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, 260, 20)];
