@@ -221,8 +221,8 @@
 		41B5E2761599063A009E5F53 /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
 		41B5E27915992823009E5F53 /* Sequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sequence.h; sourceTree = "<group>"; };
 		41B5E27A15992824009E5F53 /* Sequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sequence.m; sourceTree = "<group>"; };
-		41B5E27D15992BDC009E5F53 /* UIViewController+Async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+Async.h"; path = "FriendlyMusic/UIViewController+Async.h"; sourceTree = "<group>"; };
-		41B5E27E15992BDC009E5F53 /* UIViewController+Async.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+Async.m"; path = "FriendlyMusic/UIViewController+Async.m"; sourceTree = "<group>"; };
+		41B5E27D15992BDC009E5F53 /* UIViewController+Async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Async.h"; sourceTree = "<group>"; };
+		41B5E27E15992BDC009E5F53 /* UIViewController+Async.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Async.m"; sourceTree = "<group>"; };
 		41B5E281159933B0009E5F53 /* LocalPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalPlaylist.h; path = FriendlyMusic/LocalPlaylist.h; sourceTree = "<group>"; };
 		41B5E282159933B1009E5F53 /* LocalPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalPlaylist.m; path = FriendlyMusic/LocalPlaylist.m; sourceTree = "<group>"; };
 		BAB8A0D314A72CF80094B5B7 /* Mobile SDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework.static; includeInIndex = 0; path = "Mobile SDK.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -428,8 +428,6 @@
 			children = (
 				41B5E281159933B0009E5F53 /* LocalPlaylist.h */,
 				41B5E282159933B1009E5F53 /* LocalPlaylist.m */,
-				41B5E27D15992BDC009E5F53 /* UIViewController+Async.h */,
-				41B5E27E15992BDC009E5F53 /* UIViewController+Async.m */,
 				063720CC150018450085E588 /* TapkuLibrary */,
 				BAB8A0D814A72CF80094B5B7 /* FriendlyMusic */,
 				066073CB14F5B4DF0012E9DE /* RFAPITests */,
@@ -479,6 +477,8 @@
 				41B5E27A15992824009E5F53 /* Sequence.m */,
 				41B5E2751599063A009E5F53 /* UIApplication+NetworkActivity.h */,
 				41B5E2761599063A009E5F53 /* UIApplication+NetworkActivity.m */,
+				41B5E27D15992BDC009E5F53 /* UIViewController+Async.h */,
+				41B5E27E15992BDC009E5F53 /* UIViewController+Async.m */,
 				41B5E2711598EA2E009E5F53 /* SMWebRequest+Async.h */,
 				41B5E2721598EA2E009E5F53 /* SMWebRequest+Async.m */,
 				41B5E2641598E3BF009E5F53 /* SMWebRequest.h */,

@@ -31,7 +31,7 @@
 
 @interface MoodMapVC ()
 
-@property (nonatomic, copy) Playlist *playlist;
+@property (nonatomic, strong) Playlist *playlist;
 
 @end
 
