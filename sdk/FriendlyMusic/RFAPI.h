@@ -112,7 +112,7 @@ typedef enum RFAPIMethod {
 -(NSURLConnection *) resource:(RFAPIResource)resource withID:(NSObject *)resourceId delegate:(NSObject <NSURLConnectionDelegate> *)delegate;
 -(NSURLConnection *) resource:(RFAPIResource)resource delegate:(NSObject <NSURLConnectionDelegate> *)delegate;
 
-
+- (Producer)getPlaylistsWithOffset:(NSInteger)offset;
 - (Producer)getPlaylist:(NSInteger)playlistID;
 - (Producer)getOccasions;
 - (Producer)getOccasion:(NSInteger)occasionID;

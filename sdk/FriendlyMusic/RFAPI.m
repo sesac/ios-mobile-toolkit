@@ -78,6 +78,7 @@
         if (self.imageURL) {
             self.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.imageURL]];
         }
+
         self.editorial = [dictionary objectForKey:@"editorial"];
         self.media = [[dictionary objectForKey:@"media"] map:^ id (id m) { return [[Media alloc] initWithDictionary:m]; }];
     }
@@ -439,6 +440,17 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
 
 -(NSURLConnection *) resource:(RFAPIResource)resource delegate:(NSObject <NSURLConnectionDelegate> *)delegate {
     return [self resource:resource withParams:nil delegate:delegate];
+}
+
+- (Producer)getPlaylistsWithOffset:(NSInteger)offset {
+    NSString *offsetString = [NSString stringWithFormat:@"%u", offset];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:offsetString, @"start", nil];
+    NSURLRequest *request = [self requestResource:RFAPIResourcePlaylist withMethod:RFAPIMethodGET andParameters:params];
+    
+    return [SMWebRequest producerWithURLRequest:request dataParser:^ id (NSData *data) {
+        NSArray *playlists = [[data parseJson] objectForKey:@"playlists"];
+        return [playlists map: ^ id (id p) { return [[Playlist alloc] initWithDictionary:p]; }];
+    }];
 }
 
 - (Producer)getPlaylist:(NSInteger)playlistID {
