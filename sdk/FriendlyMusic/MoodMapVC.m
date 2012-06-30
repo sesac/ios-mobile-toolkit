@@ -361,14 +361,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         [(UIActivityIndicatorView *)[cell.contentView viewWithTag:6] stopAnimating];
     }
     
-    // set color bars
-    //int diff = [filteredSongs count] - [adjacentColors count];
-    //if (indexPath.row < diff) {
-        [cell.contentView viewWithTag:9].backgroundColor = selectedColor;
-    //}
-    //else {
-    //    [cell.contentView viewWithTag:9].backgroundColor = (UIColor *)[adjacentColors objectAtIndex:indexPath.row - diff];
-    //}
+    [cell.contentView viewWithTag:9].backgroundColor = selectedColor;
     
     return cell;
 }
@@ -771,7 +764,6 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     
     [self associateProducer:getMedia callback:^ (id result) {
         self.playlist = (Playlist *)result;
-        
         
         // play first/current song
         if (playlist.media.count) {
