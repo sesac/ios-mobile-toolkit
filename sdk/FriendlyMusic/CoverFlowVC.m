@@ -26,19 +26,41 @@
 #import "AlbumLandscapeVC.h"
 #import "PlaylistLandscapeVC.h"
 #import "SBJson.h"
+#import "UIViewController+Async.h"
+
+@interface CoverflowCoverView : TKCoverflowCoverView
+
+@property (nonatomic, strong) Playlist *playlist;
+
+@end
+
+@implementation CoverflowCoverView
+
+@synthesize playlist = _playlist;
+
+- (void)setPlaylist:(Playlist *)value {
+    _playlist = value;
+    self.image = _playlist.image;
+}
+
+@end
+
+@interface CoverFlowVC ()
+
+@property (nonatomic, copy) NSArray *playlists;
+
+@end
+
 
 @implementation CoverFlowVC
 
-@synthesize albumArray = _albumArray;
-@synthesize coverflow = _coverflow;
-@synthesize coverImages = _coverImages;
-@synthesize loaderThread = _loaderThread;
-@synthesize albumLabel = _albumLabel;
-@synthesize spinner = _spinner;
+@synthesize playlists;
+@synthesize spinner;
+@synthesize coverflow;
+@synthesize albumLabel;
 
 - (void)viewDidLoad
 {
-    NSLog(@"viewDidLoad");
     [super viewDidLoad];
 
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];             
@@ -56,10 +78,6 @@
     
     toolbar.items = [NSArray arrayWithObjects:leftButton, space, title, space, rightButton, nil];
     [self.view addSubview:toolbar];
-    
-    // set up the data arrays and coverFlow object to stick playlists into.
-    [self setAlbumArray:[[NSMutableArray alloc] init]];
-    [self setCoverImages:[[NSMutableArray alloc] init]];
 
     // coverview
     TKCoverflowView *localCF = [[TKCoverflowView alloc] initWithFrame:CGRectMake(0, 44, 480, 276)];
@@ -86,10 +104,8 @@
     self.spinner.center = self.view.center;
     [self.view addSubview:self.spinner];
 
-    [self performSelectorInBackground:@selector(getPlaylistFromServer) withObject:nil];    
-    [self.spinner startAnimating];
     
-    NSLog(@"viewDidLoad end");
+    [self getPlaylistFromServer];
 }
 
 
@@ -100,12 +116,9 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    NSLog(@"viewWillAppear");
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];                 
-    
-    NSLog(@"viewWillAppear end");
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -119,98 +132,47 @@
 }
 
 - (void)gotoPlaylist {
-    NSLog(@"gotoPlaylist");
     PlaylistLandscapeVC *playlist = [[PlaylistLandscapeVC alloc] init];
     [playlist setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self presentModalViewController:playlist animated:YES];
 }
 
-
-
 // Coverflow methods
 
 - (void)coverflowView:(TKCoverflowView*)coverflowView coverAtIndexWasBroughtToFront:(int)index {
-	self.albumLabel.text = [[self.albumArray objectAtIndex:index] objectForKey:@"title"];
+	self.albumLabel.text = ((Playlist *)[self.playlists objectAtIndex:index]).title;
 }
 
 - (TKCoverflowCoverView*)coverflowView:(TKCoverflowView*)coverflowView coverAtIndex:(int)index {
-	TKCoverflowCoverView *cover = [coverflowView dequeueReusableCoverView];
+	CoverflowCoverView *cover = (CoverflowCoverView *)[coverflowView dequeueReusableCoverView];
 	
-	if(cover == nil){
-		BOOL phone = [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone;
-		CGRect rect = phone ? CGRectMake(0, 0, 224, 300) : CGRectMake(0, 0, 300, 600);
-		cover = [[TKCoverflowCoverView alloc] initWithFrame:rect];
+	if(cover == nil) {
+		cover = [[CoverflowCoverView alloc] initWithFrame:CGRectMake(0, 0, 224, 300)];
 		cover.baseline = 224;
 	}
-	cover.image = [self.coverImages objectAtIndex:index];
+    
+	cover.playlist = [self.playlists objectAtIndex:index];
+    
 	return cover;
 }
 
 - (void)coverflowView:(TKCoverflowView*)coverflowView coverAtIndexWasDoubleTapped:(int)index{
-	AlbumLandscapeVC *album = [[AlbumLandscapeVC alloc] init];
-    album.albumInfo = [self.albumArray objectAtIndex:index];
-    [album setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self presentModalViewController:album animated:YES];
+    Playlist *playlist = (Playlist *)[playlists objectAtIndex:index];
+    
+	AlbumLandscapeVC *albumController = [[AlbumLandscapeVC alloc] initWithPlaylist:playlist];
+    
+    [albumController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self presentModalViewController:albumController animated:YES];
 }
 
-
-// server API
 - (void)getPlaylistFromServer {
-    NSLog(@"getPlaylistFromServer");
-    // go get the results!
-    
-    int playlistSetMax = 50; // will be updated after the first query to the full set; commented out below!
-    int playlistSetSize = 25;
-    
-    for (int set = 0; set <= playlistSetMax; set += playlistSetSize) {
-        NSLog(@"Playlist Hunk: %d", set);
-        
-        NSMutableDictionary *playlistParams = [[NSMutableDictionary alloc] init];
-        [playlistParams setObject:[NSString stringWithFormat:@"%i", set] forKey:@"start"];
-        
-        NSObject *json = [[RFAPI singleton] resource:RFAPIResourcePlaylist withParams:playlistParams];
-        if (!json) {
-            [self alertWithError:@"Playlists not available."];
-        }
-                
-        NSArray *playlistsArray = (NSArray *)[json valueForKey:@"playlists"];
-        for (NSDictionary *album in playlistsArray) {
-            
-            NSString *image_url = [album objectForKey:@"image_url"];
-            
-            if (image_url == nil || [image_url isEqualToString:@""]) {
-                // NSLog(@"No image found.");
-                // no image, we'll ignore it for the sake of this demo.
-            } else {
-                // NSLog(@"Image found.");
-                NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[image_url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-                UIImage *image = [UIImage imageWithData:imageData];
-                
-                [self.coverImages addObject:image];
-                [self.albumArray addObject:album];
-            
-                self.coverflow.numberOfCovers = [self.albumArray count];
-            }
-        }
-                
-        NSLog(@"Playlist Completed Hunk: %d of %d", set, playlistSetMax);
-    }
-    
-    [self.spinner stopAnimating];
-}
-
-
-// Alert delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        [self.spinner startAnimating];
-        [self performSelectorInBackground:@selector(getPlaylistFromServer) withObject:nil];
-    }
-}
-
-- (void)alertWithError:(NSString *)error {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];    
+    [self.spinner startAnimating];
+    Producer getPlaylists = [[RFAPI singleton] getPlaylistsWithOffset:0];    
+    [self associateProducer:getPlaylists callback:^ (id results) {
+        self.playlists = (NSArray *)results;
+        self.coverflow.numberOfCovers = playlists.count;
+        [self.spinner stopAnimating];
+    }];
 }
 
 @end

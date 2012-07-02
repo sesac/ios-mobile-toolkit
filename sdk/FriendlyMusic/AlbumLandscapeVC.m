@@ -26,6 +26,12 @@
 #import "SBJson.h"
 #import <AVFoundation/AVFoundation.h>
 
+@interface AlbumLandscapeVC ()
+
+@property (nonatomic, strong) Playlist *playlist;
+
+@end
+
 @implementation AlbumLandscapeVC
 
 int playRow;
@@ -35,9 +41,17 @@ UITableViewCell *selectedCell;
 AVPlayer *audioPlayer;
 AVPlayerItem *playerItem;
 
+@synthesize playlist;
 @synthesize tabview = _tabview;
 @synthesize albumInfo = _albumInfo;
 @synthesize songsArray = _songsArray;
+
+- (id)initWithPlaylist:(Playlist *)lePlaylist {
+    if (self = [super init]) {
+        self.playlist = lePlaylist;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {

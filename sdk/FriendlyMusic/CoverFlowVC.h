@@ -33,18 +33,15 @@
 //    NSThread *loaderThread;
 //    UILabel *albumLabel;
 //    UIActivityIndicatorView *spinner;
+    NSArray *playlists;
 }
 
-@property (nonatomic, strong) NSMutableArray *albumArray;
 @property (nonatomic, strong) TKCoverflowView *coverflow;
-@property (nonatomic, strong) NSMutableArray *coverImages;
-@property (nonatomic, strong) NSThread *loaderThread;
 @property (nonatomic, strong) UILabel *albumLabel;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
 - (void)goBack;
 - (void)gotoPlaylist;
 - (void)getPlaylistFromServer;
-- (void)alertWithError:(NSString *)error;
 
 @end

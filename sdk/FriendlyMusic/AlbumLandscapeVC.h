@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSDictionary *albumInfo;
 @property (nonatomic, strong) NSMutableArray *songsArray;
 
+- (id)initWithPlaylist:(Playlist *)playlist;
 - (void)close;
 - (void)addToPlaylist:(UIButton *)button;
 - (void)playerItemDidReachEnd:(NSNotification *)notification;
