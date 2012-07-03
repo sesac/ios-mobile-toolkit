@@ -29,9 +29,6 @@
 @interface PlaylistLandscapeVC : UIViewController<UITableViewDataSource, UITableViewDelegate, NSURLConnectionDelegate>
 
 @property (nonatomic, strong) UITableView *tabview;
-@property (nonatomic, strong) NSMutableArray *playlistArray;
-@property (nonatomic, strong) NSMutableDictionary *playlistDic;
-@property (nonatomic, strong) NSURLConnection *serverConnection;
 
 - (void)goBack;
 - (void)stop;

@@ -29,8 +29,6 @@
 @interface AlbumLandscapeVC : UIViewController<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tabview;
-@property (nonatomic, strong) NSDictionary *albumInfo;
-@property (nonatomic, strong) NSMutableArray *songsArray;
 
 - (id)initWithPlaylist:(Playlist *)playlist;
 - (void)close;

@@ -72,7 +72,11 @@
     if (self = [super init]) {
         self.title = [dictionary objectForKey:@"title"];
         self.ID = [[dictionary objectForKey:@"id"] intValue];
-        self.imageURL = [NSURL URLWithString:[[dictionary objectForKey:@"image_url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        NSString *imageURLString = [[dictionary objectForKey:@"image_url"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        if (imageURLString && ![imageURLString isEqual:@""])
+            self.imageURL = [NSURL URLWithString:imageURLString];
         
         self.editorial = [dictionary objectForKey:@"editorial"];
         self.media = [[dictionary objectForKey:@"media"] map:^ id (id m) { return [[Media alloc] initWithDictionary:m]; }];

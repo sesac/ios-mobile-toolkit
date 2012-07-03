@@ -25,10 +25,13 @@
 #import "AlbumLandscapeVC.h"
 #import "SBJson.h"
 #import <AVFoundation/AVFoundation.h>
+#import "LocalPlaylist.h"
+#import "NSObject+AssociateProducer.h"
 
 @interface AlbumLandscapeVC ()
 
 @property (nonatomic, strong) Playlist *playlist;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -43,8 +46,7 @@ AVPlayerItem *playerItem;
 
 @synthesize playlist;
 @synthesize tabview = _tabview;
-@synthesize albumInfo = _albumInfo;
-@synthesize songsArray = _songsArray;
+@synthesize activityIndicator;
 
 - (id)initWithPlaylist:(Playlist *)lePlaylist {
     if (self = [super init]) {
@@ -57,8 +59,6 @@ AVPlayerItem *playerItem;
 {
     [super viewDidLoad];
     
-    self.songsArray = [[NSMutableArray alloc] init];
-    [self performSelectorInBackground:@selector(getPlaylistFromServer:) withObject:@"NO"];
     selectedCell = [[UITableViewCell alloc] init];
     playRow = -1;
     
@@ -69,7 +69,7 @@ AVPlayerItem *playerItem;
     [toolbar setItems:[NSArray arrayWithObject:closeButton]];
     
     UILabel *title1 = [[UILabel alloc] initWithFrame:CGRectMake(100, 0, 280, 44)];
-    title1.text = [self.albumInfo objectForKey:@"title"];
+    title1.text = playlist.title;
     title1.textAlignment = UITextAlignmentCenter;
     title1.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
     title1.textColor = [UIColor whiteColor];
@@ -100,10 +100,21 @@ AVPlayerItem *playerItem;
         [self setTabview:localTableView];
     }
     
+    activityIndicator = [[UIActivityIndicatorView alloc] init];
+    [activityIndicator sizeToFit];
+    activityIndicator.frame = CGRectMake(
+        (self.tabview.frame.size.width - activityIndicator.frame.size.width) / 2, 
+        (self.tabview.frame.size.height - activityIndicator.frame.size.height) / 2, 
+        activityIndicator.frame.size.width, 
+        activityIndicator.frame.size.height);
+    [self.view addSubview:activityIndicator];
+    
     // Registers this class as the delegate of the audio session.
     [[AVAudioSession sharedInstance] setDelegate: self];    
     // Allow the app sound to continue to play when the screen is locked.
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    
+    [self getPlaylistFromServer:NO];
 }
 
 - (void)viewDidUnload
@@ -115,7 +126,6 @@ AVPlayerItem *playerItem;
     if (playRow >= 0) {
         [self stop];
     }
-    [self.songsArray removeAllObjects];
     [self.tabview reloadData];
     
     [self dismissModalViewControllerAnimated:YES];
@@ -137,7 +147,7 @@ AVPlayerItem *playerItem;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.songsArray count];
+    return playlist.media.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -211,23 +221,19 @@ AVPlayerItem *playerItem;
         tikButton.hidden = YES;
         [cell.contentView addSubview:tikButton];
     }
+    Media *currentMedia = [playlist.media objectAtIndex:indexPath.row];
     
     UILabel *index = (UILabel *)[cell.contentView viewWithTag:3];
     index.text = [NSString stringWithFormat:@"%i", indexPath.row+1];
     UILabel *title = (UILabel *)[cell.contentView viewWithTag:4];
-    title.text = [((NSDictionary *)[self.songsArray objectAtIndex:indexPath.row]) objectForKey:@"title"];
-    
-    NSDictionary *playlistDic = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    NSMutableArray *playlistArray = [[NSMutableArray alloc] initWithArray:[playlistDic objectForKey:@"songs"]];
+    title.text = currentMedia.title;
     
     [cell.contentView viewWithTag:5].hidden = NO;
     [cell.contentView viewWithTag:8].hidden = YES;
-    for (NSDictionary *dic in playlistArray) {
-        if ([[dic valueForKey:@"ID"] intValue] == [[[self.songsArray objectAtIndex:indexPath.row] valueForKey:@"ID"] intValue]) {
-            [cell.contentView viewWithTag:5].hidden = YES;
-            [cell.contentView viewWithTag:8].hidden = NO;
-            break;
-        }
+    
+    if ([[LocalPlaylist sharedPlaylist] existsInPlaylist:currentMedia]) {
+        [cell.contentView viewWithTag:5].hidden = YES;
+        [cell.contentView viewWithTag:8].hidden = NO;
     }
     
     if (indexPath.row == playRow) {
@@ -251,34 +257,25 @@ AVPlayerItem *playerItem;
 }
 
 // server API
-- (void)getPlaylistFromServer:(NSString *)replay {    
-    NSObject *json = [[RFAPI singleton] resource:RFAPIResourcePlaylist withID:[self.albumInfo valueForKey:@"id"]];
+- (void)getPlaylistFromServer:(BOOL)play {
+    Producer getPlaylist = [[RFAPI singleton] getPlaylist:playlist.ID];
+    [activityIndicator startAnimating];
     
-    [self.songsArray removeAllObjects];
-    NSDictionary *pl = (NSDictionary *)[json valueForKey:@"playlist"];
-    NSArray *mediaArray = (NSArray *)[pl objectForKey:@"media"];
-    for (NSDictionary *media in mediaArray) {
-        NSDictionary *album = (NSDictionary *)[media valueForKey:@"album"];
-        NSMutableDictionary *song = [[NSMutableDictionary alloc] init];
+    [self associateProducer:getPlaylist callback:^ (id result) {
+        self.playlist = (Playlist *)result;
         
-        if (album) {
-            [song setValue:[album valueForKey:@"title"] forKey:@"album"];
+        if (play && playlist.media.count) {
+            int row = playRow == -1 ? 0 : playRow;
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+            [self.tabview selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+            [self.tabview.delegate tableView:self.tabview didSelectRowAtIndexPath:indexPath];
+            if (row == 0) {
+                [self.tabview scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            }
         }
-            
-        [song setValue:[media valueForKey:@"genre"] forKey:@"genre"];
-        [song setValue:[media valueForKey:@"explicit"] forKey:@"explicit"];
-        [song setValue:[media valueForKey:@"id"] forKey:@"ID"];
-        [song setValue:[media valueForKey:@"title"] forKey:@"title"];
-        [song setValue:[media valueForKey:@"preview_url"] forKey:@"url"];
-        [self.songsArray addObject:song];
-    }
-    
-    if ([replay isEqualToString:@"YES"] && [self.songsArray count] > 0) {     // play same song
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:playRow inSection:0];
-        [self.tabview selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-        [self.tabview.delegate tableView:self.tabview didSelectRowAtIndexPath:indexPath];
-    }
-    [self.tabview reloadData];
+        [self.tabview reloadData];
+        [activityIndicator stopAnimating];
+    }];
 }
 
 #pragma mark - Table view delegate
@@ -306,9 +303,9 @@ AVPlayerItem *playerItem;
     [spinner startAnimating];
     selectedCell = cell;
     playRow = indexPath.row;
-    
-    NSDictionary *song = (NSDictionary *)[self.songsArray objectAtIndex:indexPath.row];
-    playerItem = [[AVPlayerItem alloc] initWithURL:[NSURL URLWithString:[song objectForKey:@"url"]]];
+
+    Media *currentMedia = [playlist.media objectAtIndex:indexPath.row];
+    playerItem = [[AVPlayerItem alloc] initWithURL:currentMedia.previewURL];
     [playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     [playerItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
@@ -323,16 +320,11 @@ AVPlayerItem *playerItem;
     return nil;
 }
 
-
-
 - (void)addToPlaylist:(UIButton *)button {
     int row = [[self.tabview indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
-    NSMutableDictionary *playlistDic = [[NSMutableDictionary alloc] initWithDictionary:[NSMutableDictionary dictionaryWithContentsOfFile:filePath]];
-    NSMutableArray *playlistArray = [[NSMutableArray alloc] initWithArray:[playlistDic objectForKey:@"songs"]];
     
-    [playlistArray addObject:[self.songsArray objectAtIndex:row]];
-    [playlistDic setObject:playlistArray forKey:@"songs"];
-    [playlistDic writeToFile:filePath atomically:YES];
+    Media *currentMedia = [playlist.media objectAtIndex:row];
+    [[LocalPlaylist sharedPlaylist] addToPlaylist:currentMedia];
     
     button.hidden = YES;
     [[button superview] viewWithTag:8].hidden = NO;
@@ -340,17 +332,9 @@ AVPlayerItem *playerItem;
 
 - (void)removeFromPlaylist:(UIButton *)button {
     int row = [[self.tabview indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
-    NSMutableDictionary *playlistDic = [[NSMutableDictionary alloc] initWithDictionary:[NSMutableDictionary dictionaryWithContentsOfFile:filePath]];
-    NSMutableArray *playlistArray = [[NSMutableArray alloc] initWithArray:[playlistDic objectForKey:@"songs"]];
-    [playlistArray removeObject:[self.songsArray objectAtIndex:row]];
-    for (NSDictionary *dic in playlistArray) {
-        if ([[dic valueForKey:@"ID"] intValue] == [[[self.songsArray objectAtIndex:row] valueForKey:@"ID"] intValue]) {
-            [playlistArray removeObject:dic];
-            break;
-        }
-    }
-    [playlistDic setObject:playlistArray forKey:@"songs"];
-    [playlistDic writeToFile:filePath atomically:YES];
+    
+    Media *currentMedia = [playlist.media objectAtIndex:row];
+    [[LocalPlaylist sharedPlaylist] removeFromPlaylist:currentMedia];
     
     button.hidden = YES;
     [[button superview] viewWithTag:5].hidden = NO;    
@@ -377,7 +361,7 @@ AVPlayerItem *playerItem;
             playerItem = nil;
             audioPlayer = nil;
             [self.tabview reloadData];
-            [self performSelectorInBackground:@selector(getPlaylistFromServer:) withObject:@"YES"];
+            [self getPlaylistFromServer:YES];
         }
         return;
     }

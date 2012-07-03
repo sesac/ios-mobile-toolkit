@@ -24,6 +24,7 @@
 
 #import "PlaylistLandscapeVC.h"
 #import "SBJson.h"
+#import "LocalPlaylist.h"
 
 @implementation PlaylistLandscapeVC
 
@@ -36,17 +37,9 @@ bool isPlaying;
 NSMutableData *serverData;
 
 @synthesize tabview = _tabview;
-@synthesize playlistArray = _playlistArray;
-@synthesize playlistDic = _playlistDic;
-@synthesize serverConnection = _serverConnection;
 
 - (void)viewDidLoad
-{
-    NSLog(@"viewDidLoad");
-
-    [super viewDidLoad];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
+{    
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
     toolbar.tintColor = [UIColor colorWithRed:0.145f green:0.145f blue:0.145f alpha:1.0];
     rowPlay = -1;
@@ -77,16 +70,12 @@ NSMutableData *serverData;
     [self.view addSubview:toolbar];
 
     // set up the table view
-    UITableView *localTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 480, 276) style:UITableViewStylePlain];
-    localTableView.delegate = self;
-    localTableView.dataSource = self;
-    localTableView.separatorColor = [UIColor colorWithRed:0.08f green:0.08f blue:0.08f alpha:1.0f];
-    localTableView.backgroundColor = [UIColor colorWithRed:0.125f green:0.125f blue:0.125f alpha:1.0f];
-    [self setTabview:localTableView];
-    [self.view addSubview:localTableView];
-
+    self.tabview = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 480, 276) style:UITableViewStylePlain];
+    self.tabview.delegate = self;
+    self.tabview.dataSource = self;
     self.tabview.separatorColor = [UIColor colorWithRed:0.08f green:0.08f blue:0.08f alpha:1.0f];
-    self.tabview.backgroundColor = [UIColor colorWithRed:0.1568f green:0.1529f blue:0.1451f alpha:1.0f];
+    self.tabview.backgroundColor = [UIColor colorWithRed:0.125f green:0.125f blue:0.125f alpha:1.0f];
+    [self.view addSubview:self.tabview];
     
     // Registers this class as the delegate of the audio session.
     [[AVAudioSession sharedInstance] setDelegate: self];    
@@ -94,21 +83,8 @@ NSMutableData *serverData;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 }
 
-- (void)viewDidUnload
-{
-    NSLog(@"viewDidUnload");
-
-    [super viewDidUnload];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
-    NSLog(@"viewWillAppear");
-
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    self.playlistDic = [[NSMutableDictionary alloc] initWithDictionary:[NSMutableDictionary dictionaryWithContentsOfFile:filePath]];
-    self.playlistArray = [[NSMutableArray alloc] initWithArray:[self.playlistDic objectForKey:@"songs"]];
-    [self.tabview reloadData];
 }
 
 
@@ -119,20 +95,15 @@ NSMutableData *serverData;
 
 
 - (void)removeAll {
-    NSLog(@"removeAll");
     if (isPlaying && rowPlay >= 0) {
         [self stop];
     }
     rowPlay = -1;
-    [self.playlistArray removeAllObjects];
-    [self.playlistDic setObject:self.playlistArray forKey:@"songs"];
-    [self.playlistDic writeToFile:filePath atomically:YES];
+    [[LocalPlaylist sharedPlaylist] clear];
     [self.tabview reloadData];
 }
 
 - (void)remove:(UIButton *)button {
-    NSLog(@"remove");
-    
     int row = [[self.tabview indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
     if (row == rowPlay) {
         [self stop];
@@ -141,15 +112,11 @@ NSMutableData *serverData;
         rowPlay--;
     }
     
-    [self.playlistArray removeObjectAtIndex:row];
-    [self.playlistDic setObject:self.playlistArray forKey:@"songs"];
-    [self.playlistDic writeToFile:filePath atomically:YES];
+    [[LocalPlaylist sharedPlaylist] removeAtIndex:row];
     [self.tabview reloadData];
 }
 
 - (void)goBack {
-    NSLog(@"goBack");
-
     if (rowPlay >= 0) {
         [self stop];
     }
@@ -166,14 +133,11 @@ NSMutableData *serverData;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"tableView");
-    return [self.playlistArray count];
+    return [LocalPlaylist sharedPlaylist].count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"tableView cellForRowAtIndexPath");
-
     static NSString *CellIdentifier = @"PlaylistCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -236,10 +200,12 @@ NSMutableData *serverData;
         [cell.contentView addSubview:stopButton];
     }
     
+    Media *currentMedia = [[LocalPlaylist sharedPlaylist] mediaAtIndex:indexPath.row];
+    
     UILabel *index = (UILabel *)[cell.contentView viewWithTag:3];
     index.text = [NSString stringWithFormat:@"%i", indexPath.row+1];
     UILabel *title = (UILabel *)[cell.contentView viewWithTag:4];
-    title.text = [((NSDictionary *)[self.playlistArray objectAtIndex:indexPath.row]) objectForKey:@"title"];
+    title.text = currentMedia.title;
     
     if (indexPath.row == rowPlay) {
         [cell.contentView viewWithTag:3].hidden = YES;
@@ -267,8 +233,6 @@ NSMutableData *serverData;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"tableView didSelectRowAtIndexPath");
-
     // revert previous cell changes
     UILabel *index = (UILabel *)[selectedCell.contentView viewWithTag:3];
     index.hidden = NO;
@@ -290,8 +254,8 @@ NSMutableData *serverData;
     selectedCell = cell;
     rowPlay = indexPath.row;
     
-    NSDictionary *song = (NSDictionary *)[self.playlistArray objectAtIndex:indexPath.row];
-    playlistPlayerItem = [[AVPlayerItem alloc] initWithURL:[NSURL URLWithString:[song objectForKey:@"url"]]];
+    Media *currentMedia = [[LocalPlaylist sharedPlaylist] mediaAtIndex:indexPath.row];
+    playlistPlayerItem = [[AVPlayerItem alloc] initWithURL:currentMedia.previewURL];
     [playlistPlayerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     [playlistPlayerItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:playlistPlayerItem];
@@ -300,8 +264,6 @@ NSMutableData *serverData;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    NSLog(@"tableView viewForFooterInSection");
-
     if ([self numberOfSectionsInTableView:tableView] == section+1){
         return [UIView new];
     }
@@ -310,8 +272,6 @@ NSMutableData *serverData;
 
 
 - (void)playerItemDidReachEnd:(NSNotification *)notification {
-    NSLog(@"playerItemDidReachEnd");
-
     UIButton *stop = (UIButton *)[selectedCell.contentView viewWithTag:7];
     stop.hidden = YES;
     rowPlay = -1;
@@ -326,10 +286,8 @@ NSMutableData *serverData;
 }
 
 - (void)play {
-    NSLog(@"play");
-
-    NSDictionary *song = (NSDictionary *)[self.playlistArray objectAtIndex:rowPlay];
-    playlistPlayerItem = [[AVPlayerItem alloc] initWithURL:[NSURL URLWithString:[song objectForKey:@"url"]]];
+    Media *currentMedia = [[LocalPlaylist sharedPlaylist] mediaAtIndex:rowPlay];
+    playlistPlayerItem = [[AVPlayerItem alloc] initWithURL:currentMedia.previewURL];
     [playlistPlayerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     [playlistPlayerItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:playlistPlayerItem];
@@ -337,15 +295,11 @@ NSMutableData *serverData;
 }
 
 - (void)stop {
-    NSLog(@"stop");
-
     [playlistAudioPlayer pause];
     [self playerItemDidReachEnd:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    NSLog(@"observeValueForKeyPath ofObject change context");
-
     AVPlayerItem *item = (AVPlayerItem *)object;
     if ([keyPath isEqualToString:@"status"]) {
         if ([item status] == AVPlayerItemStatusFailed) {
@@ -358,13 +312,6 @@ NSMutableData *serverData;
             
             [playlistPlayerItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];
             [playlistPlayerItem removeObserver:self forKeyPath:@"status"];
-            [self.tabview reloadData];
-            
-            // get song's new url and replay
-            NSDictionary *song = (NSDictionary *)[self.playlistArray objectAtIndex:rowPlay];
-            NSString *ID = [song objectForKey:@"ID"];
-            
-            self.serverConnection = [[RFAPI singleton] resource:RFAPIResourceMedia withID:ID delegate:self];
         }
         return;
     }
@@ -382,58 +329,6 @@ NSMutableData *serverData;
     }
     
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-}
-
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    NSLog(@"connection didReceiveResponse");
-
-    serverData = [[NSMutableData alloc] init];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    NSLog(@"connection didReceiveData");
-
-    [serverData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {    
-    NSLog(@"connection didFailWithError");
-
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Can not load the song. Please try again later" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-    UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[selectedCell.contentView viewWithTag:6];
-    [spinner stopAnimating];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection 
-{
-    NSLog(@"connectionDidFinishLoading");
-
-    //playlistIsLoading = NO;
-    NSString *resultString = [[NSString alloc] initWithData:serverData encoding:NSUTF8StringEncoding];
-    SBJsonParser *jsonParser = [SBJsonParser new];
-    NSObject *json = [jsonParser objectWithString:resultString error:NULL];
-    NSDictionary *media = (NSDictionary *)[json valueForKey:@"media"];
-    NSString *newUrl = [media objectForKey:@"preview_url"];
-    NSMutableDictionary *song = [[NSMutableDictionary alloc] initWithDictionary:[self.playlistArray objectAtIndex:rowPlay]];
-    
-    [song setObject:newUrl forKey:@"url"];
-    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
-    for (int i=0; i<[self.playlistArray count]; i++) {
-        if (i == rowPlay) {
-            [tempArray addObject:song];
-        }
-        else {
-            [tempArray addObject:[self.playlistArray objectAtIndex:i]];
-        }
-    }
-    
-    [self.playlistDic setObject:tempArray forKey:@"songs"];
-    [self.playlistDic writeToFile:filePath atomically:YES];
-    [self.playlistArray removeAllObjects];
-    self.playlistArray = [[NSMutableArray alloc] initWithArray:tempArray];
-    [self play];
 }
 
 @end

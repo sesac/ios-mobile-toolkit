@@ -139,9 +139,9 @@
 }
 
 - (void)gotoPlaylist {
-    PlaylistLandscapeVC *playlist = [[PlaylistLandscapeVC alloc] init];
-    [playlist setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self presentModalViewController:playlist animated:YES];
+    PlaylistLandscapeVC *playlistController = [[PlaylistLandscapeVC alloc] init];
+    [playlistController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self presentModalViewController:playlistController animated:YES];
 }
 
 // Coverflow methods
