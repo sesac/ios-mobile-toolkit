@@ -32,12 +32,13 @@
 @interface MoodMapVC ()
 
 @property (nonatomic, strong) Playlist *playlist;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
 @implementation MoodMapVC
 
-@synthesize playlist;
+@synthesize playlist, activityIndicator;
 
 UIColor *selectedColor;
 NSMutableArray *adjacentColors;
@@ -99,6 +100,17 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     [[AVAudioSession sharedInstance] setDelegate: self];    
     // Allow the app sound to continue to play when the screen is locked.
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    
+    
+    activityIndicator = [[UIActivityIndicatorView alloc] init];
+    [activityIndicator sizeToFit];
+    activityIndicator.frame = CGRectMake(
+                                         (tabView.frame.size.width - activityIndicator.frame.size.width) / 2, 
+                                         (tabView.frame.size.height - activityIndicator.frame.size.height) / 2  + tabView.frame.origin.y, 
+                                         activityIndicator.frame.size.width, 
+                                         activityIndicator.frame.size.height);
+    [self.view addSubview:activityIndicator];
+    [self.view bringSubviewToFront:activityIndicator];
 }
 
 - (void)viewDidUnload
@@ -761,10 +773,10 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 // server API
 - (void)getPlaylistFromServer {
     Producer getMedia = [[RFAPI singleton] getPlaylist:playlistID + 187];
-    
+    [activityIndicator startAnimating];
     [self associateProducer:getMedia callback:^ (id result) {
         self.playlist = (Playlist *)result;
-        
+        [activityIndicator stopAnimating];
         // play first/current song
         if (playlist.media.count) {
             int row = playingRow == -1 ? 0 : playingRow;
