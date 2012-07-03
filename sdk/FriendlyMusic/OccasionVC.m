@@ -27,7 +27,7 @@
 #import "OccasionVC.h"
 #import "SBJson.h"
 #import "PlaylistVC.h"
-#import "UIViewController+Async.h"
+#import "NSObject+AssociateProducer.h"
 #import "Sequence.h"
 #import "LocalPlaylist.h"
 

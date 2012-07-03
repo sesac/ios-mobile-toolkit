@@ -37,20 +37,21 @@
 
 
 @implementation TKCoverflowCoverView
-@synthesize baseline,gradientLayer;
+@synthesize baseline,gradientLayer, image = _image;
 
 
 - (id) initWithFrame:(CGRect)frame {
     if(!(self=[super initWithFrame:frame])) return nil;
     
+    self.image = nil;
     self.opaque = NO;
     self.backgroundColor = [UIColor clearColor];
     self.layer.anchorPoint = CGPointMake(0.5, 0.5);
     
-    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.width)];
+    imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     [self addSubview:imageView];
     
-    reflected =  [[UIImageView alloc] initWithFrame:CGRectMake(0, self.frame.size.width, self.frame.size.width, self.frame.size.width)];
+    reflected =  [[UIImageView alloc] initWithFrame:CGRectZero];
     reflected.transform = CGAffineTransformScale(reflected.transform, 1, -1);
     [self addSubview:reflected];
 
@@ -58,40 +59,42 @@
     gradientLayer.colors = [NSArray arrayWithObjects:(id)[UIColor colorWithWhite:0 alpha:0.5].CGColor,(id)[UIColor colorWithWhite:0 alpha:1].CGColor,nil];
     gradientLayer.startPoint = CGPointMake(0,0);
     gradientLayer.endPoint = CGPointMake(0,0.3);
-    gradientLayer.frame = CGRectMake(0, self.frame.size.width, self.frame.size.width, self.frame.size.width);
     [self.layer addSublayer:gradientLayer];
-    
-    
     
     return self;
 }
 
+- (void)layoutSubviews {
+    imageView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.width);
+    reflected.frame = CGRectMake(0, self.bounds.size.width, self.bounds.size.width, self.bounds.size.width);
+    gradientLayer.frame = CGRectMake(0, self.bounds.size.width, self.bounds.size.width, self.bounds.size.width);
+    
+	if (self.image) {
+        imageView.image = self.image;
+        
+        float w = self.image.size.width;
+        float h = self.image.size.height;
+        float factor = self.bounds.size.width / (h>w?h:w);
+        h = factor * h;
+        w = factor * w;
+        float y = baseline - h > 0 ? baseline - h : 0;
+        imageView.frame = CGRectMake(0, y, w, h);
+        
+        gradientLayer.frame = CGRectMake(0, y + h, w, h);
+        
+        reflected.frame = CGRectMake(0, y + h, w, h);
+        reflected.image = self.image;
+    }
+}
 
-- (void) setImage:(UIImage *)img{
-	
-	UIImage *image = img;
-	//[image release];
-	//image = [img retain];
-	
-	float w = image.size.width;
-	float h = image.size.height;
-	float factor = self.bounds.size.width / (h>w?h:w);
-	h = factor * h;
-	w = factor * w;
-	float y = baseline - h > 0 ? baseline - h : 0;
-	imageView.frame = CGRectMake(0, y, w, h);
-	imageView.image = image;
-	
-	
-	gradientLayer.frame = CGRectMake(0, y + h, w, h);
-	
-	reflected.frame = CGRectMake(0, y + h, w, h);
-	reflected.image = image;
+- (void)setImage:(UIImage *)img {
+	_image = img;
+    if (!img)
+        _image = [UIImage imageNamed:@"CoverFlowPlaceholder.png"];
+    [self setNeedsLayout];
 }
-- (UIImage*) image{
-	return imageView.image;
-}
-- (void) setBaseline:(float)f{
+
+- (void)setBaseline:(float)f {
 	baseline = f;
 	[self setNeedsDisplay];
 }

@@ -26,7 +26,7 @@
 #import "AlbumLandscapeVC.h"
 #import "PlaylistLandscapeVC.h"
 #import "SBJson.h"
-#import "UIViewController+Async.h"
+#import "NSObject+AssociateProducer.h"
 
 @interface CoverflowCoverView : TKCoverflowCoverView
 
@@ -39,8 +39,15 @@
 @synthesize playlist = _playlist;
 
 - (void)setPlaylist:(Playlist *)value {
+    [self deassociateProducer];
     _playlist = value;
-    self.image = _playlist.image;
+    self.image = nil;
+    if (value.imageURL) {
+        NSLog(@"Will request image for playlist %@", value.imageURL);
+        [self associateProducer:[[RFAPI singleton] getImageAtURL:value.imageURL] callback:^ void (id i) {
+            self.image = (UIImage *)i;
+        }];
+    }
 }
 
 @end

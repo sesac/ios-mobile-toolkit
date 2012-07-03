@@ -45,7 +45,10 @@
 @property (nonatomic, readonly) NSString *strippedEditorial;
 @property (nonatomic, strong) NSURL *imageURL;
 @property (nonatomic, copy) NSArray *media;
-@property (nonatomic, strong) UIImage *image;
+
+// note: accessing this performs a synchronous network request. 
+// probably you should not do it on the main thread.
+@property (nonatomic, readonly) UIImage *image;
 
 @end
 
@@ -116,5 +119,7 @@ typedef enum RFAPIMethod {
 - (Producer)getPlaylist:(NSInteger)playlistID;
 - (Producer)getOccasions;
 - (Producer)getOccasion:(NSInteger)occasionID;
+
+- (Producer)getImageAtURL:(NSURL *)url;
 
 @end

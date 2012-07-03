@@ -26,6 +26,7 @@
 #import "SBJson.h"
 #import "SMWebRequest+Async.h"
 #import "Sequence.h"
+#import "UIImage+Undeferred.h"
 
 @implementation Media
 
@@ -65,7 +66,7 @@
 
 @implementation Playlist
 
-@synthesize title, editorial, ID, imageURL, image, media;
+@synthesize title, editorial, ID, imageURL, image = _image, media;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {
     if (self = [super init]) {
@@ -73,16 +74,16 @@
         self.ID = [[dictionary objectForKey:@"id"] intValue];
         self.imageURL = [NSURL URLWithString:[[dictionary objectForKey:@"image_url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
-        // XXX dirty hack! but it should be okay-ish since this method will always
-        // be called on a background thread.
-        if (self.imageURL) {
-            self.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.imageURL]];
-        }
-
         self.editorial = [dictionary objectForKey:@"editorial"];
         self.media = [[dictionary objectForKey:@"media"] map:^ id (id m) { return [[Media alloc] initWithDictionary:m]; }];
     }
     return self;
+}
+
+- (UIImage *)image {
+    if (!_image)
+        _image = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.imageURL]];
+    return _image;
 }
 
 - (NSString *)strippedEditorial {
@@ -481,6 +482,12 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
     return [SMWebRequest producerWithURLRequest:request dataParser:^ id (NSData *data) {
         NSDictionary *occasion = [[data parseJson] objectForKey:@"occasion"];
         return [[Occasion alloc] initWithDictionary:occasion];
+    }];
+}
+
+- (Producer)getImageAtURL:(NSURL *)url {
+    return [SMWebRequest producerWithURLRequest:[NSURLRequest requestWithURL:url] dataParser:^ id (NSData *data) {
+        return [UIImage imageInVideoRamWithData:data];
     }];
 }
 

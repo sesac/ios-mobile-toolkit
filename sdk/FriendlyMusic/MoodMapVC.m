@@ -26,7 +26,7 @@
 #import "PlaylistVC.h"
 #import "FilterVC.h"
 #import "SBJson.h"
-#import "UIViewController+Async.h"
+#import "NSObject+AssociateProducer.h"
 #import "LocalPlaylist.h"
 
 @interface MoodMapVC ()

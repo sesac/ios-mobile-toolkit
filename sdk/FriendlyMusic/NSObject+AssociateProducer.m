@@ -1,4 +1,4 @@
-#import "UIViewController+Async.h"
+#import "NSObject+AssociateProducer.h"
 #import <objc/runtime.h>
 
 @interface CancellationWrapper : NSObject
@@ -24,9 +24,13 @@
 
 @end
 
-@implementation UIViewController (Async)
+@implementation NSObject (AssociateProducer)
 
 static void *CancellationKey;
+
+- (void)deassociateProducer {
+    objc_setAssociatedObject(self, &CancellationKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 - (void)associateProducer:(Producer)producer callback:(ResultCallback)callback {
     CancelCallback cancellation = producer(callback, ^ (id error) {
