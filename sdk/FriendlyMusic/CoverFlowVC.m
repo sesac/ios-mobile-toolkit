@@ -27,6 +27,7 @@
 #import "PlaylistLandscapeVC.h"
 #import "SBJson.h"
 #import "NSObject+AssociateProducer.h"
+#import "Sequence.h"
 
 @interface CoverflowCoverView : TKCoverflowCoverView
 
@@ -176,7 +177,7 @@
     [self.spinner startAnimating];
     Producer getPlaylists = [[RFAPI singleton] getPlaylistsWithOffset:0];    
     [self associateProducer:getPlaylists callback:^ (id results) {
-        self.playlists = (NSArray *)results;
+        self.playlists = [(NSArray *)results filter:^ BOOL (id p) { return ((Playlist *)p).imageURL != NULL; }];
         self.coverflow.numberOfCovers = playlists.count;
         [self.spinner stopAnimating];
     }];
