@@ -80,7 +80,6 @@ NSTimer *rotateImagesTimer;
 
 - (void)viewDidLoad
 {
-//    NSLog(@"start viewDidLoad");
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.145f green:0.145f blue:0.145f alpha:1.0];
@@ -154,15 +153,10 @@ NSTimer *rotateImagesTimer;
     [[AVAudioSession sharedInstance] setDelegate: self];    
     // Allow the app sound to continue to play when the screen is locked.
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-    
-//    NSLog(@"end viewDidLoad");
-
 }
 
 - (void)viewDidUnload
 {
-//    NSLog(@"start viewDidUnload");
-
     for (UIButton *b in secondButtons) {
         [b removeFromSuperview];
     }
@@ -174,22 +168,14 @@ NSTimer *rotateImagesTimer;
     thirdFontColor = nil;
     thirdLevelColor = nil;
     [super viewDidUnload];
-    
-//    NSLog(@"end viewDidUnload");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-//    NSLog(@"start viewWillAppear");
-
     [super viewWillAppear:animated];
     [table reloadData];
-    
-//    NSLog(@"end viewDidUnload");
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-//    NSLog(@"start viewWillDisappear");
     [rotateImagesTimer invalidate];
 
     [super viewWillDisappear:animated];
@@ -197,8 +183,6 @@ NSTimer *rotateImagesTimer;
     if (plRow >= 0) {
         [self stop];
     }
-    
-//    NSLog(@"end viewWillDisappear");
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -215,7 +199,6 @@ NSTimer *rotateImagesTimer;
     }
     
     [saveData writeToFile:occasionImageCachePath atomically:YES];
-    // NSLog(@"Wrote out: %@, with keys: %@, and result: %@", occasionImageCachePath, [saveData allKeys], saveResult);
 }
 
 - (void) loadOccasionImages {
@@ -236,23 +219,14 @@ NSTimer *rotateImagesTimer;
     for (NSString *key in [savedData allKeys]) {
         NSMutableArray *imageData = [[NSMutableArray alloc] initWithArray:[savedData objectForKey:key]];
         NSNumber *numericKey = [numberFormatter numberFromString:key];
-        
-        // NSLog(@"loadOccasionImages occasion: %@ images: %u", numericKey, [imageData count]);
-        
         [occasionImageDict setObject:imageData forKey:numericKey];
         [self switchImageForOccasion:[numericKey intValue]];
     }
-    
-    // NSLog(@"occasionImageDict keys: %@", [occasionImageDict allKeys]);
 }
 
 - (void)goBack {
-//    NSLog(@"start goBack");
-
     [audioPlayer pause];
-    
     [self.navigationController popViewControllerAnimated:YES];
-//    NSLog(@"end goBack");
 
 }
 
@@ -263,6 +237,8 @@ NSTimer *rotateImagesTimer;
     NSArray *children = occasion.children;
     
     for (int i=0; i < children.count; i++) {
+        Occasion *child = [occasion.children objectAtIndex:i];
+        
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = i;
         button.frame = CGRectMake(0, 381+i*129, 320, 129);
@@ -273,7 +249,7 @@ NSTimer *rotateImagesTimer;
         [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
         [button setContentEdgeInsets:UIEdgeInsetsMake(0, 3, 0, 0)];
         [button setTitleColor:secondFontColor forState:UIControlStateNormal];
-        [button setTitle:[((Occasion *)[children objectAtIndex:i]).name lowercaseString] forState:UIControlStateNormal];
+        [button setTitle:[child.name lowercaseString] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(showThirdLevel:) forControlEvents:UIControlEventTouchUpInside];
         [[button layer] setMasksToBounds:YES];
         [[button layer] setBorderWidth:0.5];
@@ -288,6 +264,8 @@ NSTimer *rotateImagesTimer;
     [occasionStack addObject:occasion];
     
     for (int i=0; i< occasion.children.count; i++) {
+        Occasion *child = [occasion.children objectAtIndex:i];
+        
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = i;
         button.frame = CGRectMake(0, 381+i*56, 320, 56);
@@ -298,7 +276,7 @@ NSTimer *rotateImagesTimer;
         [button setContentEdgeInsets:UIEdgeInsetsMake(0, 3, 0, 0)];
         button.alpha = 0;
         [button setTitleColor:thirdFontColor forState:UIControlStateNormal];
-        [button setTitle:[((Occasion *)[occasion.children objectAtIndex:i]).name lowercaseString] forState:UIControlStateNormal];
+        [button setTitle:[child.name lowercaseString] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(loadPlaylist:) forControlEvents:UIControlEventTouchUpInside];
         [[button layer] setMasksToBounds:YES];
         [[button layer] setBorderWidth:0.5];
@@ -310,9 +288,11 @@ NSTimer *rotateImagesTimer;
 
 }
 
-- (IBAction)loadSecondLevel:(UIButton *)button {
-//    NSLog(@"start loadSecondLevel");
+- (void)popOccasion {
+    [self.occasionStack removeLastObject];
+}
 
+- (IBAction)loadSecondLevel:(UIButton *)button {
     if (level == 1) {
         switch ([button tag]) {
             case 1:
@@ -381,11 +361,13 @@ NSTimer *rotateImagesTimer;
         firstButton.titleLabel.textColor = [UIColor whiteColor];
         [self showSecondLevel];
     }
-//    NSLog(@"end loadSecondLevel");
 }
 
 
 - (void)animateToHomeScreen {
+    while (occasionStack.count)
+        [self popOccasion];
+    
     // stop if playing
     if (plRow >= 0) {
         [self stop];
@@ -436,9 +418,6 @@ NSTimer *rotateImagesTimer;
 
 
 - (void)showSecondLevel {
-//    NSLog(@"start showSecondLevel");
-
-    
     [UIView animateWithDuration:0.5f animations:^{
         //move
         moodButton.frame = CGRectMake(-117, -115, 116, 115);    
@@ -477,19 +456,15 @@ NSTimer *rotateImagesTimer;
         }];
     }];
     level = 2;
-    
-//    NSLog(@"end showSecondLevel");
 }
 
 - (void)showThirdLevel:(UIButton *)button {
-//    NSLog(@"start showThirdLevel");
-
     int tag = [button tag];
     
     if (level == 2) {
         replaySong = NO;
         Occasion *parent = [occasionStack objectAtIndex:0];
-        Occasion *child = [parent.children objectAtIndex:[button tag]];
+        Occasion *child = [parent.children objectAtIndex:button.tag];
         [self pushOccasion:child];
         
         button.titleLabel.font = [UIFont systemFontOfSize:32];
@@ -514,6 +489,7 @@ NSTimer *rotateImagesTimer;
         level = 3;
     }
     else if (level == 3 || level == 4) {  //opposite direction of level 2
+        [self popOccasion];
         // stop if playing
         if (plRow >= 0) {
             [self stop];
@@ -547,8 +523,6 @@ NSTimer *rotateImagesTimer;
         }];
         level = 2;
     }
-//    NSLog(@"end showThirdLevel");
-
 }
 
 - (void)fetchPlaylistsForOccasion:(Occasion *)occasion {
@@ -581,8 +555,6 @@ NSTimer *rotateImagesTimer;
 
 
 - (void)loadPlaylist:(UIButton *)button {
-//    NSLog(@"start loadPlaylist");
-
     thirdButton = button;
     int tag = [button tag];
     if (level == 3) {
@@ -633,14 +605,10 @@ NSTimer *rotateImagesTimer;
         }];
         level = 3;
     }
-    
-//    NSLog(@"end loadPlaylist");
 }
 
 
 - (void)addToPlaylist:(UIButton *)button {
-//    NSLog(@"start addToPlaylist");
-
     int row = [[table indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
     int section = [[table indexPathForCell:(UITableViewCell *)[[button superview] superview]] section];
     
@@ -649,12 +617,9 @@ NSTimer *rotateImagesTimer;
     
     button.hidden = YES;
     [[button superview] viewWithTag:8].hidden = NO;
-//    NSLog(@"end addToPlaylist");
 }
 
 - (void)removeFromPlaylist:(UIButton *)button {
-//    NSLog(@"start removeFromPlaylist");
-
     int row = [[table indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
     int section = [[table indexPathForCell:(UITableViewCell *)[[button superview] superview]] section];
     
@@ -663,13 +628,9 @@ NSTimer *rotateImagesTimer;
     
     button.hidden = YES;
     [[button superview] viewWithTag:5].hidden = NO;
-    
-//    NSLog(@"end removeFromPlaylist");
 }
 
 - (void)gotoPlaylist {
-//    NSLog(@"start gotoPlaylist");
-
     if (plRow >= 0) {
         [self stop];
     }
@@ -677,7 +638,6 @@ NSTimer *rotateImagesTimer;
         playlist = [[PlaylistVC alloc] init];
     }
     [self.navigationController pushViewController:playlist animated:YES];
-//    NSLog(@"end gotoPlaylist");
 }
 
 
@@ -709,8 +669,6 @@ NSTimer *rotateImagesTimer;
 }
 
 - (void)switchImageForOccasion:(RFOccasion)occasion {
-    // NSLog(@"start switchImageForOccasion -- %i", occasion);
-    
     UIButton *targetButton = [self buttonForOccasion:occasion];
     NSArray *occasionImages = [occasionImageDict objectForKey:[NSNumber numberWithInt:occasion]];
 
@@ -721,17 +679,14 @@ NSTimer *rotateImagesTimer;
         // assign the image to the button.
         [targetButton setBackgroundImage:[UIImage imageWithData:[occasionImages objectAtIndex:randomIndex]] forState:UIControlStateNormal];
     }
-    // NSLog(@"end switchImageForOccasion");
 }
 
 - (void)updateOccasionImage {
-    // NSLog(@"start updateOccasionImage");
     // select a random occasion
     NSUInteger randomIndex = arc4random() % [occasionKeys count];
     
     // update the image for the occasion
     [self switchImageForOccasion:[[occasionKeys objectAtIndex:randomIndex] intValue]];
-    // NSLog(@"end updateOccasionImage");
 }
 
 - (void)getOccasionsFromServer {
@@ -767,8 +722,6 @@ NSTimer *rotateImagesTimer;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    NSLog(@"start tableView: cellForRowAtIndexPath:");
-
     static NSString *CellIdentifier = @"MoodCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -873,15 +826,11 @@ NSTimer *rotateImagesTimer;
         [cell.contentView viewWithTag:7].hidden = YES;
         [(UIActivityIndicatorView *)[cell.contentView viewWithTag:6] stopAnimating];
     }
-
-//    NSLog(@"end tableView: cellForRowAtIndexPath:");
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    NSLog(@"start tableView: didSelectRowAtIndexPath:");
-
     // revert previous cell changes
     UILabel *index = (UILabel *)[selectedCell.contentView viewWithTag:3];
     index.hidden = NO;
@@ -912,13 +861,9 @@ NSTimer *rotateImagesTimer;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
     audioPlayer = [[AVPlayer alloc] initWithPlayerItem:playerItem];
     [table reloadData];
-    
-//    NSLog(@"end tableView: didSelectRowAtIndexPath:");
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//    NSLog(@"start tableView: viewForHeaderInSection:");
-
     Playlist *playlist = [displayedPlaylists objectAtIndex:section];
     
     UIImageView *header = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
@@ -944,21 +889,15 @@ NSTimer *rotateImagesTimer;
     description.text = playlist.strippedEditorial;
     description.numberOfLines = 0;
     [header addSubview:description];
-    
-//    NSLog(@"end tableView: viewForHeaderInSection:");
     return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//    NSLog(@"start and end tableView: heightForHeaderInSection:");
-
     return 60;
 }
 
 
 - (void)playerItemDidReachEnd:(NSNotification *)notification {
-//    NSLog(@"start playerItemDidReachEnd");
-
     UIButton *stop = (UIButton *)[selectedCell.contentView viewWithTag:7];
     stop.hidden = YES;
     plRow = -1;
@@ -971,8 +910,6 @@ NSTimer *rotateImagesTimer;
     playerItem = nil;
     audioPlayer = nil;
     [table reloadData];
-
-//    NSLog(@"end playerItemDidReachEnd");
 }
 
 - (void)stop {
@@ -980,13 +917,9 @@ NSTimer *rotateImagesTimer;
 
     [audioPlayer pause];
     [self playerItemDidReachEnd:nil];
-    
-//    NSLog(@"end stop");
-
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-//    NSLog(@"start observeValueForKeyPath");
 
     AVPlayerItem *item = (AVPlayerItem *)object;
     if ([keyPath isEqualToString:@"status"]) {
@@ -1025,7 +958,6 @@ NSTimer *rotateImagesTimer;
     }
     
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-//    NSLog(@"end observeValueForKeyPath");
 }
 
 
