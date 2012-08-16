@@ -22,13 +22,13 @@ Build music licensing into your iOS apps! The RIT is configured to use Rumblefis
 
 ## Where's the Code?
 
-`demo/` contains a demo project that uses the SDK.
+`demo/` contains a demo project that uses the SDK. Please see `demo/README.md` file for instructions on how to build the app.
 
-`sdk/` contains the SDK itself.
+`sdk/` contains the SDK itself. Please see `sdk/README.md` file for instructions on how to build and package the resulting framework.
 
 ## Dependencies?
 
-Please install the [iOS Universal Framework](https://github.com/kstenerud/iOS-Universal-Framework.git) before building.
+Please install the [iOS Universal Framework](https://github.com/kstenerud/iOS-Universal-Framework.git) before building. Follow the instructions in the repository for installing the templates for the "Real Framework."  
 
 ## Where Do I Send Complaints, Praise, etc.?
 
