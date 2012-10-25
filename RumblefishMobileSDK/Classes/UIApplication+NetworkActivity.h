@@ -22,6 +22,8 @@
  this file requires a written agreement with Rumblefish, Inc.
  */
 
+#import <UIKit/UIKit.h>
+
 @interface UIApplication (NetworkActivity)
 
 - (void)networkActivityDidBegin;

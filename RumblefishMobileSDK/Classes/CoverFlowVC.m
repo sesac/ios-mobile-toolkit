@@ -25,7 +25,7 @@
 #import "CoverFlowVC.h"
 #import "AlbumLandscapeVC.h"
 #import "PlaylistLandscapeVC.h"
-#import "SBJson.h"
+#import "SBJson/SBJson.h"
 #import "NSObject+AssociateProducer.h"
 #import "Sequence.h"
 

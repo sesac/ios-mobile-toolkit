@@ -23,7 +23,7 @@
  */
 
 #import "AlbumLandscapeVC.h"
-#import "SBJson.h"
+#import "SBJson/SBJson.h"
 #import <AVFoundation/AVFoundation.h>
 #import "LocalPlaylist.h"
 #import "NSObject+AssociateProducer.h"

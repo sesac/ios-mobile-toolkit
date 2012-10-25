@@ -23,7 +23,7 @@
  */
 
 #import "RFAPI.h"
-#import "SBJson.h"
+#import "SBJson/SBJson.h"
 #import "SMWebRequest+Async.h"
 #import "Sequence.h"
 #import "UIImage+Undeferred.h"

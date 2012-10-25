@@ -23,7 +23,7 @@
  */
 
 #import "PlaylistLandscapeVC.h"
-#import "SBJson.h"
+#import "SBJson/SBJson.h"
 #import "LocalPlaylist.h"
 
 @implementation PlaylistLandscapeVC

@@ -25,7 +25,7 @@
 #import "MoodMapVC.h"
 #import "PlaylistVC.h"
 #import "FilterVC.h"
-#import "SBJson.h"
+#import "SBJson/SBJson.h"
 #import "NSObject+AssociateProducer.h"
 #import "LocalPlaylist.h"
 

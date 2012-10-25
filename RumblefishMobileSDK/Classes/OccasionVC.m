@@ -25,7 +25,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
 #import "OccasionVC.h"
-#import "SBJson.h"
+#import "SBJson/SBJson.h"
 #import "PlaylistVC.h"
 #import "NSObject+AssociateProducer.h"
 #import "Sequence.h"

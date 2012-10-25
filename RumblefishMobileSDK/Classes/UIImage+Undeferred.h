@@ -22,6 +22,7 @@
  this file requires a written agreement with Rumblefish, Inc.
  */
 
+#import <UIKit/UIKit.h>
 
 @interface UIImage (Undeferred)
 

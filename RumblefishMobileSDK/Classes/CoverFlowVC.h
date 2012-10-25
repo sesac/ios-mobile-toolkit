@@ -24,7 +24,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RFAPI.h"
-#import "TapkuLibrary.h"
+#import "TapkuLibrary/TapkuLibrary.h"
 
 @interface CoverFlowVC : UIViewController<TKCoverflowViewDataSource,TKCoverflowViewDelegate> {
     // NSMutableArray *albumArray;
