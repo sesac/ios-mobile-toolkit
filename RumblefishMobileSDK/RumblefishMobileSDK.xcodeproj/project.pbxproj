@@ -119,40 +119,14 @@
 		413FD7AB1639A84A002A9183 /* RumblefishMobileSDK */ = {
 			isa = PBXGroup;
 			children = (
-				413FD7B81639AB2E002A9183 /* AlbumLandscapeVC.h */,
-				413FD7B91639AB2E002A9183 /* AlbumLandscapeVC.m */,
-				413FD7BA1639AB2E002A9183 /* Async.h */,
-				413FD7BB1639AB2E002A9183 /* Async.m */,
-				413FD7BC1639AB2E002A9183 /* CoverFlowVC.h */,
-				413FD7BD1639AB2E002A9183 /* CoverFlowVC.m */,
-				413FD7BE1639AB2E002A9183 /* FilterVC.h */,
-				413FD7BF1639AB2E002A9183 /* FilterVC.m */,
+				413FD7CE1639AB2E002A9183 /* RFAPI.h */,
+				413FD7CF1639AB2E002A9183 /* RFAPI.m */,
 				413FD7C01639AB2E002A9183 /* FriendlyMusic.h */,
 				413FD7C11639AB2E002A9183 /* FriendlyMusic.m */,
 				413FD7C21639AB2E002A9183 /* LocalPlaylist.h */,
 				413FD7C31639AB2E002A9183 /* LocalPlaylist.m */,
-				413FD7C41639AB2E002A9183 /* MoodMapVC.h */,
-				413FD7C51639AB2E002A9183 /* MoodMapVC.m */,
-				413FD7C61639AB2E002A9183 /* NSObject+AssociateProducer.h */,
-				413FD7C71639AB2E002A9183 /* NSObject+AssociateProducer.m */,
-				413FD7C81639AB2E002A9183 /* OccasionVC.h */,
-				413FD7C91639AB2E002A9183 /* OccasionVC.m */,
-				413FD7CA1639AB2E002A9183 /* PlaylistLandscapeVC.h */,
-				413FD7CB1639AB2E002A9183 /* PlaylistLandscapeVC.m */,
-				413FD7CC1639AB2E002A9183 /* PlaylistVC.h */,
-				413FD7CD1639AB2E002A9183 /* PlaylistVC.m */,
-				413FD7CE1639AB2E002A9183 /* RFAPI.h */,
-				413FD7CF1639AB2E002A9183 /* RFAPI.m */,
-				413FD7D01639AB2E002A9183 /* Sequence.h */,
-				413FD7D11639AB2E002A9183 /* Sequence.m */,
-				413FD7D21639AB2E002A9183 /* SMWebRequest.h */,
-				413FD7D31639AB2E002A9183 /* SMWebRequest.m */,
-				413FD7D41639AB2E002A9183 /* SMWebRequest+Async.h */,
-				413FD7D51639AB2E002A9183 /* SMWebRequest+Async.m */,
-				413FD7D61639AB2E002A9183 /* UIApplication+NetworkActivity.h */,
-				413FD7D71639AB2E002A9183 /* UIApplication+NetworkActivity.m */,
-				413FD7D81639AB2E002A9183 /* UIImage+Undeferred.h */,
-				413FD7D91639AB2E002A9183 /* UIImage+Undeferred.m */,
+				413FD7F11639AD24002A9183 /* Controllers */,
+				413FD7F31639AD48002A9183 /* Utilities */,
 				413FD7AC1639A84A002A9183 /* Supporting Files */,
 			);
 			path = RumblefishMobileSDK;
@@ -164,6 +138,48 @@
 				413FD7B71639A970002A9183 /* RumblefishMobileSDK-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		413FD7F11639AD24002A9183 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				413FD7B81639AB2E002A9183 /* AlbumLandscapeVC.h */,
+				413FD7B91639AB2E002A9183 /* AlbumLandscapeVC.m */,
+				413FD7BC1639AB2E002A9183 /* CoverFlowVC.h */,
+				413FD7BD1639AB2E002A9183 /* CoverFlowVC.m */,
+				413FD7BE1639AB2E002A9183 /* FilterVC.h */,
+				413FD7BF1639AB2E002A9183 /* FilterVC.m */,
+				413FD7C41639AB2E002A9183 /* MoodMapVC.h */,
+				413FD7C51639AB2E002A9183 /* MoodMapVC.m */,
+				413FD7C81639AB2E002A9183 /* OccasionVC.h */,
+				413FD7C91639AB2E002A9183 /* OccasionVC.m */,
+				413FD7CA1639AB2E002A9183 /* PlaylistLandscapeVC.h */,
+				413FD7CB1639AB2E002A9183 /* PlaylistLandscapeVC.m */,
+				413FD7CC1639AB2E002A9183 /* PlaylistVC.h */,
+				413FD7CD1639AB2E002A9183 /* PlaylistVC.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		413FD7F31639AD48002A9183 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				413FD7C61639AB2E002A9183 /* NSObject+AssociateProducer.h */,
+				413FD7C71639AB2E002A9183 /* NSObject+AssociateProducer.m */,
+				413FD7D01639AB2E002A9183 /* Sequence.h */,
+				413FD7D11639AB2E002A9183 /* Sequence.m */,
+				413FD7D21639AB2E002A9183 /* SMWebRequest.h */,
+				413FD7D31639AB2E002A9183 /* SMWebRequest.m */,
+				413FD7D41639AB2E002A9183 /* SMWebRequest+Async.h */,
+				413FD7D51639AB2E002A9183 /* SMWebRequest+Async.m */,
+				413FD7D61639AB2E002A9183 /* UIApplication+NetworkActivity.h */,
+				413FD7D71639AB2E002A9183 /* UIApplication+NetworkActivity.m */,
+				413FD7D81639AB2E002A9183 /* UIImage+Undeferred.h */,
+				413FD7D91639AB2E002A9183 /* UIImage+Undeferred.m */,
+				413FD7BA1639AB2E002A9183 /* Async.h */,
+				413FD7BB1639AB2E002A9183 /* Async.m */,
+			);
+			name = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -328,6 +344,7 @@
 				413FD7B61639A84A002A9183 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
