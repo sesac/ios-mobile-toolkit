@@ -45,7 +45,7 @@ In the project editor, expand the **Link Binary With Libraries** box, hit **+**,
 - ### Include the Rumblefish SDK resource bundle in your app's bundle
 Expand the **RumblefishMobileSDK.xcodeproj** project in the project navigator, then expand the **Products** group beneath it. Drag `RumblefishMobileSDKResources.bundle` onto the **Copy Bundle Resources** box. Don't worry if `RumblefishMobileSDKResources.bundle` is red.
 - ### Include the Rumblefish SDK header where you want to use it in your project
-Simply `#import "RumblefishMobileSDK/RumblefishMobileSDK.h"` and you're ready to start using the SDK. Take a look at the demo project for an example of how to use the SDK.
+Simply `#import "RumblefishMobileSDK/RumblefishMobileSDK.h"` and you're ready to start using the SDK. Take a look at `TestVC.m` in the demo project for an example of how to use the SDK.
 
 ## Where Do I Send Complaints, Praise, etc.?
 
