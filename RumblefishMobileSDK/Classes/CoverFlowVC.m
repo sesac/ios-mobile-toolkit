@@ -69,12 +69,6 @@
 @synthesize coverflow;
 @synthesize albumLabel;
 
-- (id)init {
-    if (self = [super initWithNibName:@"CoverFlowVC" bundle:[NSBundle rumblefishResourcesBundle]]) {
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

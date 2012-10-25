@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		411FCECF1639E856000B1841 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 411FCECE1639E856000B1841 /* Icon.png */; };
+		411FCED11639E85D000B1841 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 411FCED01639E85D000B1841 /* Icon@2x.png */; };
 		413FD9011639B787002A9183 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD9001639B787002A9183 /* UIKit.framework */; };
 		413FD9031639B787002A9183 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD9021639B787002A9183 /* Foundation.framework */; };
 		413FD9051639B787002A9183 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD9041639B787002A9183 /* CoreGraphics.framework */; };
@@ -16,8 +18,6 @@
 		413FD9331639BBD2002A9183 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 413FD92C1639BBD2002A9183 /* Default-568h@2x.png */; };
 		413FD9341639BBD2002A9183 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 413FD92D1639BBD2002A9183 /* Default.png */; };
 		413FD9351639BBD2002A9183 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 413FD92E1639BBD2002A9183 /* Default@2x.png */; };
-		413FD9361639BBD2002A9183 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 413FD92F1639BBD2002A9183 /* Icon.png */; };
-		413FD9371639BBD2002A9183 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 413FD9301639BBD2002A9183 /* Icon@2x.png */; };
 		413FD9381639BBD2002A9183 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 413FD9311639BBD2002A9183 /* MainWindow.xib */; };
 		413FD9391639BBD2002A9183 /* TestVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 413FD9321639BBD2002A9183 /* TestVC.xib */; };
 		413FD9571639BFBF002A9183 /* libRumblefishMobileSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD94C1639BF2D002A9183 /* libRumblefishMobileSDK.a */; };
@@ -52,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		411FCECE1639E856000B1841 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		411FCED01639E85D000B1841 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		413FD8FC1639B787002A9183 /* RumblefishMobileSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RumblefishMobileSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		413FD9001639B787002A9183 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		413FD9021639B787002A9183 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -65,8 +67,6 @@
 		413FD92C1639BBD2002A9183 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = SOURCE_ROOT; };
 		413FD92D1639BBD2002A9183 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = SOURCE_ROOT; };
 		413FD92E1639BBD2002A9183 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = SOURCE_ROOT; };
-		413FD92F1639BBD2002A9183 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = SOURCE_ROOT; };
-		413FD9301639BBD2002A9183 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = SOURCE_ROOT; };
 		413FD9311639BBD2002A9183 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = SOURCE_ROOT; };
 		413FD9321639BBD2002A9183 /* TestVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TestVC.xib; path = Resources/TestVC.xib; sourceTree = SOURCE_ROOT; };
 		413FD93B1639BF2C002A9183 /* RumblefishMobileSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RumblefishMobileSDK.xcodeproj; path = ../RumblefishMobileSDK/RumblefishMobileSDK.xcodeproj; sourceTree = "<group>"; };
@@ -97,6 +97,8 @@
 		413FD8F11639B787002A9183 = {
 			isa = PBXGroup;
 			children = (
+				411FCED01639E85D000B1841 /* Icon@2x.png */,
+				411FCECE1639E856000B1841 /* Icon.png */,
 				413FD9061639B787002A9183 /* RumblefishMobileSDKDemo */,
 				413FD8FF1639B787002A9183 /* Frameworks */,
 				413FD8FD1639B787002A9183 /* Products */,
@@ -153,8 +155,6 @@
 			children = (
 				413FD9311639BBD2002A9183 /* MainWindow.xib */,
 				413FD9321639BBD2002A9183 /* TestVC.xib */,
-				413FD92F1639BBD2002A9183 /* Icon.png */,
-				413FD9301639BBD2002A9183 /* Icon@2x.png */,
 				413FD92C1639BBD2002A9183 /* Default-568h@2x.png */,
 				413FD92D1639BBD2002A9183 /* Default.png */,
 				413FD92E1639BBD2002A9183 /* Default@2x.png */,
@@ -250,10 +250,10 @@
 				413FD9331639BBD2002A9183 /* Default-568h@2x.png in Resources */,
 				413FD9341639BBD2002A9183 /* Default.png in Resources */,
 				413FD9351639BBD2002A9183 /* Default@2x.png in Resources */,
-				413FD9361639BBD2002A9183 /* Icon.png in Resources */,
-				413FD9371639BBD2002A9183 /* Icon@2x.png in Resources */,
 				413FD9381639BBD2002A9183 /* MainWindow.xib in Resources */,
 				413FD9391639BBD2002A9183 /* TestVC.xib in Resources */,
+				411FCECF1639E856000B1841 /* Icon.png in Resources */,
+				411FCED11639E85D000B1841 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

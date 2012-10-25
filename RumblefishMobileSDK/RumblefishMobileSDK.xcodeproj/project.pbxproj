@@ -196,6 +196,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		411FCED21639E922000B1841 /* RumblefishMobileSDKResources-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "RumblefishMobileSDKResources-Info.plist"; path = "RumblefishMobileSDKResources/RumblefishMobileSDKResources-Info.plist"; sourceTree = SOURCE_ROOT; };
 		413FD7A61639A84A002A9183 /* libRumblefishMobileSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRumblefishMobileSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		413FD7A91639A84A002A9183 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		413FD7B71639A970002A9183 /* RumblefishMobileSDK-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RumblefishMobileSDK-Prefix.pch"; path = "Classes/RumblefishMobileSDK-Prefix.pch"; sourceTree = SOURCE_ROOT; };
@@ -238,7 +239,6 @@
 		413FD8121639AF0B002A9183 /* TapkuLibrary.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TapkuLibrary.bundle; path = Dependencies/TapkuLibrary/src/TapkuLibrary.bundle; sourceTree = "<group>"; };
 		413FD8201639B2E3002A9183 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		413FD8301639B33C002A9183 /* RumblefishMobileSDKResources.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RumblefishMobileSDKResources.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		413FD8DA1639B52F002A9183 /* RumblefishMobileSDKResources-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "RumblefishMobileSDKResources-Info.plist"; path = "RumblefishMobileSDKResources/RumblefishMobileSDKResources-Info.plist"; sourceTree = SOURCE_ROOT; };
 		413FD8DB1639B52F002A9183 /* RumblefishMobileSDKResources-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RumblefishMobileSDKResources-Prefix.pch"; path = "RumblefishMobileSDKResources/RumblefishMobileSDKResources-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		413FD8DF1639B53F002A9183 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = RumblefishMobileSDKResources/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		413FD9621639CBBB002A9183 /* NSBundle+RumblefishMobileSDKResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBundle+RumblefishMobileSDKResources.h"; path = "Classes/NSBundle+RumblefishMobileSDKResources.h"; sourceTree = SOURCE_ROOT; };
@@ -484,8 +484,8 @@
 		413FD8331639B33C002A9183 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				411FCED21639E922000B1841 /* RumblefishMobileSDKResources-Info.plist */,
 				413FD8DE1639B53F002A9183 /* InfoPlist.strings */,
-				413FD8DA1639B52F002A9183 /* RumblefishMobileSDKResources-Info.plist */,
 				413FD8DB1639B52F002A9183 /* RumblefishMobileSDKResources-Prefix.pch */,
 			);
 			name = "Supporting Files";
