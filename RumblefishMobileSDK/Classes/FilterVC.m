@@ -23,6 +23,7 @@
  */
 
 #import "FilterVC.h"
+#import "UIImage+RumblefishSDKResources.h"
 
 @implementation FilterVC
 
@@ -111,7 +112,7 @@ NSMutableDictionary *playlistDic;
     
     BOOL on = [[playlistDic objectForKey:key] boolValue];
     [playlistDic setValue:[NSNumber numberWithBool:!on] forKey:key];
-    [button setImage: on ? [UIImage imageNamed:@"btn_check_OFF.png"] : [UIImage imageNamed:@"btn_check_ON.png"] forState:UIControlStateNormal];
+    [button setImage: on ? [UIImage imageInResourceBundleNamed:@"btn_check_OFF.png"] : [UIImage imageInResourceBundleNamed:@"btn_check_ON.png"] forState:UIControlStateNormal];
 }
 
 - (void)close {
@@ -151,8 +152,8 @@ NSMutableDictionary *playlistDic;
         cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
     }
     
-    UIImage *on = [UIImage imageNamed:@"btn_check_ON.png"];
-    UIImage *off = [UIImage imageNamed:@"btn_check_OFF.png"];
+    UIImage *on = [UIImage imageInResourceBundleNamed:@"btn_check_ON.png"];
+    UIImage *off = [UIImage imageInResourceBundleNamed:@"btn_check_OFF.png"];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 0, off.size.width, off.size.height);
     [button addTarget:self action:@selector(setFilter:) forControlEvents:UIControlEventTouchUpInside];

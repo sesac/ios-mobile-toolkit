@@ -25,6 +25,7 @@
 #import "PlaylistVC.h"
 #import "SBJson/SBJson.h"
 #import "LocalPlaylist.h"
+#import "UIImage+RumblefishSDKResources.h"
 
 @implementation PlaylistVC
 
@@ -40,7 +41,7 @@ bool isPlaying;
     self.navigationItem.title = @"Playlist";
     
     UIButton *removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *removeImage = [UIImage imageNamed:@"btn_removeall.png"];
+    UIImage *removeImage = [UIImage imageInResourceBundleNamed:@"btn_removeall.png"];
     [removeButton setImage:removeImage forState:UIControlStateNormal];
     removeButton.frame = CGRectMake(0, 0, removeImage.size.width, removeImage.size.height);
     [removeButton addTarget:self action:@selector(removeAll) forControlEvents:UIControlEventTouchUpInside];
@@ -145,13 +146,13 @@ bool isPlaying;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.contentView.backgroundColor = [UIColor colorWithRed:0.1686f green:0.1686f blue:0.1686f alpha:1.0f];
 
-        UIImage *horImage = [UIImage imageNamed:@"separator_horizontal.png"];
+        UIImage *horImage = [UIImage imageInResourceBundleNamed:@"separator_horizontal.png"];
         UIImageView *horSeparator = [[UIImageView alloc] initWithImage:horImage];
         horSeparator.frame = CGRectMake(0, 0, 480, horImage.size.height);
         horSeparator.tag = 1;
         [cell.contentView addSubview:horSeparator];
         
-        UIImage *verImage = [UIImage imageNamed:@"separator_vertical.png"];
+        UIImage *verImage = [UIImage imageInResourceBundleNamed:@"separator_vertical.png"];
         UIImageView *verSeparator = [[UIImageView alloc] initWithImage:verImage];
         verSeparator.frame = CGRectMake(45, 1, verImage.size.width, verImage.size.height);
         verSeparator.tag = 2;
@@ -175,7 +176,7 @@ bool isPlaying;
         [cell.contentView addSubview:titleLabel];
         
         UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImage *deleteImage = [UIImage imageNamed:@"btn_remove.png"];
+        UIImage *deleteImage = [UIImage imageInResourceBundleNamed:@"btn_remove.png"];
         [deleteButton setImage:deleteImage forState:UIControlStateNormal];
         [deleteButton setFrame:CGRectMake(280, 0, 44, 44)];
         [deleteButton addTarget:self action:@selector(remove:) forControlEvents:UIControlEventTouchUpInside];
@@ -190,7 +191,7 @@ bool isPlaying;
         
         UIButton *stopButton = [UIButton buttonWithType:UIButtonTypeCustom];
         stopButton.tag = 7;
-        UIImage *stopImage = [UIImage imageNamed:@"btn_stop.png"];
+        UIImage *stopImage = [UIImage imageInResourceBundleNamed:@"btn_stop.png"];
         [stopButton setImage:stopImage forState:UIControlStateNormal];
         [stopButton setFrame:CGRectMake(1, 0, stopImage.size.width, stopImage.size.height)];
         [stopButton addTarget:self action:@selector(stop) forControlEvents:UIControlEventTouchUpInside];

@@ -28,6 +28,8 @@
 #import "SBJson/SBJson.h"
 #import "NSObject+AssociateProducer.h"
 #import "Sequence.h"
+#import "UIImage+RumblefishSDKResources.h"
+#import "NSBundle+RumblefishMobileSDKResources.h"
 
 @interface CoverflowCoverView : TKCoverflowCoverView
 
@@ -67,6 +69,12 @@
 @synthesize coverflow;
 @synthesize albumLabel;
 
+- (id)init {
+    if (self = [super initWithNibName:@"CoverFlowVC" bundle:[NSBundle rumblefishResourcesBundle]]) {
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -80,7 +88,7 @@
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(goBack)];
     UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     space.width = 112;
-    UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"friendlymusic_logo.png"]];
+    UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"friendlymusic_logo.png"]];
     UIBarButtonItem *title = [[UIBarButtonItem alloc] initWithCustomView:titleView];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Playlist" style: UIBarButtonItemStyleBordered target:self action:@selector(gotoPlaylist)];
     

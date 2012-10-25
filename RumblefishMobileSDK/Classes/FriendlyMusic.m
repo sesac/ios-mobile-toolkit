@@ -26,6 +26,8 @@
 #import "MoodMapVC.h"
 #import "CoverFlowVC.h"
 #import "OccasionVC.h"
+#import "NSBundle+RumblefishMobileSDKResources.h"
+#import "UIImage+RumblefishSDKResources.h"
 
 @implementation FriendlyMusic
 
@@ -34,40 +36,11 @@
 NSMutableArray *optionArray;
 
 - (id)init {
-    self = [super initWithNibName:@"FriendlyMusic" bundle:nil];
+    self = [super initWithNibName:@"FriendlyMusic" bundle:[NSBundle rumblefishResourcesBundle]];
     if (self) {
         FMMOODMAP = 1;
         FMOCCASION = 2;
         FMEDITORSPICKS = 4;
-        
-        // copy plist files to user directory
-        bool failed = NO;
-        NSError *error = nil;
-        NSFileManager *fileManager = [[NSFileManager alloc] init];
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"playlist.plist"];
-        if (![fileManager fileExistsAtPath:filePath]) {
-            NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"playlist.plist"];
-            [fileManager copyItemAtPath:path toPath:filePath error:&error];
-            if (error != nil) {
-                NSLog(@"Error:%@", [error description]);
-                failed = YES;
-            }
-        }
-        filePath = [documentsDirectory stringByAppendingPathComponent:@"occasion_images.plist"];
-        if (![fileManager fileExistsAtPath:filePath]) {
-            NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"occasion_images.plist"];
-            [fileManager copyItemAtPath:path toPath:filePath error:&error];
-            if (error != nil) {
-                NSLog(@"Error:%@", [error description]);
-                failed = YES;
-            }
-        }
-        if (failed) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to copy data files." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-        }
     }
     return self;
 }
@@ -135,23 +108,23 @@ NSMutableArray *optionArray;
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
-        UIImage *horImage = [UIImage imageNamed:@"separator_horizontal.png"];
+        UIImage *horImage = [UIImage imageInResourceBundleNamed:@"separator_horizontal.png"];
         UIImageView *horSeparator = [[UIImageView alloc] initWithImage:horImage];
         horSeparator.frame = CGRectMake(0, 0, 320, horImage.size.height);
         [cell.contentView addSubview:horSeparator];
         
         if ([[optionArray objectAtIndex:indexPath.row] isEqualToString:@"moodmap"]) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"moodmap_logo.png"]];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"moodmap_logo.png"]];
             imageView.frame = CGRectMake(72, (347/[optionArray count]-29)/2, 176, 29);
             [cell.contentView addSubview:imageView];
         }
         else if ([[optionArray objectAtIndex:indexPath.row] isEqualToString:@"occasion"]) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"occasion_logo.png"]];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"occasion_logo.png"]];
             imageView.frame = CGRectMake(86.5, (347/[optionArray count]-71)/2, 147, 71);
             [cell.contentView addSubview:imageView];
         }
         else {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"editorspick_logo.png"]];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"editorspick_logo.png"]];
             imageView.frame = CGRectMake(66.5, (347/[optionArray count]-74)/2, 187, 74);
             [cell.contentView addSubview:imageView];
         }

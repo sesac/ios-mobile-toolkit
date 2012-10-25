@@ -28,6 +28,8 @@
 #import "SBJson/SBJson.h"
 #import "NSObject+AssociateProducer.h"
 #import "LocalPlaylist.h"
+#import "UIImage+RumblefishSDKResources.h"
+#import "NSBundle+RumblefishMobileSDKResources.h"
 
 @interface MoodMapVC ()
 
@@ -42,7 +44,7 @@
 
 UIColor *selectedColor;
 NSMutableArray *adjacentColors;
-NSString *filePath, *srv;
+NSString *srv;
 NSMutableData *serverData;
 int playingRow;
 AVPlayer *audioPlayer;
@@ -63,6 +65,11 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
                        0,  0,114,115,116,117, 84, 85, 86, 87,  0,  0,
                        0,  0,  0,118,119,120, 88, 89, 90,  0,  0,  0};
 
+- (id)init {
+    if (self = [super initWithNibName:@"MoodMapVC" bundle:[NSBundle rumblefishResourcesBundle]]) {
+    }
+    return self;
+}
 
 #pragma mark - View lifecycle
 
@@ -81,9 +88,6 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     playingRow = -1;
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLandscape"];
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    filePath = [[NSString alloc] initWithString:[documentsDirectory stringByAppendingPathComponent:@"playlist.plist"]];
     selectedColor = [[UIColor alloc] init];
     
     // First time load
@@ -141,7 +145,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     
     NSString *imageName = [NSString stringWithFormat:@"btn_playlist_%@.png", [LocalPlaylist sharedPlaylist].count ? @"ON" : @"OFF"];
     
-    [playlistButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    [playlistButton setImage:[UIImage imageInResourceBundleNamed:imageName] forState:UIControlStateNormal];
 
     [tabView reloadData];
 }
@@ -185,7 +189,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 
 - (IBAction)filterButtonPressed {
     //// currently unavailable  ////
-    UIImageView *filters_image = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"filters_coming_soon.png"]];
+    UIImageView *filters_image = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"filters_coming_soon.png"]];
     filters_image.frame = CGRectMake(62.5, 200, 195, 56);
     filters_image.alpha = 0;
     [self.view addSubview:filters_image];
@@ -209,7 +213,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 
     button.hidden = YES;
     [[button superview] viewWithTag:8].hidden = NO;
-    [playlistButton setImage:[UIImage imageNamed:@"btn_playlist_ON.png"] forState:UIControlStateNormal];
+    [playlistButton setImage:[UIImage imageInResourceBundleNamed:@"btn_playlist_ON.png"] forState:UIControlStateNormal];
 }
 
 - (void)removeFromPlaylist:(UIButton *)button {
@@ -222,7 +226,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     [[button superview] viewWithTag:5].hidden = NO;
     
     if (![LocalPlaylist sharedPlaylist].count)
-        [playlistButton setImage:[UIImage imageNamed:@"btn_playlist_OFF.png"] forState:UIControlStateNormal];
+        [playlistButton setImage:[UIImage imageInResourceBundleNamed:@"btn_playlist_OFF.png"] forState:UIControlStateNormal];
 }
 
 
@@ -248,13 +252,13 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.contentView.backgroundColor = [UIColor colorWithRed:0.1686f green:0.1686f blue:0.1686f alpha:1.0f];
         
-        UIImage *horImage = [UIImage imageNamed:@"separator_horizontal.png"];
+        UIImage *horImage = [UIImage imageInResourceBundleNamed:@"separator_horizontal.png"];
         UIImageView *horSeparator = [[UIImageView alloc] initWithImage:horImage];
         horSeparator.frame = CGRectMake(0, 0, horImage.size.width, horImage.size.height);
         horSeparator.tag = 1;
         [cell.contentView addSubview:horSeparator];
         
-        UIImage *verImage = [UIImage imageNamed:@"separator_vertical.png"];
+        UIImage *verImage = [UIImage imageInResourceBundleNamed:@"separator_vertical.png"];
         UIImageView *verSeparator = [[UIImageView alloc] initWithImage:verImage];
         verSeparator.frame = CGRectMake(45, 1, verImage.size.width, verImage.size.height);
         verSeparator.tag = 2;
@@ -279,7 +283,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         
         UIButton *addButton = [UIButton buttonWithType:UIButtonTypeCustom];
         addButton.tag = 5;
-        UIImage *addImage = [UIImage imageNamed:@"btn_add.png"];
+        UIImage *addImage = [UIImage imageInResourceBundleNamed:@"btn_add.png"];
         [addButton setImage:addImage forState:UIControlStateNormal];
         [addButton setFrame:CGRectMake(270, 0, 44, 44)];
         [addButton addTarget:self action:@selector(addToPlaylist:) forControlEvents:UIControlEventTouchUpInside];
@@ -293,7 +297,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         
         UIButton *stopButton = [UIButton buttonWithType:UIButtonTypeCustom];
         stopButton.tag = 7;
-        UIImage *stopImage = [UIImage imageNamed:@"btn_stop.png"];
+        UIImage *stopImage = [UIImage imageInResourceBundleNamed:@"btn_stop.png"];
         [stopButton setImage:stopImage forState:UIControlStateNormal];
         [stopButton setFrame:CGRectMake(1, 0, 44, 44)];
         [stopButton addTarget:self action:@selector(stop) forControlEvents:UIControlEventTouchUpInside];
@@ -302,7 +306,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         
         UIButton *tikButton = [UIButton buttonWithType:UIButtonTypeCustom];
         tikButton.tag = 8;
-        UIImage *tikImage = [UIImage imageNamed:@"song_check.png"];
+        UIImage *tikImage = [UIImage imageInResourceBundleNamed:@"song_check.png"];
         [tikButton setImage:tikImage forState:UIControlStateNormal];
         [tikButton setFrame:CGRectMake(280, 12, 22, 19)];
         [tikButton addTarget:self action:@selector(removeFromPlaylist:) forControlEvents:UIControlEventTouchUpInside];

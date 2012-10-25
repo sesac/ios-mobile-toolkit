@@ -24,6 +24,7 @@
 		413FD9591639BFD9002A9183 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD9581639BFD9002A9183 /* QuartzCore.framework */; };
 		413FD95B1639BFE5002A9183 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD95A1639BFE5002A9183 /* AVFoundation.framework */; };
 		413FD95F1639C2EA002A9183 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD95E1639C2EA002A9183 /* MapKit.framework */; };
+		413FD9651639CE82002A9183 /* RumblefishMobileSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 413FD94E1639BF2D002A9183 /* RumblefishMobileSDKResources.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,7 +97,6 @@
 		413FD8F11639B787002A9183 = {
 			isa = PBXGroup;
 			children = (
-				413FD95E1639C2EA002A9183 /* MapKit.framework */,
 				413FD9061639B787002A9183 /* RumblefishMobileSDKDemo */,
 				413FD8FF1639B787002A9183 /* Frameworks */,
 				413FD8FD1639B787002A9183 /* Products */,
@@ -119,6 +119,7 @@
 				413FD9581639BFD9002A9183 /* QuartzCore.framework */,
 				413FD9001639B787002A9183 /* UIKit.framework */,
 				413FD9021639B787002A9183 /* Foundation.framework */,
+				413FD95E1639C2EA002A9183 /* MapKit.framework */,
 				413FD9041639B787002A9183 /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
@@ -245,6 +246,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				413FD9651639CE82002A9183 /* RumblefishMobileSDKResources.bundle in Resources */,
 				413FD9331639BBD2002A9183 /* Default-568h@2x.png in Resources */,
 				413FD9341639BBD2002A9183 /* Default.png in Resources */,
 				413FD9351639BBD2002A9183 /* Default@2x.png in Resources */,
@@ -372,6 +374,7 @@
 				413FD91C1639B787002A9183 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

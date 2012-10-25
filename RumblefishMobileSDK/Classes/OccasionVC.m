@@ -30,6 +30,8 @@
 #import "NSObject+AssociateProducer.h"
 #import "Sequence.h"
 #import "LocalPlaylist.h"
+#import "NSBundle+RumblefishMobileSDKResources.h"
+#import "UIImage+RumblefishSDKResources.h"
 
 @interface OccasionVC ()
 
@@ -47,7 +49,7 @@
 NSMutableArray *secondButtons, *thirdButtons;
 int level, plRow, plSection;
 bool isPlaying;
-NSString *filePath, *srv;
+NSString *srv;
 UITableViewCell *selectedCell;
 AVPlayer *audioPlayer;
 AVPlayerItem *playerItem;
@@ -63,7 +65,7 @@ NSTimer *rotateImagesTimer;
 #pragma mark - View lifecycle
 
 - (id)init {
-    if (self = [super init]) {
+    if (self = [super initWithNibName:@"OccasionVC" bundle:[NSBundle rumblefishResourcesBundle]]) {
         self.occasionStack = [NSMutableArray array];
     }
     return self;
@@ -92,11 +94,8 @@ NSTimer *rotateImagesTimer;
     
     table.separatorColor = [UIColor colorWithRed:0.08f green:0.08f blue:0.08f alpha:1.0f];
     selectedCell = [[UITableViewCell alloc] init];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    filePath = [[NSString alloc] initWithString:[documentsDirectory stringByAppendingPathComponent:@"playlist.plist"]];
     
-    UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"friendlymusic_logo.png"]];
+    UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"friendlymusic_logo.png"]];
     self.navigationItem.titleView = titleView;
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Playlist" style: UIBarButtonItemStyleBordered target:self action:@selector(gotoPlaylist)];
     self.navigationItem.rightBarButtonItem = rightButton;
@@ -132,6 +131,8 @@ NSTimer *rotateImagesTimer;
                         [NSNumber numberWithInt:RFOccasionHoliday], 
                         nil];
     
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
     occasionImageCachePath = [documentsDirectory stringByAppendingPathComponent:OCCASION_IMAGE_CACHE_PATH];
     occasionImageDict = [[NSMutableDictionary alloc] init];
 
@@ -729,13 +730,13 @@ NSTimer *rotateImagesTimer;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.contentView.backgroundColor = [UIColor colorWithRed:0.1686f green:0.1686f blue:0.1686f alpha:1.0f];
         
-        UIImage *horImage = [UIImage imageNamed:@"separator_horizontal.png"];
+        UIImage *horImage = [UIImage imageInResourceBundleNamed:@"separator_horizontal.png"];
         UIImageView *horSeparator = [[UIImageView alloc] initWithImage:horImage];
         horSeparator.frame = CGRectMake(0, 0, horImage.size.width, horImage.size.height);
         horSeparator.tag = 1;
         [cell.contentView addSubview:horSeparator];
         
-        UIImage *verImage = [UIImage imageNamed:@"separator_vertical.png"];
+        UIImage *verImage = [UIImage imageInResourceBundleNamed:@"separator_vertical.png"];
         UIImageView *verSeparator = [[UIImageView alloc] initWithImage:verImage];
         verSeparator.frame = CGRectMake(45, 1, verImage.size.width, verImage.size.height);
         verSeparator.tag = 2;
@@ -760,7 +761,7 @@ NSTimer *rotateImagesTimer;
         
         UIButton *addButton = [UIButton buttonWithType:UIButtonTypeCustom];
         addButton.tag = 5;
-        UIImage *addImage = [UIImage imageNamed:@"btn_add.png"];
+        UIImage *addImage = [UIImage imageInResourceBundleNamed:@"btn_add.png"];
         [addButton setImage:addImage forState:UIControlStateNormal];
         [addButton setFrame:CGRectMake(270, 0, 44, 44)];
         [addButton addTarget:self action:@selector(addToPlaylist:) forControlEvents:UIControlEventTouchUpInside];
@@ -774,7 +775,7 @@ NSTimer *rotateImagesTimer;
         
         UIButton *stopButton = [UIButton buttonWithType:UIButtonTypeCustom];
         stopButton.tag = 7;
-        UIImage *stopImage = [UIImage imageNamed:@"btn_stop.png"];
+        UIImage *stopImage = [UIImage imageInResourceBundleNamed:@"btn_stop.png"];
         [stopButton setImage:stopImage forState:UIControlStateNormal];
         [stopButton setFrame:CGRectMake(1, 0, 44, 44)];
         [stopButton addTarget:self action:@selector(stop) forControlEvents:UIControlEventTouchUpInside];
@@ -783,7 +784,7 @@ NSTimer *rotateImagesTimer;
         
         UIButton *tikButton = [UIButton buttonWithType:UIButtonTypeCustom];
         tikButton.tag = 8;
-        UIImage *tikImage = [UIImage imageNamed:@"song_check.png"];
+        UIImage *tikImage = [UIImage imageInResourceBundleNamed:@"song_check.png"];
         [tikButton setImage:tikImage forState:UIControlStateNormal];
         [tikButton setFrame:CGRectMake(280, 12, 22, 19)];
         [tikButton addTarget:self action:@selector(removeFromPlaylist:) forControlEvents:UIControlEventTouchUpInside];
@@ -867,7 +868,7 @@ NSTimer *rotateImagesTimer;
     Playlist *playlist = [displayedPlaylists objectAtIndex:section];
     
     UIImageView *header = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
-    header.image = [UIImage imageNamed:@"occasion_header_bg.png"];
+    header.image = [UIImage imageInResourceBundleNamed:@"occasion_header_bg.png"];
     UIImageView *art = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
     
     // XXX synchronous image download. gonna need to extract a view class here.

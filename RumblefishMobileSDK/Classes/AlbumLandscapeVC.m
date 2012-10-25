@@ -27,6 +27,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "LocalPlaylist.h"
 #import "NSObject+AssociateProducer.h"
+#import "UIImage+RumblefishSDKResources.h"
 
 @interface AlbumLandscapeVC ()
 
@@ -39,7 +40,7 @@
 
 int playRow;
 bool isPlaying;
-NSString *filePath, *srv;
+NSString *srv;
 UITableViewCell *selectedCell;
 AVPlayer *audioPlayer;
 AVPlayerItem *playerItem;
@@ -85,10 +86,6 @@ AVPlayerItem *playerItem;
     [toolbar addSubview:title2];
     
     [self.view addSubview:toolbar];
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    filePath = [[NSString alloc] initWithString:[documentsDirectory stringByAppendingPathComponent:@"playlist.plist"]];
     
     if (self.tabview == nil) {
         UITableView *localTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 480, 276) style:UITableViewStylePlain];
@@ -160,13 +157,13 @@ AVPlayerItem *playerItem;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.contentView.backgroundColor = [UIColor colorWithRed:0.1686f green:0.1686f blue:0.1686f alpha:1.0f];
         
-        UIImage *horImage = [UIImage imageNamed:@"separator_horizontal.png"];
+        UIImage *horImage = [UIImage imageInResourceBundleNamed:@"separator_horizontal.png"];
         UIImageView *horSeparator = [[UIImageView alloc] initWithImage:horImage];
         horSeparator.frame = CGRectMake(0, 0, 480, horImage.size.height);
         horSeparator.tag = 1;
         [cell.contentView addSubview:horSeparator];
         
-        UIImage *verImage = [UIImage imageNamed:@"separator_vertical.png"];
+        UIImage *verImage = [UIImage imageInResourceBundleNamed:@"separator_vertical.png"];
         UIImageView *verSeparator = [[UIImageView alloc] initWithImage:verImage];
         verSeparator.frame = CGRectMake(45, 1, verImage.size.width, verImage.size.height);
         verSeparator.tag = 2;
@@ -191,7 +188,7 @@ AVPlayerItem *playerItem;
         
         UIButton *addButton = [UIButton buttonWithType:UIButtonTypeCustom];
         addButton.tag = 5;
-        UIImage *addImage = [UIImage imageNamed:@"btn_add.png"];
+        UIImage *addImage = [UIImage imageInResourceBundleNamed:@"btn_add.png"];
         [addButton setImage:addImage forState:UIControlStateNormal];
         [addButton setFrame:CGRectMake(435, 0, 44, 44)];
         [addButton addTarget:self action:@selector(addToPlaylist:) forControlEvents:UIControlEventTouchUpInside];
@@ -205,7 +202,7 @@ AVPlayerItem *playerItem;
         
         UIButton *stopButton = [UIButton buttonWithType:UIButtonTypeCustom];
         stopButton.tag = 7;
-        UIImage *stopImage = [UIImage imageNamed:@"btn_stop.png"];
+        UIImage *stopImage = [UIImage imageInResourceBundleNamed:@"btn_stop.png"];
         [stopButton setImage:stopImage forState:UIControlStateNormal];
         [stopButton setFrame:CGRectMake(1, 0, 44, 44)];
         [stopButton addTarget:self action:@selector(stop) forControlEvents:UIControlEventTouchUpInside];
@@ -214,7 +211,7 @@ AVPlayerItem *playerItem;
         
         UIButton *tikButton = [UIButton buttonWithType:UIButtonTypeCustom];
         tikButton.tag = 8;
-        UIImage *tikImage = [UIImage imageNamed:@"song_check.png"];
+        UIImage *tikImage = [UIImage imageInResourceBundleNamed:@"song_check.png"];
         [tikButton setImage:tikImage forState:UIControlStateNormal];
         [tikButton setFrame:CGRectMake(445, 12, 22, 19)];
         [tikButton addTarget:self action:@selector(removeFromPlaylist:) forControlEvents:UIControlEventTouchUpInside];
