@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'RumblefishMobileSDK' target in the 'RumblefishMobileSDK' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif

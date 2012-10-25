@@ -1,0 +1,335 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		413FD7AA1639A84A002A9183 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD7A91639A84A002A9183 /* Foundation.framework */; };
+		413FD7DA1639AB2E002A9183 /* AlbumLandscapeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7B91639AB2E002A9183 /* AlbumLandscapeVC.m */; };
+		413FD7DB1639AB2E002A9183 /* Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BB1639AB2E002A9183 /* Async.m */; };
+		413FD7DC1639AB2E002A9183 /* CoverFlowVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BD1639AB2E002A9183 /* CoverFlowVC.m */; };
+		413FD7DD1639AB2E002A9183 /* FilterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BF1639AB2E002A9183 /* FilterVC.m */; };
+		413FD7DE1639AB2E002A9183 /* FriendlyMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C11639AB2E002A9183 /* FriendlyMusic.m */; };
+		413FD7DF1639AB2E002A9183 /* LocalPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C31639AB2E002A9183 /* LocalPlaylist.m */; };
+		413FD7E01639AB2E002A9183 /* MoodMapVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C51639AB2E002A9183 /* MoodMapVC.m */; };
+		413FD7E11639AB2E002A9183 /* NSObject+AssociateProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C71639AB2E002A9183 /* NSObject+AssociateProducer.m */; };
+		413FD7E21639AB2E002A9183 /* OccasionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C91639AB2E002A9183 /* OccasionVC.m */; };
+		413FD7E31639AB2E002A9183 /* PlaylistLandscapeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7CB1639AB2E002A9183 /* PlaylistLandscapeVC.m */; };
+		413FD7E41639AB2E002A9183 /* PlaylistVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7CD1639AB2E002A9183 /* PlaylistVC.m */; };
+		413FD7E51639AB2E002A9183 /* RFAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7CF1639AB2E002A9183 /* RFAPI.m */; };
+		413FD7E61639AB2E002A9183 /* Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D11639AB2E002A9183 /* Sequence.m */; };
+		413FD7E71639AB2E002A9183 /* SMWebRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D31639AB2E002A9183 /* SMWebRequest.m */; };
+		413FD7E81639AB2E002A9183 /* SMWebRequest+Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D51639AB2E002A9183 /* SMWebRequest+Async.m */; };
+		413FD7E91639AB2E002A9183 /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D71639AB2E002A9183 /* UIApplication+NetworkActivity.m */; };
+		413FD7EA1639AB2E002A9183 /* UIImage+Undeferred.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D91639AB2E002A9183 /* UIImage+Undeferred.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		413FD7A41639A84A002A9183 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		413FD7A61639A84A002A9183 /* libRumblefishMobileSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRumblefishMobileSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		413FD7A91639A84A002A9183 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		413FD7B71639A970002A9183 /* RumblefishMobileSDK-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RumblefishMobileSDK-Prefix.pch"; path = "Classes/RumblefishMobileSDK-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		413FD7B81639AB2E002A9183 /* AlbumLandscapeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlbumLandscapeVC.h; path = Classes/AlbumLandscapeVC.h; sourceTree = SOURCE_ROOT; };
+		413FD7B91639AB2E002A9183 /* AlbumLandscapeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlbumLandscapeVC.m; path = Classes/AlbumLandscapeVC.m; sourceTree = SOURCE_ROOT; };
+		413FD7BA1639AB2E002A9183 /* Async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Async.h; path = Classes/Async.h; sourceTree = SOURCE_ROOT; };
+		413FD7BB1639AB2E002A9183 /* Async.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Async.m; path = Classes/Async.m; sourceTree = SOURCE_ROOT; };
+		413FD7BC1639AB2E002A9183 /* CoverFlowVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoverFlowVC.h; path = Classes/CoverFlowVC.h; sourceTree = SOURCE_ROOT; };
+		413FD7BD1639AB2E002A9183 /* CoverFlowVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoverFlowVC.m; path = Classes/CoverFlowVC.m; sourceTree = SOURCE_ROOT; };
+		413FD7BE1639AB2E002A9183 /* FilterVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FilterVC.h; path = Classes/FilterVC.h; sourceTree = SOURCE_ROOT; };
+		413FD7BF1639AB2E002A9183 /* FilterVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FilterVC.m; path = Classes/FilterVC.m; sourceTree = SOURCE_ROOT; };
+		413FD7C01639AB2E002A9183 /* FriendlyMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendlyMusic.h; path = Classes/FriendlyMusic.h; sourceTree = SOURCE_ROOT; };
+		413FD7C11639AB2E002A9183 /* FriendlyMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendlyMusic.m; path = Classes/FriendlyMusic.m; sourceTree = SOURCE_ROOT; };
+		413FD7C21639AB2E002A9183 /* LocalPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalPlaylist.h; path = Classes/LocalPlaylist.h; sourceTree = SOURCE_ROOT; };
+		413FD7C31639AB2E002A9183 /* LocalPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalPlaylist.m; path = Classes/LocalPlaylist.m; sourceTree = SOURCE_ROOT; };
+		413FD7C41639AB2E002A9183 /* MoodMapVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoodMapVC.h; path = Classes/MoodMapVC.h; sourceTree = SOURCE_ROOT; };
+		413FD7C51639AB2E002A9183 /* MoodMapVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoodMapVC.m; path = Classes/MoodMapVC.m; sourceTree = SOURCE_ROOT; };
+		413FD7C61639AB2E002A9183 /* NSObject+AssociateProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+AssociateProducer.h"; path = "Classes/NSObject+AssociateProducer.h"; sourceTree = SOURCE_ROOT; };
+		413FD7C71639AB2E002A9183 /* NSObject+AssociateProducer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+AssociateProducer.m"; path = "Classes/NSObject+AssociateProducer.m"; sourceTree = SOURCE_ROOT; };
+		413FD7C81639AB2E002A9183 /* OccasionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OccasionVC.h; path = Classes/OccasionVC.h; sourceTree = SOURCE_ROOT; };
+		413FD7C91639AB2E002A9183 /* OccasionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OccasionVC.m; path = Classes/OccasionVC.m; sourceTree = SOURCE_ROOT; };
+		413FD7CA1639AB2E002A9183 /* PlaylistLandscapeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaylistLandscapeVC.h; path = Classes/PlaylistLandscapeVC.h; sourceTree = SOURCE_ROOT; };
+		413FD7CB1639AB2E002A9183 /* PlaylistLandscapeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaylistLandscapeVC.m; path = Classes/PlaylistLandscapeVC.m; sourceTree = SOURCE_ROOT; };
+		413FD7CC1639AB2E002A9183 /* PlaylistVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaylistVC.h; path = Classes/PlaylistVC.h; sourceTree = SOURCE_ROOT; };
+		413FD7CD1639AB2E002A9183 /* PlaylistVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaylistVC.m; path = Classes/PlaylistVC.m; sourceTree = SOURCE_ROOT; };
+		413FD7CE1639AB2E002A9183 /* RFAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RFAPI.h; path = Classes/RFAPI.h; sourceTree = SOURCE_ROOT; };
+		413FD7CF1639AB2E002A9183 /* RFAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RFAPI.m; path = Classes/RFAPI.m; sourceTree = SOURCE_ROOT; };
+		413FD7D01639AB2E002A9183 /* Sequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sequence.h; path = Classes/Sequence.h; sourceTree = SOURCE_ROOT; };
+		413FD7D11639AB2E002A9183 /* Sequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Sequence.m; path = Classes/Sequence.m; sourceTree = SOURCE_ROOT; };
+		413FD7D21639AB2E002A9183 /* SMWebRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SMWebRequest.h; path = Classes/SMWebRequest.h; sourceTree = SOURCE_ROOT; };
+		413FD7D31639AB2E002A9183 /* SMWebRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SMWebRequest.m; path = Classes/SMWebRequest.m; sourceTree = SOURCE_ROOT; };
+		413FD7D41639AB2E002A9183 /* SMWebRequest+Async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SMWebRequest+Async.h"; path = "Classes/SMWebRequest+Async.h"; sourceTree = SOURCE_ROOT; };
+		413FD7D51639AB2E002A9183 /* SMWebRequest+Async.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SMWebRequest+Async.m"; path = "Classes/SMWebRequest+Async.m"; sourceTree = SOURCE_ROOT; };
+		413FD7D61639AB2E002A9183 /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIApplication+NetworkActivity.h"; path = "Classes/UIApplication+NetworkActivity.h"; sourceTree = SOURCE_ROOT; };
+		413FD7D71639AB2E002A9183 /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+NetworkActivity.m"; path = "Classes/UIApplication+NetworkActivity.m"; sourceTree = SOURCE_ROOT; };
+		413FD7D81639AB2E002A9183 /* UIImage+Undeferred.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Undeferred.h"; path = "Classes/UIImage+Undeferred.h"; sourceTree = SOURCE_ROOT; };
+		413FD7D91639AB2E002A9183 /* UIImage+Undeferred.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Undeferred.m"; path = "Classes/UIImage+Undeferred.m"; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		413FD7A31639A84A002A9183 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				413FD7AA1639A84A002A9183 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		413FD79B1639A84A002A9183 = {
+			isa = PBXGroup;
+			children = (
+				413FD7AB1639A84A002A9183 /* RumblefishMobileSDK */,
+				413FD7A81639A84A002A9183 /* Frameworks */,
+				413FD7A71639A84A002A9183 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		413FD7A71639A84A002A9183 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				413FD7A61639A84A002A9183 /* libRumblefishMobileSDK.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		413FD7A81639A84A002A9183 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				413FD7A91639A84A002A9183 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		413FD7AB1639A84A002A9183 /* RumblefishMobileSDK */ = {
+			isa = PBXGroup;
+			children = (
+				413FD7B81639AB2E002A9183 /* AlbumLandscapeVC.h */,
+				413FD7B91639AB2E002A9183 /* AlbumLandscapeVC.m */,
+				413FD7BA1639AB2E002A9183 /* Async.h */,
+				413FD7BB1639AB2E002A9183 /* Async.m */,
+				413FD7BC1639AB2E002A9183 /* CoverFlowVC.h */,
+				413FD7BD1639AB2E002A9183 /* CoverFlowVC.m */,
+				413FD7BE1639AB2E002A9183 /* FilterVC.h */,
+				413FD7BF1639AB2E002A9183 /* FilterVC.m */,
+				413FD7C01639AB2E002A9183 /* FriendlyMusic.h */,
+				413FD7C11639AB2E002A9183 /* FriendlyMusic.m */,
+				413FD7C21639AB2E002A9183 /* LocalPlaylist.h */,
+				413FD7C31639AB2E002A9183 /* LocalPlaylist.m */,
+				413FD7C41639AB2E002A9183 /* MoodMapVC.h */,
+				413FD7C51639AB2E002A9183 /* MoodMapVC.m */,
+				413FD7C61639AB2E002A9183 /* NSObject+AssociateProducer.h */,
+				413FD7C71639AB2E002A9183 /* NSObject+AssociateProducer.m */,
+				413FD7C81639AB2E002A9183 /* OccasionVC.h */,
+				413FD7C91639AB2E002A9183 /* OccasionVC.m */,
+				413FD7CA1639AB2E002A9183 /* PlaylistLandscapeVC.h */,
+				413FD7CB1639AB2E002A9183 /* PlaylistLandscapeVC.m */,
+				413FD7CC1639AB2E002A9183 /* PlaylistVC.h */,
+				413FD7CD1639AB2E002A9183 /* PlaylistVC.m */,
+				413FD7CE1639AB2E002A9183 /* RFAPI.h */,
+				413FD7CF1639AB2E002A9183 /* RFAPI.m */,
+				413FD7D01639AB2E002A9183 /* Sequence.h */,
+				413FD7D11639AB2E002A9183 /* Sequence.m */,
+				413FD7D21639AB2E002A9183 /* SMWebRequest.h */,
+				413FD7D31639AB2E002A9183 /* SMWebRequest.m */,
+				413FD7D41639AB2E002A9183 /* SMWebRequest+Async.h */,
+				413FD7D51639AB2E002A9183 /* SMWebRequest+Async.m */,
+				413FD7D61639AB2E002A9183 /* UIApplication+NetworkActivity.h */,
+				413FD7D71639AB2E002A9183 /* UIApplication+NetworkActivity.m */,
+				413FD7D81639AB2E002A9183 /* UIImage+Undeferred.h */,
+				413FD7D91639AB2E002A9183 /* UIImage+Undeferred.m */,
+				413FD7AC1639A84A002A9183 /* Supporting Files */,
+			);
+			path = RumblefishMobileSDK;
+			sourceTree = "<group>";
+		};
+		413FD7AC1639A84A002A9183 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				413FD7B71639A970002A9183 /* RumblefishMobileSDK-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		413FD7A51639A84A002A9183 /* RumblefishMobileSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 413FD7B41639A84A002A9183 /* Build configuration list for PBXNativeTarget "RumblefishMobileSDK" */;
+			buildPhases = (
+				413FD7A21639A84A002A9183 /* Sources */,
+				413FD7A31639A84A002A9183 /* Frameworks */,
+				413FD7A41639A84A002A9183 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RumblefishMobileSDK;
+			productName = RumblefishMobileSDK;
+			productReference = 413FD7A61639A84A002A9183 /* libRumblefishMobileSDK.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		413FD79D1639A84A002A9183 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Rumblefish, Inc.";
+			};
+			buildConfigurationList = 413FD7A01639A84A002A9183 /* Build configuration list for PBXProject "RumblefishMobileSDK" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 413FD79B1639A84A002A9183;
+			productRefGroup = 413FD7A71639A84A002A9183 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				413FD7A51639A84A002A9183 /* RumblefishMobileSDK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		413FD7A21639A84A002A9183 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				413FD7DA1639AB2E002A9183 /* AlbumLandscapeVC.m in Sources */,
+				413FD7DB1639AB2E002A9183 /* Async.m in Sources */,
+				413FD7DC1639AB2E002A9183 /* CoverFlowVC.m in Sources */,
+				413FD7DD1639AB2E002A9183 /* FilterVC.m in Sources */,
+				413FD7DE1639AB2E002A9183 /* FriendlyMusic.m in Sources */,
+				413FD7DF1639AB2E002A9183 /* LocalPlaylist.m in Sources */,
+				413FD7E01639AB2E002A9183 /* MoodMapVC.m in Sources */,
+				413FD7E11639AB2E002A9183 /* NSObject+AssociateProducer.m in Sources */,
+				413FD7E21639AB2E002A9183 /* OccasionVC.m in Sources */,
+				413FD7E31639AB2E002A9183 /* PlaylistLandscapeVC.m in Sources */,
+				413FD7E41639AB2E002A9183 /* PlaylistVC.m in Sources */,
+				413FD7E51639AB2E002A9183 /* RFAPI.m in Sources */,
+				413FD7E61639AB2E002A9183 /* Sequence.m in Sources */,
+				413FD7E71639AB2E002A9183 /* SMWebRequest.m in Sources */,
+				413FD7E81639AB2E002A9183 /* SMWebRequest+Async.m in Sources */,
+				413FD7E91639AB2E002A9183 /* UIApplication+NetworkActivity.m in Sources */,
+				413FD7EA1639AB2E002A9183 /* UIImage+Undeferred.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		413FD7B21639A84A002A9183 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		413FD7B31639A84A002A9183 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		413FD7B51639A84A002A9183 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/RumblefishMobileSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Classes/RumblefishMobileSDK-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		413FD7B61639A84A002A9183 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/RumblefishMobileSDK.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Classes/RumblefishMobileSDK-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		413FD7A01639A84A002A9183 /* Build configuration list for PBXProject "RumblefishMobileSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				413FD7B21639A84A002A9183 /* Debug */,
+				413FD7B31639A84A002A9183 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		413FD7B41639A84A002A9183 /* Build configuration list for PBXNativeTarget "RumblefishMobileSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				413FD7B51639A84A002A9183 /* Debug */,
+				413FD7B61639A84A002A9183 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 413FD79D1639A84A002A9183 /* Project object */;
+}
