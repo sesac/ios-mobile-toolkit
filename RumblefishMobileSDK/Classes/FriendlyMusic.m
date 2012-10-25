@@ -148,7 +148,7 @@ NSMutableArray *optionArray;
     else {
         CoverFlowVC *coverflow = [[CoverFlowVC alloc] init];
         [coverflow setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-        [self.navigationController presentModalViewController:coverflow animated:YES];
+        [self.navigationController presentViewController:coverflow animated:YES completion:nil];
     }
 }
 

@@ -745,7 +745,7 @@ NSTimer *rotateImagesTimer;
         UILabel *indexLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 45, 44)];
         indexLabel.tag = 3;
         indexLabel.textColor = [UIColor whiteColor];
-        indexLabel.textAlignment = UITextAlignmentCenter;
+        indexLabel.textAlignment = NSTextAlignmentCenter;
         indexLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
         indexLabel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:indexLabel];
@@ -755,7 +755,7 @@ NSTimer *rotateImagesTimer;
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
         titleLabel.numberOfLines = 2;
-        titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+        titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         titleLabel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:titleLabel];
         

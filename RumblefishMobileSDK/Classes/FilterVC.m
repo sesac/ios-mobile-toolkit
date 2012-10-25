@@ -229,7 +229,7 @@ NSMutableDictionary *playlistDic;
     UILabel *label = [[UILabel alloc] initWithFrame:headerView.frame];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor colorWithRed:0.51f green:0.8 blue:0.29f alpha:1.0f];
-    label.textAlignment = UITextAlignmentCenter;
+    label.textAlignment = NSTextAlignmentCenter;
     label.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
     if (section == 1) {
         label.text = @"Type";

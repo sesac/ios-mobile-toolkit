@@ -138,7 +138,7 @@
     UILabel *localLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 290, 480, 20)];
     localLabel.textColor = [UIColor whiteColor];
     localLabel.backgroundColor = [UIColor clearColor];
-    localLabel.textAlignment = UITextAlignmentCenter;
+    localLabel.textAlignment = NSTextAlignmentCenter;
     localLabel.font = [UIFont boldSystemFontOfSize:16];
     
     [self setAlbumLabel:localLabel];
@@ -174,13 +174,13 @@
 
 - (void)goBack {
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)gotoPlaylist {
     PlaylistLandscapeVC *playlistController = [[PlaylistLandscapeVC alloc] init];
     [playlistController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self presentModalViewController:playlistController animated:YES];
+    [self presentViewController:playlistController animated:YES completion:nil];
 }
 
 // Coverflow methods
@@ -208,7 +208,7 @@
 	AlbumLandscapeVC *albumController = [[AlbumLandscapeVC alloc] initWithPlaylist:playlist];
     
     [albumController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self presentModalViewController:albumController animated:YES];
+    [self presentViewController:albumController animated:YES completion:nil];
 }
 
 - (void)getPlaylistFromServer {
