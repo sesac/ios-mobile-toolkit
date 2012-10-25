@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		413FD7AA1639A84A002A9183 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD7A91639A84A002A9183 /* Foundation.framework */; };
 		413FD7DA1639AB2E002A9183 /* AlbumLandscapeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7B91639AB2E002A9183 /* AlbumLandscapeVC.m */; };
-		413FD7DB1639AB2E002A9183 /* Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BB1639AB2E002A9183 /* Async.m */; };
+		413FD7DB1639AB2E002A9183 /* Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BB1639AB2E002A9183 /* Async.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		413FD7DC1639AB2E002A9183 /* CoverFlowVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BD1639AB2E002A9183 /* CoverFlowVC.m */; };
 		413FD7DD1639AB2E002A9183 /* FilterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BF1639AB2E002A9183 /* FilterVC.m */; };
 		413FD7DE1639AB2E002A9183 /* FriendlyMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C11639AB2E002A9183 /* FriendlyMusic.m */; };
@@ -21,10 +21,10 @@
 		413FD7E41639AB2E002A9183 /* PlaylistVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7CD1639AB2E002A9183 /* PlaylistVC.m */; };
 		413FD7E51639AB2E002A9183 /* RFAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7CF1639AB2E002A9183 /* RFAPI.m */; };
 		413FD7E61639AB2E002A9183 /* Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D11639AB2E002A9183 /* Sequence.m */; };
-		413FD7E71639AB2E002A9183 /* SMWebRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D31639AB2E002A9183 /* SMWebRequest.m */; };
-		413FD7E81639AB2E002A9183 /* SMWebRequest+Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D51639AB2E002A9183 /* SMWebRequest+Async.m */; };
+		413FD7E71639AB2E002A9183 /* SMWebRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D31639AB2E002A9183 /* SMWebRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		413FD7E81639AB2E002A9183 /* SMWebRequest+Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D51639AB2E002A9183 /* SMWebRequest+Async.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		413FD7E91639AB2E002A9183 /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D71639AB2E002A9183 /* UIApplication+NetworkActivity.m */; };
-		413FD7EA1639AB2E002A9183 /* UIImage+Undeferred.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D91639AB2E002A9183 /* UIImage+Undeferred.m */; };
+		413FD7EA1639AB2E002A9183 /* UIImage+Undeferred.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D91639AB2E002A9183 /* UIImage+Undeferred.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		413FD8171639AFD7002A9183 /* libsbjson-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD8031639AEB2002A9183 /* libsbjson-ios.a */; };
 		413FD8181639AFD7002A9183 /* libTapkuLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD80F1639AEFD002A9183 /* libTapkuLibrary.a */; };
 		413FD8191639B293002A9183 /* RFAPI.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 413FD7CE1639AB2E002A9183 /* RFAPI.h */; };
@@ -32,6 +32,7 @@
 		413FD8311639B33C002A9183 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD8201639B2E3002A9183 /* CoreFoundation.framework */; };
 		413FD8DD1639B52F002A9183 /* RumblefishMobileSDKResources-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 413FD8DA1639B52F002A9183 /* RumblefishMobileSDKResources-Info.plist */; };
 		413FD8E01639B53F002A9183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 413FD8DE1639B53F002A9183 /* InfoPlist.strings */; };
+		413FD9561639BFA2002A9183 /* Async.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 413FD7BA1639AB2E002A9183 /* Async.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +101,7 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				413FD9561639BFA2002A9183 /* Async.h in CopyFiles */,
 				413FD8191639B293002A9183 /* RFAPI.h in CopyFiles */,
 				413FD81A1639B293002A9183 /* FriendlyMusic.h in CopyFiles */,
 			);
@@ -451,7 +453,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				413FD7DA1639AB2E002A9183 /* AlbumLandscapeVC.m in Sources */,
-				413FD7DB1639AB2E002A9183 /* Async.m in Sources */,
 				413FD7DC1639AB2E002A9183 /* CoverFlowVC.m in Sources */,
 				413FD7DD1639AB2E002A9183 /* FilterVC.m in Sources */,
 				413FD7DE1639AB2E002A9183 /* FriendlyMusic.m in Sources */,
@@ -463,9 +464,10 @@
 				413FD7E41639AB2E002A9183 /* PlaylistVC.m in Sources */,
 				413FD7E51639AB2E002A9183 /* RFAPI.m in Sources */,
 				413FD7E61639AB2E002A9183 /* Sequence.m in Sources */,
+				413FD7E91639AB2E002A9183 /* UIApplication+NetworkActivity.m in Sources */,
+				413FD7DB1639AB2E002A9183 /* Async.m in Sources */,
 				413FD7E71639AB2E002A9183 /* SMWebRequest.m in Sources */,
 				413FD7E81639AB2E002A9183 /* SMWebRequest+Async.m in Sources */,
-				413FD7E91639AB2E002A9183 /* UIApplication+NetworkActivity.m in Sources */,
 				413FD7EA1639AB2E002A9183 /* UIImage+Undeferred.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -552,6 +554,7 @@
 		413FD7B51639A84A002A9183 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/RumblefishMobileSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Classes/RumblefishMobileSDK-Prefix.pch";
@@ -565,6 +568,7 @@
 		413FD7B61639A84A002A9183 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/RumblefishMobileSDK.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Classes/RumblefishMobileSDK-Prefix.pch";

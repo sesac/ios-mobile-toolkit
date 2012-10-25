@@ -23,7 +23,7 @@
  */
 
 #import "TestVC.h"
-#import <Mobile SDK/FriendlyMusic.h>
+#import "RumblefishMobileSDK/FriendlyMusic.h"
 
 @implementation TestVC
 

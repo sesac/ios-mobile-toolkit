@@ -1,0 +1,379 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		413FD9011639B787002A9183 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD9001639B787002A9183 /* UIKit.framework */; };
+		413FD9031639B787002A9183 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD9021639B787002A9183 /* Foundation.framework */; };
+		413FD9051639B787002A9183 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD9041639B787002A9183 /* CoreGraphics.framework */; };
+		413FD9261639BA9F002A9183 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD91F1639BA9F002A9183 /* main.m */; };
+		413FD9271639BA9F002A9183 /* TestFMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD9221639BA9F002A9183 /* TestFMAppDelegate.m */; };
+		413FD9281639BA9F002A9183 /* TestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD9241639BA9F002A9183 /* TestVC.m */; };
+		413FD9331639BBD2002A9183 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 413FD92C1639BBD2002A9183 /* Default-568h@2x.png */; };
+		413FD9341639BBD2002A9183 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 413FD92D1639BBD2002A9183 /* Default.png */; };
+		413FD9351639BBD2002A9183 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 413FD92E1639BBD2002A9183 /* Default@2x.png */; };
+		413FD9361639BBD2002A9183 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 413FD92F1639BBD2002A9183 /* Icon.png */; };
+		413FD9371639BBD2002A9183 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 413FD9301639BBD2002A9183 /* Icon@2x.png */; };
+		413FD9381639BBD2002A9183 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 413FD9311639BBD2002A9183 /* MainWindow.xib */; };
+		413FD9391639BBD2002A9183 /* TestVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 413FD9321639BBD2002A9183 /* TestVC.xib */; };
+		413FD9571639BFBF002A9183 /* libRumblefishMobileSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD94C1639BF2D002A9183 /* libRumblefishMobileSDK.a */; };
+		413FD9591639BFD9002A9183 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD9581639BFD9002A9183 /* QuartzCore.framework */; };
+		413FD95B1639BFE5002A9183 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD95A1639BFE5002A9183 /* AVFoundation.framework */; };
+		413FD95F1639C2EA002A9183 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD95E1639C2EA002A9183 /* MapKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		413FD94B1639BF2D002A9183 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 413FD93B1639BF2C002A9183 /* RumblefishMobileSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 413FD7A61639A84A002A9183;
+			remoteInfo = RumblefishMobileSDK;
+		};
+		413FD94D1639BF2D002A9183 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 413FD93B1639BF2C002A9183 /* RumblefishMobileSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 413FD8301639B33C002A9183;
+			remoteInfo = RumblefishMobileSDKResources;
+		};
+		413FD9541639BF51002A9183 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 413FD93B1639BF2C002A9183 /* RumblefishMobileSDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 413FD7A51639A84A002A9183;
+			remoteInfo = RumblefishMobileSDK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		413FD8FC1639B787002A9183 /* RumblefishMobileSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RumblefishMobileSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		413FD9001639B787002A9183 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		413FD9021639B787002A9183 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		413FD9041639B787002A9183 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		413FD91F1639BA9F002A9183 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Classes/main.m; sourceTree = SOURCE_ROOT; };
+		413FD9201639BA9F002A9183 /* RumblefishMobileSDKDemo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RumblefishMobileSDKDemo-Prefix.pch"; path = "Classes/RumblefishMobileSDKDemo-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		413FD9211639BA9F002A9183 /* TestFMAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFMAppDelegate.h; path = Classes/TestFMAppDelegate.h; sourceTree = SOURCE_ROOT; };
+		413FD9221639BA9F002A9183 /* TestFMAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestFMAppDelegate.m; path = Classes/TestFMAppDelegate.m; sourceTree = SOURCE_ROOT; };
+		413FD9231639BA9F002A9183 /* TestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestVC.h; path = Classes/TestVC.h; sourceTree = SOURCE_ROOT; };
+		413FD9241639BA9F002A9183 /* TestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestVC.m; path = Classes/TestVC.m; sourceTree = SOURCE_ROOT; };
+		413FD92C1639BBD2002A9183 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = SOURCE_ROOT; };
+		413FD92D1639BBD2002A9183 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = SOURCE_ROOT; };
+		413FD92E1639BBD2002A9183 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = SOURCE_ROOT; };
+		413FD92F1639BBD2002A9183 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = SOURCE_ROOT; };
+		413FD9301639BBD2002A9183 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = SOURCE_ROOT; };
+		413FD9311639BBD2002A9183 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = SOURCE_ROOT; };
+		413FD9321639BBD2002A9183 /* TestVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TestVC.xib; path = Resources/TestVC.xib; sourceTree = SOURCE_ROOT; };
+		413FD93B1639BF2C002A9183 /* RumblefishMobileSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RumblefishMobileSDK.xcodeproj; path = ../RumblefishMobileSDK/RumblefishMobileSDK.xcodeproj; sourceTree = "<group>"; };
+		413FD9581639BFD9002A9183 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		413FD95A1639BFE5002A9183 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		413FD95C1639C15F002A9183 /* RumblefishMobileSDKDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "RumblefishMobileSDKDemo-Info.plist"; sourceTree = SOURCE_ROOT; };
+		413FD95E1639C2EA002A9183 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		413FD8F91639B787002A9183 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				413FD95F1639C2EA002A9183 /* MapKit.framework in Frameworks */,
+				413FD95B1639BFE5002A9183 /* AVFoundation.framework in Frameworks */,
+				413FD9591639BFD9002A9183 /* QuartzCore.framework in Frameworks */,
+				413FD9571639BFBF002A9183 /* libRumblefishMobileSDK.a in Frameworks */,
+				413FD9011639B787002A9183 /* UIKit.framework in Frameworks */,
+				413FD9031639B787002A9183 /* Foundation.framework in Frameworks */,
+				413FD9051639B787002A9183 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		413FD8F11639B787002A9183 = {
+			isa = PBXGroup;
+			children = (
+				413FD95E1639C2EA002A9183 /* MapKit.framework */,
+				413FD9061639B787002A9183 /* RumblefishMobileSDKDemo */,
+				413FD8FF1639B787002A9183 /* Frameworks */,
+				413FD8FD1639B787002A9183 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		413FD8FD1639B787002A9183 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				413FD8FC1639B787002A9183 /* RumblefishMobileSDKDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		413FD8FF1639B787002A9183 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				413FD93B1639BF2C002A9183 /* RumblefishMobileSDK.xcodeproj */,
+				413FD95A1639BFE5002A9183 /* AVFoundation.framework */,
+				413FD9581639BFD9002A9183 /* QuartzCore.framework */,
+				413FD9001639B787002A9183 /* UIKit.framework */,
+				413FD9021639B787002A9183 /* Foundation.framework */,
+				413FD9041639B787002A9183 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		413FD9061639B787002A9183 /* RumblefishMobileSDKDemo */ = {
+			isa = PBXGroup;
+			children = (
+				413FD9201639BA9F002A9183 /* RumblefishMobileSDKDemo-Prefix.pch */,
+				413FD9211639BA9F002A9183 /* TestFMAppDelegate.h */,
+				413FD9221639BA9F002A9183 /* TestFMAppDelegate.m */,
+				413FD9231639BA9F002A9183 /* TestVC.h */,
+				413FD9241639BA9F002A9183 /* TestVC.m */,
+				413FD9071639B787002A9183 /* Supporting Files */,
+				413FD93A1639BBD7002A9183 /* Resources */,
+			);
+			path = RumblefishMobileSDKDemo;
+			sourceTree = "<group>";
+		};
+		413FD9071639B787002A9183 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				413FD95C1639C15F002A9183 /* RumblefishMobileSDKDemo-Info.plist */,
+				413FD91F1639BA9F002A9183 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		413FD93A1639BBD7002A9183 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				413FD9311639BBD2002A9183 /* MainWindow.xib */,
+				413FD9321639BBD2002A9183 /* TestVC.xib */,
+				413FD92F1639BBD2002A9183 /* Icon.png */,
+				413FD9301639BBD2002A9183 /* Icon@2x.png */,
+				413FD92C1639BBD2002A9183 /* Default-568h@2x.png */,
+				413FD92D1639BBD2002A9183 /* Default.png */,
+				413FD92E1639BBD2002A9183 /* Default@2x.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		413FD93C1639BF2C002A9183 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				413FD94C1639BF2D002A9183 /* libRumblefishMobileSDK.a */,
+				413FD94E1639BF2D002A9183 /* RumblefishMobileSDKResources.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		413FD8FB1639B787002A9183 /* RumblefishMobileSDKDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 413FD91A1639B787002A9183 /* Build configuration list for PBXNativeTarget "RumblefishMobileSDKDemo" */;
+			buildPhases = (
+				413FD8F81639B787002A9183 /* Sources */,
+				413FD8F91639B787002A9183 /* Frameworks */,
+				413FD8FA1639B787002A9183 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				413FD9551639BF51002A9183 /* PBXTargetDependency */,
+			);
+			name = RumblefishMobileSDKDemo;
+			productName = RumblefishMobileSDKDemo;
+			productReference = 413FD8FC1639B787002A9183 /* RumblefishMobileSDKDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		413FD8F31639B787002A9183 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Rumblefish, Inc.";
+			};
+			buildConfigurationList = 413FD8F61639B787002A9183 /* Build configuration list for PBXProject "RumblefishMobileSDKDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 413FD8F11639B787002A9183;
+			productRefGroup = 413FD8FD1639B787002A9183 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 413FD93C1639BF2C002A9183 /* Products */;
+					ProjectRef = 413FD93B1639BF2C002A9183 /* RumblefishMobileSDK.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				413FD8FB1639B787002A9183 /* RumblefishMobileSDKDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		413FD94C1639BF2D002A9183 /* libRumblefishMobileSDK.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRumblefishMobileSDK.a;
+			remoteRef = 413FD94B1639BF2D002A9183 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		413FD94E1639BF2D002A9183 /* RumblefishMobileSDKResources.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RumblefishMobileSDKResources.bundle;
+			remoteRef = 413FD94D1639BF2D002A9183 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		413FD8FA1639B787002A9183 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				413FD9331639BBD2002A9183 /* Default-568h@2x.png in Resources */,
+				413FD9341639BBD2002A9183 /* Default.png in Resources */,
+				413FD9351639BBD2002A9183 /* Default@2x.png in Resources */,
+				413FD9361639BBD2002A9183 /* Icon.png in Resources */,
+				413FD9371639BBD2002A9183 /* Icon@2x.png in Resources */,
+				413FD9381639BBD2002A9183 /* MainWindow.xib in Resources */,
+				413FD9391639BBD2002A9183 /* TestVC.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		413FD8F81639B787002A9183 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				413FD9261639BA9F002A9183 /* main.m in Sources */,
+				413FD9271639BA9F002A9183 /* TestFMAppDelegate.m in Sources */,
+				413FD9281639BA9F002A9183 /* TestVC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		413FD9551639BF51002A9183 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RumblefishMobileSDK;
+			targetProxy = 413FD9541639BF51002A9183 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		413FD9181639B787002A9183 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		413FD9191639B787002A9183 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		413FD91B1639B787002A9183 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Classes/RumblefishMobileSDKDemo-Prefix.pch";
+				HEADER_SEARCH_PATHS = Dependencies/TestFlightSDK0.8.2;
+				INFOPLIST_FILE = "RumblefishMobileSDKDemo-Info.plist";
+				OTHER_LDFLAGS = "-all_load";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		413FD91C1639B787002A9183 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Classes/RumblefishMobileSDKDemo-Prefix.pch";
+				HEADER_SEARCH_PATHS = Dependencies/TestFlightSDK0.8.2;
+				INFOPLIST_FILE = "RumblefishMobileSDKDemo-Info.plist";
+				OTHER_LDFLAGS = "-all_load";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		413FD8F61639B787002A9183 /* Build configuration list for PBXProject "RumblefishMobileSDKDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				413FD9181639B787002A9183 /* Debug */,
+				413FD9191639B787002A9183 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		413FD91A1639B787002A9183 /* Build configuration list for PBXNativeTarget "RumblefishMobileSDKDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				413FD91B1639B787002A9183 /* Debug */,
+				413FD91C1639B787002A9183 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 413FD8F31639B787002A9183 /* Project object */;
+}
