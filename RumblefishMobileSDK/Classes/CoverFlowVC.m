@@ -41,6 +41,19 @@
 
 @synthesize playlist = _playlist;
 
+- (void)setImage:(UIImage *)value {
+    if (!value)
+        value = [UIImage imageInResourceBundleNamed:@"CoverFlowPlaceholder.png"];
+    [super setImage:value];
+}
+
+- (id)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        self.image = nil; // force placeholder to appear
+    }
+    return self;
+}
+
 - (void)setPlaylist:(Playlist *)value {
     [self deassociateProducer];
     _playlist = value;
@@ -50,6 +63,29 @@
         [self associateProducer:[[RFAPI singleton] getImageAtURL:value.imageURL] callback:^ void (id i) {
             self.image = (UIImage *)i;
         }];
+    }
+}
+
+- (void)layoutSubviews {
+    self.imageView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.width);
+    self.reflected.frame = CGRectMake(0, self.bounds.size.width, self.bounds.size.width, self.bounds.size.height);
+    self.gradientLayer.frame = CGRectMake(0, self.bounds.size.width, self.bounds.size.width, self.bounds.size.height);
+    
+	if (self.image) {
+        self.imageView.image = self.image;
+        
+        float w = self.image.size.width;
+        float h = self.image.size.height;
+        float factor = self.bounds.size.width / (h>w?h:w);
+        h = factor * h;
+        w = factor * w;
+        float y = self.baseline - h > 0 ? self.baseline - h : 0;
+        self.imageView.frame = CGRectMake(0, y, w, h);
+        
+        self.gradientLayer.frame = CGRectMake(0, y + h, w, h);
+        
+        self.reflected.frame = CGRectMake(0, y + h, w, h);
+        self.reflected.image = self.image;
     }
 }
 
