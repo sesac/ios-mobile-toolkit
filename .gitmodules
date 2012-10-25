@@ -1,0 +1,6 @@
+[submodule "RumblefishMobileSDK/Dependencies/SBJson"]
+	path = RumblefishMobileSDK/Dependencies/SBJson
+	url = git://github.com/stig/json-framework.git
+[submodule "RumblefishMobileSDK/Dependencies/TapkuLibrary"]
+	path = RumblefishMobileSDK/Dependencies/TapkuLibrary
+	url = git://github.com/devinross/tapkulibrary.git
