@@ -20,7 +20,7 @@ The RIT demonstrates how to interact with Rumblefish’s API to search for and p
 
 Build music licensing into your iOS apps! The RIT is configured to use Rumblefish’s sandbox API environment which contains a limited number of Rumblefish tracks and can not issue commercial licenses or delivery high quality tracks for download. Contact us at developers@rumblefish.com when you are ready to set up a production portal to enable these features.
 
-## Building the code
+## Hacking on the code
 
 This repository uses git submodules to pull in its dependencies. **Make sure to perform a recursive submodule initializeation after cloning.**
 
@@ -28,9 +28,9 @@ This repository uses git submodules to pull in its dependencies. **Make sure to 
     git submodule update --init --recursive
     
 
-The `RumblefishMobileSDKDemo/` directory contains a demo project that uses the SDK. The `RumblefishMobileSDK/` directory contains the SDK project itself. Assuming the submodules in your clone are up-to-date, you should be able to simply build either project in Xcode in the usual manner.
+The `RumblefishMobileSDKDemo/` directory contains a demo project that uses the SDK. The `RumblefishMobileSDK/` directory contains the SDK project itself. Assuming the submodules in your clone are up-to-date, you should be able to simply build and hack on either project in Xcode in the usual manner.
 
-## Using the SDK in your own project
+## Using the SDK in your project
 
 The Rumblefish iOS SDK is distributed as a static library with a companion resource bundle. This technique is described [here](http://www.galloway.me.uk/tutorials/ios-library-with-resources/).
 
