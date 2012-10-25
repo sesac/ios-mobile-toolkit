@@ -30,7 +30,8 @@
 		413FD8191639B293002A9183 /* RFAPI.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 413FD7CE1639AB2E002A9183 /* RFAPI.h */; };
 		413FD81A1639B293002A9183 /* FriendlyMusic.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 413FD7C01639AB2E002A9183 /* FriendlyMusic.h */; };
 		413FD8311639B33C002A9183 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD8201639B2E3002A9183 /* CoreFoundation.framework */; };
-		413FD8371639B33C002A9183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 413FD8351639B33C002A9183 /* InfoPlist.strings */; };
+		413FD8DD1639B52F002A9183 /* RumblefishMobileSDKResources-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 413FD8DA1639B52F002A9183 /* RumblefishMobileSDKResources-Info.plist */; };
+		413FD8E01639B53F002A9183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 413FD8DE1639B53F002A9183 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -148,10 +149,10 @@
 		413FD8061639AEFD002A9183 /* TapkuLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TapkuLibrary.xcodeproj; path = Dependencies/TapkuLibrary/src/TapkuLibrary.xcodeproj; sourceTree = "<group>"; };
 		413FD8121639AF0B002A9183 /* TapkuLibrary.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TapkuLibrary.bundle; path = Dependencies/TapkuLibrary/src/TapkuLibrary.bundle; sourceTree = "<group>"; };
 		413FD8201639B2E3002A9183 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		413FD8301639B33C002A9183 /* RumblefishSDKResources.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RumblefishSDKResources.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		413FD8341639B33C002A9183 /* RumblefishSDKResources-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RumblefishSDKResources-Info.plist"; sourceTree = "<group>"; };
-		413FD8361639B33C002A9183 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		413FD8381639B33C002A9183 /* RumblefishSDKResources-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RumblefishSDKResources-Prefix.pch"; sourceTree = "<group>"; };
+		413FD8301639B33C002A9183 /* RumblefishMobileSDKResources.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RumblefishMobileSDKResources.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		413FD8DA1639B52F002A9183 /* RumblefishMobileSDKResources-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "RumblefishMobileSDKResources-Info.plist"; path = "RumblefishMobileSDKResources/RumblefishMobileSDKResources-Info.plist"; sourceTree = SOURCE_ROOT; };
+		413FD8DB1639B52F002A9183 /* RumblefishMobileSDKResources-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RumblefishMobileSDKResources-Prefix.pch"; path = "RumblefishMobileSDKResources/RumblefishMobileSDKResources-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		413FD8DF1639B53F002A9183 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = RumblefishMobileSDKResources/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,7 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				413FD7A61639A84A002A9183 /* libRumblefishMobileSDK.a */,
-				413FD8301639B33C002A9183 /* RumblefishSDKResources.bundle */,
+				413FD8301639B33C002A9183 /* RumblefishMobileSDKResources.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -304,9 +305,9 @@
 		413FD8331639B33C002A9183 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				413FD8341639B33C002A9183 /* RumblefishSDKResources-Info.plist */,
-				413FD8351639B33C002A9183 /* InfoPlist.strings */,
-				413FD8381639B33C002A9183 /* RumblefishSDKResources-Prefix.pch */,
+				413FD8DE1639B53F002A9183 /* InfoPlist.strings */,
+				413FD8DA1639B52F002A9183 /* RumblefishMobileSDKResources-Info.plist */,
+				413FD8DB1639B52F002A9183 /* RumblefishMobileSDKResources-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -333,9 +334,9 @@
 			productReference = 413FD7A61639A84A002A9183 /* libRumblefishMobileSDK.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		413FD82F1639B33C002A9183 /* RumblefishSDKResources */ = {
+		413FD82F1639B33C002A9183 /* RumblefishMobileSDKResources */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 413FD8391639B33C002A9183 /* Build configuration list for PBXNativeTarget "RumblefishSDKResources" */;
+			buildConfigurationList = 413FD8391639B33C002A9183 /* Build configuration list for PBXNativeTarget "RumblefishMobileSDKResources" */;
 			buildPhases = (
 				413FD82C1639B33C002A9183 /* Sources */,
 				413FD82D1639B33C002A9183 /* Frameworks */,
@@ -345,9 +346,9 @@
 			);
 			dependencies = (
 			);
-			name = RumblefishSDKResources;
+			name = RumblefishMobileSDKResources;
 			productName = RumblefishSDKResources;
-			productReference = 413FD8301639B33C002A9183 /* RumblefishSDKResources.bundle */;
+			productReference = 413FD8301639B33C002A9183 /* RumblefishMobileSDKResources.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -382,7 +383,7 @@
 			projectRoot = "";
 			targets = (
 				413FD7A51639A84A002A9183 /* RumblefishMobileSDK */,
-				413FD82F1639B33C002A9183 /* RumblefishSDKResources */,
+				413FD82F1639B33C002A9183 /* RumblefishMobileSDKResources */,
 			);
 		};
 /* End PBXProject section */
@@ -437,7 +438,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				413FD8371639B33C002A9183 /* InfoPlist.strings in Resources */,
+				413FD8DD1639B52F002A9183 /* RumblefishMobileSDKResources-Info.plist in Resources */,
+				413FD8E01639B53F002A9183 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,10 +493,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		413FD8351639B33C002A9183 /* InfoPlist.strings */ = {
+		413FD8DE1639B53F002A9183 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				413FD8361639B33C002A9183 /* en */,
+				413FD8DF1639B53F002A9183 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -580,9 +582,9 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "RumblefishSDKResources/RumblefishSDKResources-Prefix.pch";
+				GCC_PREFIX_HEADER = "RumblefishMobileSDKResources/RumblefishMobileSDKResources-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				INFOPLIST_FILE = "RumblefishSDKResources/RumblefishSDKResources-Info.plist";
+				INFOPLIST_FILE = "RumblefishMobileSDKResources/RumblefishMobileSDKResources-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -599,9 +601,9 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "RumblefishSDKResources/RumblefishSDKResources-Prefix.pch";
+				GCC_PREFIX_HEADER = "RumblefishMobileSDKResources/RumblefishMobileSDKResources-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				INFOPLIST_FILE = "RumblefishSDKResources/RumblefishSDKResources-Info.plist";
+				INFOPLIST_FILE = "RumblefishMobileSDKResources/RumblefishMobileSDKResources-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -631,7 +633,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		413FD8391639B33C002A9183 /* Build configuration list for PBXNativeTarget "RumblefishSDKResources" */ = {
+		413FD8391639B33C002A9183 /* Build configuration list for PBXNativeTarget "RumblefishMobileSDKResources" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				413FD83A1639B33C002A9183 /* Debug */,
