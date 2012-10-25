@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		411FCEF11639F107000B1841 /* RumblefishMobileSDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 411FCEEB1639F0A8000B1841 /* RumblefishMobileSDK.h */; };
 		413FD7AA1639A84A002A9183 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD7A91639A84A002A9183 /* Foundation.framework */; };
 		413FD7DA1639AB2E002A9183 /* AlbumLandscapeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7B91639AB2E002A9183 /* AlbumLandscapeVC.m */; };
 		413FD7DB1639AB2E002A9183 /* Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BB1639AB2E002A9183 /* Async.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -187,6 +188,7 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				411FCEF11639F107000B1841 /* RumblefishMobileSDK.h in CopyFiles */,
 				413FD9561639BFA2002A9183 /* Async.h in CopyFiles */,
 				413FD8191639B293002A9183 /* RFAPI.h in CopyFiles */,
 				413FD81A1639B293002A9183 /* FriendlyMusic.h in CopyFiles */,
@@ -197,6 +199,7 @@
 
 /* Begin PBXFileReference section */
 		411FCED21639E922000B1841 /* RumblefishMobileSDKResources-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "RumblefishMobileSDKResources-Info.plist"; path = "RumblefishMobileSDKResources/RumblefishMobileSDKResources-Info.plist"; sourceTree = SOURCE_ROOT; };
+		411FCEEB1639F0A8000B1841 /* RumblefishMobileSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RumblefishMobileSDK.h; path = Classes/RumblefishMobileSDK.h; sourceTree = SOURCE_ROOT; };
 		413FD7A61639A84A002A9183 /* libRumblefishMobileSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRumblefishMobileSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		413FD7A91639A84A002A9183 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		413FD7B71639A970002A9183 /* RumblefishMobileSDK-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RumblefishMobileSDK-Prefix.pch"; path = "Classes/RumblefishMobileSDK-Prefix.pch"; sourceTree = SOURCE_ROOT; };
@@ -381,6 +384,7 @@
 		413FD7AB1639A84A002A9183 /* RumblefishMobileSDK */ = {
 			isa = PBXGroup;
 			children = (
+				411FCEEB1639F0A8000B1841 /* RumblefishMobileSDK.h */,
 				413FD7CE1639AB2E002A9183 /* RFAPI.h */,
 				413FD7CF1639AB2E002A9183 /* RFAPI.m */,
 				413FD7C01639AB2E002A9183 /* FriendlyMusic.h */,
