@@ -640,6 +640,7 @@
 				413FD83B1639B33C002A9183 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
