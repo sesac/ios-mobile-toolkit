@@ -212,10 +212,12 @@ AVPlayerItem *playerItem;
     }
     
     [cell.contentView viewWithTag:5].frame = CGRectMake(self.view.bounds.size.width - 44, 0, 44, 44);
-    
     [cell.contentView viewWithTag:8].frame = CGRectMake(self.view.bounds.size.width - 33, 12, 22, 19);
-    
     title.frame = CGRectMake(52, 0, self.view.bounds.size.width - 100, 44);
+    
+    CGRect horizontalLineFrame = [cell.contentView viewWithTag:1].frame;
+    horizontalLineFrame.size.width = tableView.bounds.size.width;
+    [cell.contentView viewWithTag:1].frame = horizontalLineFrame;
     
     return cell;
 }
