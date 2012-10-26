@@ -303,8 +303,10 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
         parameters = [[NSMutableDictionary alloc] init];
     }
     
-    [parameters setValue:[self ipAddress] forKey:@"ip"];
-    [parameters setValue:[self accessToken] forKey:@"token"];
+    [parameters setValue:self.ipAddress forKey:@"ip"];
+    
+    if (self.accessToken)
+        [parameters setValue:self.accessToken forKey:@"token"];
     
     NSMutableString *queryString = nil;
     NSArray *keys = [parameters allKeys];
