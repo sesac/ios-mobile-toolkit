@@ -224,7 +224,7 @@
 	return cover;
 }
 
-- (void)coverflowView:(TKCoverflowView*)coverflowView coverAtIndexWasDoubleTapped:(int)index{
+- (void) coverflowView:(TKCoverflowView*)coverflowView coverAtIndexWasTappedInFront:(int)index tapCount:(NSInteger)tapCount {
     Playlist *playlist = (Playlist *)[playlists objectAtIndex:index];
     
 	AlbumLandscapeVC *albumController = [[AlbumLandscapeVC alloc] initWithPlaylist:playlist];
