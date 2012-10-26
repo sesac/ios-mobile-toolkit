@@ -30,6 +30,7 @@
 @interface MoodMapControllerView : UIView
 
 @property (nonatomic, assign) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 

@@ -32,15 +32,24 @@
 
 @implementation MoodMapControllerView
 
-@synthesize tableView;
+@synthesize tableView, activityIndicator;
+
+- (void)awakeFromNib {
+    self.activityIndicator = [[UIActivityIndicatorView alloc] init];
+    [self addSubview:activityIndicator];
+    
+}
 
 - (void)layoutSubviews {
     [super layoutSubviews];
     
     if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
-        tableView.frame = CGRectMake(320, 0, self.bounds.size.width - 160, 300);
+        tableView.frame = CGRectMake(320, 0, self.bounds.size.width - 320, 300);
     else
         tableView.frame = CGRectMake(0, 320, self.bounds.size.width, self.bounds.size.height - 320);
+    
+    [activityIndicator sizeToFit];
+    activityIndicator.center = tableView.center;
 }
 
 @end
@@ -48,13 +57,13 @@
 @interface MoodMapVC ()
 
 @property (nonatomic, strong) Playlist *playlist;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) MoodMapControllerView *controllerView;
 
 @end
 
 @implementation MoodMapVC
 
-@synthesize playlist, activityIndicator;
+@synthesize playlist, controllerView;
 
 UIColor *selectedColor;
 NSMutableArray *adjacentColors;
@@ -88,6 +97,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 
 - (void)viewDidLoad
 {
+    self.controllerView = (MoodMapControllerView *)self.view;
     [super viewDidLoad];
     
     adjacentColors = [[NSMutableArray alloc] init];
@@ -116,21 +126,11 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     [[AVAudioSession sharedInstance] setDelegate: self];    
     // Allow the app sound to continue to play when the screen is locked.
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-    
-    
-    activityIndicator = [[UIActivityIndicatorView alloc] init];
-    [activityIndicator sizeToFit];
-    activityIndicator.frame = CGRectMake(
-                                         (tabView.frame.size.width - activityIndicator.frame.size.width) / 2, 
-                                         (tabView.frame.size.height - activityIndicator.frame.size.height) / 2  + tabView.frame.origin.y, 
-                                         activityIndicator.frame.size.width, 
-                                         activityIndicator.frame.size.height);
-    [self.view addSubview:activityIndicator];
-    [self.view bringSubviewToFront:activityIndicator];
 }
 
 - (void)viewDidUnload
 {
+    self.controllerView = nil;
     [super viewDidUnload];
 }
 
@@ -280,7 +280,6 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         addButton.tag = 5;
         UIImage *addImage = [UIImage imageInResourceBundleNamed:@"btn_add.png"];
         [addButton setImage:addImage forState:UIControlStateNormal];
-        [addButton setFrame:CGRectMake(270, 0, 44, 44)];
         [addButton addTarget:self action:@selector(addToPlaylist:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:addButton];
         
@@ -303,7 +302,6 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         tikButton.tag = 8;
         UIImage *tikImage = [UIImage imageInResourceBundleNamed:@"song_check.png"];
         [tikButton setImage:tikImage forState:UIControlStateNormal];
-        [tikButton setFrame:CGRectMake(280, 12, 22, 19)];
         [tikButton addTarget:self action:@selector(removeFromPlaylist:) forControlEvents:UIControlEventTouchUpInside];
         tikButton.hidden = YES;
         [cell.contentView addSubview:tikButton];
@@ -313,35 +311,44 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         [cell.contentView addSubview:colorBar];
     }
     
-    // handle orientation
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLandscape"]) {
-        [cell.contentView viewWithTag:1].hidden = YES;
-        [cell.contentView viewWithTag:2].hidden = YES;
-        [cell.contentView viewWithTag:3].hidden = YES;
-        if (indexPath.row == playingRow) {
-            [cell.contentView viewWithTag:4].frame = CGRectMake(46, 0, 71, 44);
-        }
-        else {
-            [cell.contentView viewWithTag:4].frame = CGRectMake(2, 0, 115, 44);
-        }
-        [cell.contentView viewWithTag:5].frame = CGRectMake(120, 0, 44, 44);
-        [cell.contentView viewWithTag:8].frame = CGRectMake(130, 12, 22, 19);
-    }
-    else {
-        [cell.contentView viewWithTag:1].hidden = NO;
-        [cell.contentView viewWithTag:2].hidden = NO;
-        [cell.contentView viewWithTag:3].hidden = NO;
-        [cell.contentView viewWithTag:4].frame = CGRectMake(49, 0, 232, 44);
-        [cell.contentView viewWithTag:5].frame = CGRectMake(270, 0, 44, 44);
-        [cell.contentView viewWithTag:8].frame = CGRectMake(280, 12, 22, 19);
-    }
-    
     Media *currentMedia = (Media *)[playlist.media objectAtIndex:indexPath.row];
     
     UILabel *index = (UILabel *)[cell.contentView viewWithTag:3];
     index.text = [NSString stringWithFormat:@"%i", indexPath.row+1];
     UILabel *title = (UILabel *)[cell.contentView viewWithTag:4];
     title.text = currentMedia.title;
+    
+    CGFloat titleWidth = tableView.bounds.size.width - 44;
+    CGFloat titleX = 52;
+    
+    
+    // if we're in landscape, we're not showing the 'index' box
+    // and we only scoot the text over to display the spinner/stop button
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLandscape"]) {
+        if (indexPath.row == playingRow) {
+            titleX = 44;
+        }
+        else
+            titleX = 5;
+    }
+    
+    titleWidth -= titleX;
+    
+    title.frame = CGRectMake(titleX, 0, titleWidth, 44);
+    [cell.contentView viewWithTag:5].frame = CGRectMake(tableView.bounds.size.width - 44, 0, 44, 44);
+    [cell.contentView viewWithTag:8].frame = CGRectMake(tableView.bounds.size.width - 33, 12, 22, 19);
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLandscape"]) {
+        [cell.contentView viewWithTag:1].hidden = YES;
+        [cell.contentView viewWithTag:2].hidden = YES;
+        [cell.contentView viewWithTag:3].hidden = YES;
+    }
+    else {
+        [cell.contentView viewWithTag:1].hidden = NO;
+        [cell.contentView viewWithTag:2].hidden = NO;
+        [cell.contentView viewWithTag:3].hidden = NO;
+    }
     
     [cell.contentView viewWithTag:5].hidden = NO;
     [cell.contentView viewWithTag:8].hidden = YES;
@@ -772,10 +779,10 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 // server API
 - (void)getPlaylistFromServer {
     Producer getMedia = [[RFAPI singleton] getPlaylist:playlistID + 187];
-    [activityIndicator startAnimating];
+    [self.controllerView.activityIndicator startAnimating];
     [self associateProducer:getMedia callback:^ (id result) {
         self.playlist = (Playlist *)result;
-        [activityIndicator stopAnimating];
+        [self.controllerView.activityIndicator stopAnimating];
         // play first/current song
         if (playlist.media.count) {
             int row = playingRow == -1 ? 0 : playingRow;
