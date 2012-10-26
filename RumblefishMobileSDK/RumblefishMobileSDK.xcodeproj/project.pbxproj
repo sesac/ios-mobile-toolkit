@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		411FCEF11639F107000B1841 /* RumblefishMobileSDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 411FCEEB1639F0A8000B1841 /* RumblefishMobileSDK.h */; };
+		411FCF3C163AD205000B1841 /* occasion_image_cache.plist in Resources */ = {isa = PBXBuildFile; fileRef = 411FCF3B163AD1D0000B1841 /* occasion_image_cache.plist */; };
 		413FD7AA1639A84A002A9183 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD7A91639A84A002A9183 /* Foundation.framework */; };
 		413FD7DA1639AB2E002A9183 /* AlbumVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7B91639AB2E002A9183 /* AlbumVC.m */; };
 		413FD7DB1639AB2E002A9183 /* Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BB1639AB2E002A9183 /* Async.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -198,6 +199,7 @@
 /* Begin PBXFileReference section */
 		411FCED21639E922000B1841 /* RumblefishMobileSDKResources-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "RumblefishMobileSDKResources-Info.plist"; path = "RumblefishMobileSDKResources/RumblefishMobileSDKResources-Info.plist"; sourceTree = SOURCE_ROOT; };
 		411FCEEB1639F0A8000B1841 /* RumblefishMobileSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RumblefishMobileSDK.h; path = Classes/RumblefishMobileSDK.h; sourceTree = SOURCE_ROOT; };
+		411FCF3B163AD1D0000B1841 /* occasion_image_cache.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = occasion_image_cache.plist; path = RumblefishMobileSDKResources/occasion_image_cache.plist; sourceTree = SOURCE_ROOT; };
 		413FD7A61639A84A002A9183 /* libRumblefishMobileSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRumblefishMobileSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		413FD7A91639A84A002A9183 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		413FD7B71639A970002A9183 /* RumblefishMobileSDK-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RumblefishMobileSDK-Prefix.pch"; path = "Classes/RumblefishMobileSDK-Prefix.pch"; sourceTree = SOURCE_ROOT; };
@@ -467,6 +469,7 @@
 			children = (
 				413FD96E1639D7DA002A9183 /* Images */,
 				413FD96C1639D07E002A9183 /* playlist.plist */,
+				411FCF3B163AD1D0000B1841 /* occasion_image_cache.plist */,
 				413FD9661639CF8A002A9183 /* FriendlyMusic.xib */,
 				413FD9671639CF8A002A9183 /* MoodMapVC.xib */,
 				413FD9681639CF8A002A9183 /* OccasionVC.xib */,
@@ -694,6 +697,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				411FCF3C163AD205000B1841 /* occasion_image_cache.plist in Resources */,
 				413FD9B91639D828002A9183 /* bg_surround.png in Resources */,
 				413FD9BA1639D828002A9183 /* bg_surround@2x.png in Resources */,
 				413FD9BB1639D828002A9183 /* blank.jpg in Resources */,

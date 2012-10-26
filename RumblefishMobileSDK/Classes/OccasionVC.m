@@ -213,7 +213,7 @@ NSTimer *rotateImagesTimer;
     
     if (!savedData) {
         // if not, load from the resource plist.
-        NSBundle* bundle = [NSBundle mainBundle];
+        NSBundle* bundle = [NSBundle rumblefishResourcesBundle];
         NSString* plistPath = [bundle pathForResource:@"occasion_image_cache" ofType:@"plist"];
         NSLog(@"No saved data, attempting to load %@", plistPath);
         savedData = [NSDictionary dictionaryWithContentsOfFile:plistPath];
