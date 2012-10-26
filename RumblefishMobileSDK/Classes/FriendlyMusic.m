@@ -89,10 +89,6 @@ NSMutableArray *optionArray;
     }
 }
 
-- (IBAction)close {
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 
 // Table methods
 

@@ -31,7 +31,6 @@
 
 @property(nonatomic, readonly) int FMMOODMAP, FMOCCASION, FMEDITORSPICKS; 
 
-- (IBAction)close;
 - (void)setOptions:(int)options;
 
 @end
