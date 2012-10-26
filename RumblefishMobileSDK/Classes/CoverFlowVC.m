@@ -161,8 +161,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self getPlaylistFromServer];
-    [self.view layoutIfNeeded];
+    
+    if (!playlists)
+        [self getPlaylistFromServer];
 }
 
 - (void)playlistTapped {
