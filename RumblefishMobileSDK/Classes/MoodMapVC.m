@@ -135,14 +135,6 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLandscape"]) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-        tabView.frame = CGRectMake(320, 0, 160, 320);
-    } else {
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-        tabView.frame = CGRectMake(0, 320, 320, 140);
-    }
-    
     NSString *imageName = [NSString stringWithFormat:@"btn_playlist_%@.png", [LocalPlaylist sharedPlaylist].count ? @"ON" : @"OFF"];
     
     [playlistButton setImage:[UIImage imageInResourceBundleNamed:imageName] forState:UIControlStateNormal];
@@ -159,13 +151,11 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isLandscape"];
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-        tabView.frame = CGRectMake(320, 0, 160, 320);
+        tabView.frame = CGRectMake(320, 0, 160, 300);
         [tabView reloadData];
     }
     else if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLandscape"];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
         tabView.frame = CGRectMake(0, 320, 320, 140);
         [tabView reloadData];
     }

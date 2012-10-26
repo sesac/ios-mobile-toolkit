@@ -24,7 +24,7 @@
 
 #import "CoverFlowVC.h"
 #import "AlbumLandscapeVC.h"
-#import "PlaylistLandscapeVC.h"
+#import "PlaylistVC.h"
 #import "SBJson/SBJson.h"
 #import "NSObject+AssociateProducer.h"
 #import "Sequence.h"
@@ -189,18 +189,16 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [self getPlaylistFromServer];
     [self.view layoutIfNeeded];
 }
 
 - (void)backTapped {
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)playlistTapped {
-    PlaylistLandscapeVC *playlistController = [[PlaylistLandscapeVC alloc] init];
+    PlaylistVC *playlistController = [[PlaylistVC alloc] init];
     [playlistController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self presentViewController:playlistController animated:YES completion:nil];
 }

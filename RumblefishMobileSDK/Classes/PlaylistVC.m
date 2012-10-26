@@ -37,26 +37,14 @@ bool isPlaying;
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
     self.navigationItem.title = @"Playlist";
-    
-    UIButton *removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *removeImage = [UIImage imageInResourceBundleNamed:@"btn_removeall.png"];
-    [removeButton setImage:removeImage forState:UIControlStateNormal];
-    removeButton.frame = CGRectMake(0, 0, removeImage.size.width, removeImage.size.height);
-    [removeButton addTarget:self action:@selector(removeAll) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:removeButton];
+
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Remove all" style:UIBarButtonItemStyleBordered target:self action:@selector(removeAll)];
     self.navigationItem.rightBarButtonItem = rightButton;
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor colorWithRed:.88 green:0 blue:0 alpha:1];
     
     self.tableView.separatorColor = [UIColor colorWithRed:0.08f green:0.08f blue:0.08f alpha:1.0f];
     self.tableView.backgroundColor = [UIColor colorWithRed:0.1568f green:0.1529f blue:0.1451f alpha:1.0f];
-    
-    selectedCell = [[UITableViewCell alloc] init];
-    
-    // Registers this class as the delegate of the audio session.
-    [[AVAudioSession sharedInstance] setDelegate: self];    
-    // Allow the app sound to continue to play when the screen is locked.
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 }
 
 - (void)viewDidUnload
@@ -67,12 +55,6 @@ bool isPlaying;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    }
-    else {
-        [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    }
     [self.tableView reloadData];
 }
 
@@ -89,16 +71,8 @@ bool isPlaying;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isLandscape"];
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
-        [self.tableView reloadData];
-    }
-    else if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLandscape"];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO];
-        [self.tableView reloadData];
-    }
+    // force cells to re-layout
+    [self.tableView reloadData];
 }
 
 - (void)removeAll {
@@ -175,6 +149,7 @@ bool isPlaying;
         titleLabel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:titleLabel];
         
+        // XXXX should be accessory view
         UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         UIImage *deleteImage = [UIImage imageInResourceBundleNamed:@"btn_remove.png"];
         [deleteButton setImage:deleteImage forState:UIControlStateNormal];

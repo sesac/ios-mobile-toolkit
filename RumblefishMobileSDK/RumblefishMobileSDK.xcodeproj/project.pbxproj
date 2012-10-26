@@ -18,7 +18,6 @@
 		413FD7E01639AB2E002A9183 /* MoodMapVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C51639AB2E002A9183 /* MoodMapVC.m */; };
 		413FD7E11639AB2E002A9183 /* NSObject+AssociateProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C71639AB2E002A9183 /* NSObject+AssociateProducer.m */; };
 		413FD7E21639AB2E002A9183 /* OccasionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C91639AB2E002A9183 /* OccasionVC.m */; };
-		413FD7E31639AB2E002A9183 /* PlaylistLandscapeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7CB1639AB2E002A9183 /* PlaylistLandscapeVC.m */; };
 		413FD7E41639AB2E002A9183 /* PlaylistVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7CD1639AB2E002A9183 /* PlaylistVC.m */; };
 		413FD7E51639AB2E002A9183 /* RFAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7CF1639AB2E002A9183 /* RFAPI.m */; };
 		413FD7E61639AB2E002A9183 /* Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7D11639AB2E002A9183 /* Sequence.m */; };
@@ -221,8 +220,6 @@
 		413FD7C71639AB2E002A9183 /* NSObject+AssociateProducer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+AssociateProducer.m"; path = "Classes/NSObject+AssociateProducer.m"; sourceTree = SOURCE_ROOT; };
 		413FD7C81639AB2E002A9183 /* OccasionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OccasionVC.h; path = Classes/OccasionVC.h; sourceTree = SOURCE_ROOT; };
 		413FD7C91639AB2E002A9183 /* OccasionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OccasionVC.m; path = Classes/OccasionVC.m; sourceTree = SOURCE_ROOT; };
-		413FD7CA1639AB2E002A9183 /* PlaylistLandscapeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaylistLandscapeVC.h; path = Classes/PlaylistLandscapeVC.h; sourceTree = SOURCE_ROOT; };
-		413FD7CB1639AB2E002A9183 /* PlaylistLandscapeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaylistLandscapeVC.m; path = Classes/PlaylistLandscapeVC.m; sourceTree = SOURCE_ROOT; };
 		413FD7CC1639AB2E002A9183 /* PlaylistVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaylistVC.h; path = Classes/PlaylistVC.h; sourceTree = SOURCE_ROOT; };
 		413FD7CD1639AB2E002A9183 /* PlaylistVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaylistVC.m; path = Classes/PlaylistVC.m; sourceTree = SOURCE_ROOT; };
 		413FD7CE1639AB2E002A9183 /* RFAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RFAPI.h; path = Classes/RFAPI.h; sourceTree = SOURCE_ROOT; };
@@ -419,8 +416,6 @@
 				413FD7C51639AB2E002A9183 /* MoodMapVC.m */,
 				413FD7C81639AB2E002A9183 /* OccasionVC.h */,
 				413FD7C91639AB2E002A9183 /* OccasionVC.m */,
-				413FD7CA1639AB2E002A9183 /* PlaylistLandscapeVC.h */,
-				413FD7CB1639AB2E002A9183 /* PlaylistLandscapeVC.m */,
 				413FD7CC1639AB2E002A9183 /* PlaylistVC.h */,
 				413FD7CD1639AB2E002A9183 /* PlaylistVC.m */,
 			);
@@ -801,7 +796,6 @@
 				413FD7E01639AB2E002A9183 /* MoodMapVC.m in Sources */,
 				413FD7E11639AB2E002A9183 /* NSObject+AssociateProducer.m in Sources */,
 				413FD7E21639AB2E002A9183 /* OccasionVC.m in Sources */,
-				413FD7E31639AB2E002A9183 /* PlaylistLandscapeVC.m in Sources */,
 				413FD7E41639AB2E002A9183 /* PlaylistVC.m in Sources */,
 				413FD7E51639AB2E002A9183 /* RFAPI.m in Sources */,
 				413FD7E61639AB2E002A9183 /* Sequence.m in Sources */,
