@@ -27,6 +27,10 @@
 
 @implementation TestVC
 
+- (void)viewDidLoad {
+    ((UIScrollView *)self.view.subviews[0]).contentSize = CGSizeMake(320, 480);
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     // PLEASE SPECIFY A VALID public key and password. Contact developers@rumblefish.com for more info.
     [RFAPI rumbleWithEnvironment:RFAPIEnvProduction 
