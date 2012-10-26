@@ -22,21 +22,21 @@
  this file requires a written agreement with Rumblefish, Inc.
  */
 
-#import "AlbumLandscapeVC.h"
+#import "AlbumVC.h"
 #import "SBJson/SBJson.h"
 #import <AVFoundation/AVFoundation.h>
 #import "LocalPlaylist.h"
 #import "NSObject+AssociateProducer.h"
 #import "UIImage+RumblefishSDKResources.h"
 
-@interface AlbumLandscapeVC ()
+@interface AlbumVC ()
 
 @property (nonatomic, strong) Playlist *playlist;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
-@implementation AlbumLandscapeVC
+@implementation AlbumVC
 
 int playRow;
 bool isPlaying;

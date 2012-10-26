@@ -26,7 +26,7 @@
 #import "RFAPI.h"
 
 
-@interface AlbumLandscapeVC : UITableViewController
+@interface AlbumVC : UITableViewController
 
 - (id)initWithPlaylist:(Playlist *)playlist;
 

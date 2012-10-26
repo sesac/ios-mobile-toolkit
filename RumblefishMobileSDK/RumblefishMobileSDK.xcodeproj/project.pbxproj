@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		411FCEF11639F107000B1841 /* RumblefishMobileSDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 411FCEEB1639F0A8000B1841 /* RumblefishMobileSDK.h */; };
 		413FD7AA1639A84A002A9183 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 413FD7A91639A84A002A9183 /* Foundation.framework */; };
-		413FD7DA1639AB2E002A9183 /* AlbumLandscapeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7B91639AB2E002A9183 /* AlbumLandscapeVC.m */; };
+		413FD7DA1639AB2E002A9183 /* AlbumVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7B91639AB2E002A9183 /* AlbumVC.m */; };
 		413FD7DB1639AB2E002A9183 /* Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BB1639AB2E002A9183 /* Async.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		413FD7DC1639AB2E002A9183 /* CoverFlowVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BD1639AB2E002A9183 /* CoverFlowVC.m */; };
 		413FD7DE1639AB2E002A9183 /* FriendlyMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C11639AB2E002A9183 /* FriendlyMusic.m */; };
@@ -201,8 +201,8 @@
 		413FD7A61639A84A002A9183 /* libRumblefishMobileSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRumblefishMobileSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		413FD7A91639A84A002A9183 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		413FD7B71639A970002A9183 /* RumblefishMobileSDK-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RumblefishMobileSDK-Prefix.pch"; path = "Classes/RumblefishMobileSDK-Prefix.pch"; sourceTree = SOURCE_ROOT; };
-		413FD7B81639AB2E002A9183 /* AlbumLandscapeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlbumLandscapeVC.h; path = Classes/AlbumLandscapeVC.h; sourceTree = SOURCE_ROOT; };
-		413FD7B91639AB2E002A9183 /* AlbumLandscapeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlbumLandscapeVC.m; path = Classes/AlbumLandscapeVC.m; sourceTree = SOURCE_ROOT; };
+		413FD7B81639AB2E002A9183 /* AlbumVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlbumVC.h; path = Classes/AlbumVC.h; sourceTree = SOURCE_ROOT; };
+		413FD7B91639AB2E002A9183 /* AlbumVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlbumVC.m; path = Classes/AlbumVC.m; sourceTree = SOURCE_ROOT; };
 		413FD7BA1639AB2E002A9183 /* Async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Async.h; path = Classes/Async.h; sourceTree = SOURCE_ROOT; };
 		413FD7BB1639AB2E002A9183 /* Async.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Async.m; path = Classes/Async.m; sourceTree = SOURCE_ROOT; };
 		413FD7BC1639AB2E002A9183 /* CoverFlowVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoverFlowVC.h; path = Classes/CoverFlowVC.h; sourceTree = SOURCE_ROOT; };
@@ -403,8 +403,8 @@
 		413FD7F11639AD24002A9183 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				413FD7B81639AB2E002A9183 /* AlbumLandscapeVC.h */,
-				413FD7B91639AB2E002A9183 /* AlbumLandscapeVC.m */,
+				413FD7B81639AB2E002A9183 /* AlbumVC.h */,
+				413FD7B91639AB2E002A9183 /* AlbumVC.m */,
 				413FD7BC1639AB2E002A9183 /* CoverFlowVC.h */,
 				413FD7BD1639AB2E002A9183 /* CoverFlowVC.m */,
 				413FD7C41639AB2E002A9183 /* MoodMapVC.h */,
@@ -783,7 +783,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				413FD7DA1639AB2E002A9183 /* AlbumLandscapeVC.m in Sources */,
+				413FD7DA1639AB2E002A9183 /* AlbumVC.m in Sources */,
 				413FD7DC1639AB2E002A9183 /* CoverFlowVC.m in Sources */,
 				413FD7DE1639AB2E002A9183 /* FriendlyMusic.m in Sources */,
 				413FD7DF1639AB2E002A9183 /* LocalPlaylist.m in Sources */,

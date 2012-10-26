@@ -23,7 +23,7 @@
  */
 
 #import "CoverFlowVC.h"
-#import "AlbumLandscapeVC.h"
+#import "AlbumVC.h"
 #import "PlaylistVC.h"
 #import "SBJson/SBJson.h"
 #import "NSObject+AssociateProducer.h"
@@ -202,7 +202,7 @@
 - (void)coverflowView:(TKCoverflowView*)coverflowView coverAtIndexWasTappedInFront:(int)index tapCount:(NSInteger)tapCount {
     Playlist *playlist = (Playlist *)[playlists objectAtIndex:index];
     
-	AlbumLandscapeVC *albumController = [[AlbumLandscapeVC alloc] initWithPlaylist:playlist];
+	AlbumVC *albumController = [[AlbumVC alloc] initWithPlaylist:playlist];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:albumController];
     navigationController.navigationBar.tintColor = BAR_TINT_COLOR;
     
