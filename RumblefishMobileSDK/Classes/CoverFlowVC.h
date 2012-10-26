@@ -23,25 +23,9 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "RFAPI.h"
 #import "TapkuLibrary/TapkuLibrary.h"
 
 @interface CoverFlowVC : UIViewController<TKCoverflowViewDataSource,TKCoverflowViewDelegate> {
-    // NSMutableArray *albumArray;
-//    TKCoverflowView *coverflow;
-//    NSMutableArray *coverImages;
-//    NSThread *loaderThread;
-//    UILabel *albumLabel;
-//    UIActivityIndicatorView *spinner;
-    NSArray *playlists;
 }
-
-@property (nonatomic, strong) TKCoverflowView *coverflow;
-@property (nonatomic, strong) UILabel *albumLabel;
-@property (nonatomic, strong) UIActivityIndicatorView *spinner;
-
-- (void)goBack;
-- (void)gotoPlaylist;
-- (void)getPlaylistFromServer;
 
 @end

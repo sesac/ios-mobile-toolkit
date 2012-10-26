@@ -91,93 +91,115 @@
 
 @end
 
+@interface NSObject (CoverFlowVCViewDelegate)
+
+- (void)backTapped;
+- (void)playlistTapped;
+
+@end
+
+@interface CoverFlowVCView : UIView
+
+@property (nonatomic, assign) id delegate;
+@property (nonatomic, strong) UIToolbar *toolbar;
+@property (nonatomic, strong) TKCoverflowView *coverFlowView;
+@property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+
+@end
+
+@implementation CoverFlowVCView
+
+@synthesize toolbar, coverFlowView, label, activityIndicator;
+
+- (id)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor blackColor];
+        
+        self.coverFlowView = [[TKCoverflowView alloc] initWithFrame:CGRectZero];
+        [self addSubview:coverFlowView];
+        
+        self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
+        toolbar.tintColor = [UIColor colorWithRed:0.145f green:0.145f blue:0.145f alpha:1.0];
+        UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(backTapped)];
+        UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"friendlymusic_logo.png"]];
+        UIBarButtonItem *title = [[UIBarButtonItem alloc] initWithCustomView:titleView];
+        UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Playlist" style: UIBarButtonItemStyleBordered target:self action:@selector(playlistTapped)];
+        
+        toolbar.items = [NSArray arrayWithObjects:leftButton, space, title, space, rightButton, nil];
+        [self addSubview:toolbar];
+        
+        self.label = [[UILabel alloc] initWithFrame:CGRectZero];
+        label.textColor = [UIColor whiteColor];
+        label.backgroundColor = [UIColor clearColor];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [UIFont boldSystemFontOfSize:16];
+        [self addSubview:label];
+        
+        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [self addSubview:activityIndicator];
+    }
+    return self;
+}
+
+- (void)layoutSubviews {
+    [toolbar sizeToFit];
+    toolbar.frame = CGRectMake(0, 0, self.bounds.size.width, toolbar.frame.size.height);
+    NSLog(@"laid out toolbar at %@", NSStringFromCGRect(toolbar.frame));
+    
+    [label sizeToFit];
+    label.frame = CGRectMake(0, self.bounds.size.height - (label.frame.size.height + 20), self.bounds.size.width, label.font.lineHeight);
+    NSLog(@"laid out label at %@", NSStringFromCGRect(label.frame));
+    
+    activityIndicator.center = self.center;
+    
+    coverFlowView.frame = self.bounds;
+}
+
+- (void)backTapped {
+    [self.delegate backTapped];
+}
+
+- (void)playlistTapped {
+    [self.delegate playlistTapped];
+}
+
+@end
+
 @interface CoverFlowVC ()
 
 @property (nonatomic, copy) NSArray *playlists;
+@property (nonatomic, strong) CoverFlowVCView *coverFlowVCView;
 
 @end
 
 
 @implementation CoverFlowVC
 
-@synthesize playlists;
-@synthesize spinner;
-@synthesize coverflow;
-@synthesize albumLabel;
+@synthesize coverFlowVCView, playlists;
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];             
-    self.view.frame = CGRectMake(0, 0, 480, 320);
-    self.view.backgroundColor = [UIColor blackColor];
-    
-    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
-    toolbar.tintColor = [UIColor colorWithRed:0.145f green:0.145f blue:0.145f alpha:1.0];
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(goBack)];
-    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    space.width = 112;
-    UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"friendlymusic_logo.png"]];
-    UIBarButtonItem *title = [[UIBarButtonItem alloc] initWithCustomView:titleView];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Playlist" style: UIBarButtonItemStyleBordered target:self action:@selector(gotoPlaylist)];
-    
-    toolbar.items = [NSArray arrayWithObjects:leftButton, space, title, space, rightButton, nil];
-    [self.view addSubview:toolbar];
-
-    // coverview
-    TKCoverflowView *localCF = [[TKCoverflowView alloc] initWithFrame:CGRectMake(0, 44, 480, 276)];
-    localCF.coverflowDelegate = self;
-    localCF.dataSource = self;
-    
-    [self setCoverflow:localCF];
-    [self.view addSubview:[self coverflow]];
-    
-
-    // label
-    UILabel *localLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 290, 480, 20)];
-    localLabel.textColor = [UIColor whiteColor];
-    localLabel.backgroundColor = [UIColor clearColor];
-    localLabel.textAlignment = NSTextAlignmentCenter;
-    localLabel.font = [UIFont boldSystemFontOfSize:16];
-    
-    [self setAlbumLabel:localLabel];
-    [self.view addSubview:[self albumLabel]];
-
-    
-    // spinner
-    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    self.spinner.center = self.view.center;
-    [self.view addSubview:self.spinner];
-
-    
-    [self getPlaylistFromServer];
-}
-
-
-- (void)viewDidUnload
-{
-    self.coverflow = nil;
-    [super viewDidUnload];
+- (void)loadView {
+    self.coverFlowVCView = [[CoverFlowVCView alloc] initWithFrame:CGRectZero];
+    self.coverFlowVCView.delegate = self;
+    self.coverFlowVCView.coverFlowView.coverflowDelegate = self;
+    self.coverFlowVCView.coverFlowView.dataSource = self;
+    self.view = self.coverFlowVCView;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];                 
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    [self getPlaylistFromServer];
+    [self.view layoutIfNeeded];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationLandscapeRight);
-}
-
-- (void)goBack {
+- (void)backTapped {
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)gotoPlaylist {
+- (void)playlistTapped {
     PlaylistLandscapeVC *playlistController = [[PlaylistLandscapeVC alloc] init];
     [playlistController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self presentViewController:playlistController animated:YES completion:nil];
@@ -186,7 +208,7 @@
 // Coverflow methods
 
 - (void)coverflowView:(TKCoverflowView*)coverflowView coverAtIndexWasBroughtToFront:(int)index {
-	self.albumLabel.text = ((Playlist *)[self.playlists objectAtIndex:index]).title;
+	self.coverFlowVCView.label.text = ((Playlist *)[self.playlists objectAtIndex:index]).title;
 }
 
 - (TKCoverflowCoverView*)coverflowView:(TKCoverflowView*)coverflowView coverAtIndex:(int)index {
@@ -212,12 +234,12 @@
 }
 
 - (void)getPlaylistFromServer {
-    [self.spinner startAnimating];
+    [self.coverFlowVCView.activityIndicator startAnimating];
     Producer getPlaylists = [[RFAPI singleton] getPlaylistsWithOffset:0];    
     [self associateProducer:getPlaylists callback:^ (id results) {
         self.playlists = [(NSArray *)results filter:^ BOOL (id p) { return ((Playlist *)p).imageURL != NULL; }];
-        self.coverflow.numberOfCovers = playlists.count;
-        [self.spinner stopAnimating];
+        self.coverFlowVCView.coverFlowView.numberOfCovers = playlists.count;
+        [self.coverFlowVCView.activityIndicator stopAnimating];
     }];
 }
 
