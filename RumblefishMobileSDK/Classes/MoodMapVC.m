@@ -44,7 +44,7 @@
     [super layoutSubviews];
     
     if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
-        tableView.frame = CGRectMake(320, 0, self.bounds.size.width - 320, 300);
+        tableView.frame = CGRectMake(320, 0, self.bounds.size.width - 320, self.bounds.size.height);
     else
         tableView.frame = CGRectMake(0, 320, self.bounds.size.width, self.bounds.size.height - 320);
     
@@ -154,6 +154,9 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     [tabView reloadData];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -163,7 +166,10 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [tabView reloadData];
     
-    [[NSUserDefaults standardUserDefaults] setBool:toInterfaceOrientation == UIInterfaceOrientationLandscapeRight forKey:@"isLandscape"];
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:isLandscape withAnimation:UIStatusBarAnimationFade];
+    [[NSUserDefaults standardUserDefaults] setBool:isLandscape forKey:@"isLandscape"];
 }
 
 - (IBAction)doneButtonPressed {
