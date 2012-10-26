@@ -26,6 +26,13 @@
 #import <AVFoundation/AVFoundation.h>
 #import "RFAPI.h"
 
+
+@interface MoodMapControllerView : UIView
+
+@property (nonatomic, assign) IBOutlet UITableView *tableView;
+
+@end
+
 @interface MoodMapVC : UIViewController<UITableViewDelegate, UITableViewDataSource, NSURLConnectionDelegate> {
     IBOutlet UIImageView *glow, *ring, *selector, *moodmap, *welcome;
     IBOutlet UIButton *doneButton, *playlistButton, *filterButton;
@@ -36,11 +43,5 @@
 
 - (IBAction)doneButtonPressed;
 - (IBAction)playlistButtonPressed;
-- (IBAction)filterButtonPressed;
-- (UIImage *)imageByFillingColor:(UIColor *)color inImage:(UIImage *)image;
-- (void)colorOfPoint:(CGPoint)point;
-- (void)addToPlaylist:(UIButton *)button;
-- (void)getPlaylistFromServer;
-- (void)stop;
 
 @end

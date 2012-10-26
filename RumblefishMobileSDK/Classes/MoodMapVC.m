@@ -30,6 +30,21 @@
 #import "UIImage+RumblefishSDKResources.h"
 #import "NSBundle+RumblefishMobileSDKResources.h"
 
+@implementation MoodMapControllerView
+
+@synthesize tableView;
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
+        tableView.frame = CGRectMake(320, 0, self.bounds.size.width - 160, 300);
+    else
+        tableView.frame = CGRectMake(0, 320, self.bounds.size.width, self.bounds.size.height - 320);
+}
+
+@end
+
 @interface MoodMapVC ()
 
 @property (nonatomic, strong) Playlist *playlist;
@@ -146,16 +161,9 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isLandscape"];
-        tabView.frame = CGRectMake(320, 0, 160, 300);
-        [tabView reloadData];
-    }
-    else if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLandscape"];
-        tabView.frame = CGRectMake(0, 320, 320, 140);
-        [tabView reloadData];
-    }
+    [tabView reloadData];
+    
+    [[NSUserDefaults standardUserDefaults] setBool:toInterfaceOrientation == UIInterfaceOrientationLandscapeRight forKey:@"isLandscape"];
 }
 
 - (IBAction)doneButtonPressed {
