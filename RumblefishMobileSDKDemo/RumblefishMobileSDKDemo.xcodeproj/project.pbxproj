@@ -336,6 +336,7 @@
 				GCC_PREFIX_HEADER = "Classes/RumblefishMobileSDKDemo-Prefix.pch";
 				HEADER_SEARCH_PATHS = Dependencies/TestFlightSDK0.8.2;
 				INFOPLIST_FILE = "RumblefishMobileSDKDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -349,6 +350,7 @@
 				GCC_PREFIX_HEADER = "Classes/RumblefishMobileSDKDemo-Prefix.pch";
 				HEADER_SEARCH_PATHS = Dependencies/TestFlightSDK0.8.2;
 				INFOPLIST_FILE = "RumblefishMobileSDKDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
