@@ -93,12 +93,10 @@ AVPlayerItem *playerItem;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    // force cells to re-layout
+    [self.tableView reloadData];
 }
-
 
 #pragma mark - Table view data source
 
@@ -142,7 +140,7 @@ AVPlayerItem *playerItem;
         indexLabel.backgroundColor = [UIColor clearColor];
         [cell.contentView addSubview:indexLabel];
         
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(52, 0, 380, 44)];
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         titleLabel.tag = 4;
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
@@ -155,7 +153,6 @@ AVPlayerItem *playerItem;
         addButton.tag = 5;
         UIImage *addImage = [UIImage imageInResourceBundleNamed:@"btn_add.png"];
         [addButton setImage:addImage forState:UIControlStateNormal];
-        [addButton setFrame:CGRectMake(435, 0, 44, 44)];
         [addButton addTarget:self action:@selector(addToPlaylist:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:addButton];
         
@@ -178,7 +175,6 @@ AVPlayerItem *playerItem;
         tikButton.tag = 8;
         UIImage *tikImage = [UIImage imageInResourceBundleNamed:@"song_check.png"];
         [tikButton setImage:tikImage forState:UIControlStateNormal];
-        [tikButton setFrame:CGRectMake(445, 12, 22, 19)];
         [tikButton addTarget:self action:@selector(removeFromPlaylist:) forControlEvents:UIControlEventTouchUpInside];
         tikButton.hidden = YES;
         [cell.contentView addSubview:tikButton];
@@ -214,6 +210,12 @@ AVPlayerItem *playerItem;
         [cell.contentView viewWithTag:7].hidden = YES;
         [(UIActivityIndicatorView *)[cell.contentView viewWithTag:6] stopAnimating];
     }
+    
+    [cell.contentView viewWithTag:5].frame = CGRectMake(self.view.bounds.size.width - 44, 0, 44, 44);
+    
+    [cell.contentView viewWithTag:8].frame = CGRectMake(self.view.bounds.size.width - 33, 12, 22, 19);
+    
+    title.frame = CGRectMake(52, 0, self.view.bounds.size.width - 100, 44);
     
     return cell;
 }
