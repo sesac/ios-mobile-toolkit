@@ -53,6 +53,11 @@ NSMutableArray *optionArray;
         [alert show];
     }
     
+    UIImageView *headerImage = [self.view.subviews objectAtIndex:0];
+    headerImage.contentMode = UIViewContentModeScaleToFill;
+
+    headerImage.image = [headerImage.image resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, headerImage.image.size.width - 2)];
+    
     self.navigationController.navigationBar.tintColor = BAR_TINT_COLOR;
     self.navigationController.navigationBarHidden = YES;
     self.navigationItem.title = @"Back";
@@ -89,6 +94,9 @@ NSMutableArray *optionArray;
     }
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [tabview reloadData];
+}
 
 // Table methods
 
@@ -107,30 +115,31 @@ NSMutableArray *optionArray;
                 
         UIImage *horImage = [UIImage imageInResourceBundleNamed:@"separator_horizontal.png"];
         UIImageView *horSeparator = [[UIImageView alloc] initWithImage:horImage];
-        horSeparator.frame = CGRectMake(0, 0, 320, horImage.size.height);
-        [cell.contentView addSubview:horSeparator];
+        horSeparator.tag = 1;
         
         if ([[optionArray objectAtIndex:indexPath.row] isEqualToString:@"moodmap"]) {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"moodmap_logo.png"]];
-            imageView.frame = CGRectMake(72, (347/[optionArray count]-29)/2, 176, 29);
+            imageView.tag = 2;
             [cell.contentView addSubview:imageView];
         }
         else if ([[optionArray objectAtIndex:indexPath.row] isEqualToString:@"occasion"]) {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"occasion_logo.png"]];
-            imageView.frame = CGRectMake(86.5, (347/[optionArray count]-71)/2, 147, 71);
+            imageView.tag = 2;
             [cell.contentView addSubview:imageView];
         }
         else {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"editorspick_logo.png"]];
-            imageView.frame = CGRectMake(66.5, (347/[optionArray count]-74)/2, 187, 74);
+            imageView.tag = 2;
             [cell.contentView addSubview:imageView];
         }
     }
+    
+    CGRect horizontalLineFrame = [cell.contentView viewWithTag:1].frame;
+    horizontalLineFrame.size.width = tableView.bounds.size.width;
+    [cell.contentView viewWithTag:1].frame = horizontalLineFrame;
+    [cell.contentView viewWithTag:2].center = CGPointMake(tableView.bounds.size.width / 2, tableView.rowHeight / 2);
+    
     return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 347/[optionArray count];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
