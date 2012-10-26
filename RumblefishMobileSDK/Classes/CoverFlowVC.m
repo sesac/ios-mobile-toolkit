@@ -203,9 +203,11 @@
     Playlist *playlist = (Playlist *)[playlists objectAtIndex:index];
     
 	AlbumLandscapeVC *albumController = [[AlbumLandscapeVC alloc] initWithPlaylist:playlist];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:albumController];
+    navigationController.navigationBar.tintColor = BAR_TINT_COLOR;
     
     [albumController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self presentViewController:albumController animated:YES completion:nil];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)getPlaylistFromServer {

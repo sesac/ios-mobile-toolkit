@@ -45,13 +45,12 @@ UITableViewCell *selectedCell;
 AVPlayer *audioPlayer;
 AVPlayerItem *playerItem;
 
-@synthesize playlist;
-@synthesize tabview = _tabview;
-@synthesize activityIndicator;
+@synthesize playlist, activityIndicator;
 
 - (id)initWithPlaylist:(Playlist *)lePlaylist {
     if (self = [super init]) {
         self.playlist = lePlaylist;
+        self.title = playlist.title;
     }
     return self;
 }
@@ -60,50 +59,21 @@ AVPlayerItem *playerItem;
 {
     [super viewDidLoad];
     
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(close)];
+    
     selectedCell = [[UITableViewCell alloc] init];
     playRow = -1;
     
-    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
-    toolbar.tintColor = BAR_TINT_COLOR;
+    self.tableView.separatorColor = [UIColor colorWithRed:0.08f green:0.08f blue:0.08f alpha:1.0f];
+    self.tableView.backgroundColor = [UIColor colorWithRed:0.125f green:0.125f blue:0.125f alpha:1.0f];
     
-    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(close)];
-    [toolbar setItems:[NSArray arrayWithObject:closeButton]];
-    
-    UILabel *title1 = [[UILabel alloc] initWithFrame:CGRectMake(100, 0, 280, 44)];
-    title1.text = playlist.title;
-    title1.textAlignment = NSTextAlignmentCenter;
-    title1.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
-    title1.textColor = [UIColor whiteColor];
-    title1.backgroundColor = [UIColor clearColor];
-    [toolbar addSubview:title1];
-    
-    UILabel *title2 = [[UILabel alloc] initWithFrame:CGRectMake(100, 25, 280, 19)];
-    title2.text = @"";
-    title2.textAlignment = NSTextAlignmentCenter;
-    title2.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
-    title2.textColor = [UIColor whiteColor];
-    title2.backgroundColor = [UIColor clearColor];
-    [toolbar addSubview:title2];
-    
-    [self.view addSubview:toolbar];
-    
-    if (self.tabview == nil) {
-        UITableView *localTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 480, 276) style:UITableViewStylePlain];
-        localTableView.delegate = self;
-        localTableView.dataSource = self;
-        localTableView.separatorColor = [UIColor colorWithRed:0.08f green:0.08f blue:0.08f alpha:1.0f];
-        localTableView.backgroundColor = [UIColor colorWithRed:0.125f green:0.125f blue:0.125f alpha:1.0f];
-        [self.view addSubview:localTableView];
-        [self setTabview:localTableView];
-    }
-    
-    activityIndicator = [[UIActivityIndicatorView alloc] init];
+    self.activityIndicator = [[UIActivityIndicatorView alloc] init];
     [activityIndicator sizeToFit];
     activityIndicator.frame = CGRectMake(
-        (self.tabview.frame.size.width - activityIndicator.frame.size.width) / 2, 
-        (self.tabview.frame.size.height - activityIndicator.frame.size.height) / 2, 
-        activityIndicator.frame.size.width, 
-        activityIndicator.frame.size.height);
+                                         (self.tableView.frame.size.width - activityIndicator.frame.size.width) / 2,
+                                         (self.tableView.frame.size.height - activityIndicator.frame.size.height) / 2,
+                                         activityIndicator.frame.size.width,
+                                         activityIndicator.frame.size.height);
     [self.view addSubview:activityIndicator];
     
     // Registers this class as the delegate of the audio session.
@@ -114,16 +84,11 @@ AVPlayerItem *playerItem;
     [self getPlaylistFromServer:NO];
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-}
-
 - (void)close {
     if (playRow >= 0) {
         [self stop];
     }
-    [self.tabview reloadData];
+    [self.tableView reloadData];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -253,7 +218,6 @@ AVPlayerItem *playerItem;
     return cell;
 }
 
-// server API
 - (void)getPlaylistFromServer:(BOOL)play {
     Producer getPlaylist = [[RFAPI singleton] getPlaylist:playlist.ID];
     [activityIndicator startAnimating];
@@ -264,13 +228,13 @@ AVPlayerItem *playerItem;
         if (play && playlist.media.count) {
             int row = playRow == -1 ? 0 : playRow;
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-            [self.tabview selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-            [self.tabview.delegate tableView:self.tabview didSelectRowAtIndexPath:indexPath];
+            [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+            [self.tableView.delegate tableView:self.tableView didSelectRowAtIndexPath:indexPath];
             if (row == 0) {
-                [self.tabview scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
             }
         }
-        [self.tabview reloadData];
+        [self.tableView reloadData];
         [activityIndicator stopAnimating];
     }];
 }
@@ -307,7 +271,7 @@ AVPlayerItem *playerItem;
     [playerItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
     audioPlayer = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-    [self.tabview reloadData];
+    [self.tableView reloadData];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
@@ -318,7 +282,7 @@ AVPlayerItem *playerItem;
 }
 
 - (void)addToPlaylist:(UIButton *)button {
-    int row = [[self.tabview indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
+    int row = [[self.tableView indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
     
     Media *currentMedia = [playlist.media objectAtIndex:row];
     [[LocalPlaylist sharedPlaylist] addToPlaylist:currentMedia];
@@ -328,7 +292,7 @@ AVPlayerItem *playerItem;
 }
 
 - (void)removeFromPlaylist:(UIButton *)button {
-    int row = [[self.tabview indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
+    int row = [[self.tableView indexPathForCell:(UITableViewCell *)[[button superview] superview]] row];
     
     Media *currentMedia = [playlist.media objectAtIndex:row];
     [[LocalPlaylist sharedPlaylist] removeFromPlaylist:currentMedia];
@@ -357,7 +321,7 @@ AVPlayerItem *playerItem;
             [playerItem removeObserver:self forKeyPath:@"status"];
             playerItem = nil;
             audioPlayer = nil;
-            [self.tabview reloadData];
+            [self.tableView reloadData];
             [self getPlaylistFromServer:YES];
         }
         return;
@@ -370,7 +334,7 @@ AVPlayerItem *playerItem;
             isPlaying = YES;
             UIButton *stop = (UIButton *)[selectedCell.contentView viewWithTag:7];
             stop.hidden = NO;
-            [self.tabview reloadData];
+            [self.tableView reloadData];
         }
         return;
     }
@@ -389,7 +353,7 @@ AVPlayerItem *playerItem;
     [playerItem removeObserver:self forKeyPath:@"status"];
     playerItem = nil;
     audioPlayer = nil;
-    [self.tabview reloadData];
+    [self.tableView reloadData];
 }
 
 @end

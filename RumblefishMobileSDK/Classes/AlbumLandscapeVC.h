@@ -26,14 +26,8 @@
 #import "RFAPI.h"
 
 
-@interface AlbumLandscapeVC : UIViewController<UITableViewDelegate, UITableViewDataSource>
-
-@property (nonatomic, strong) UITableView *tabview;
+@interface AlbumLandscapeVC : UITableViewController
 
 - (id)initWithPlaylist:(Playlist *)playlist;
-- (void)close;
-- (void)addToPlaylist:(UIButton *)button;
-- (void)playerItemDidReachEnd:(NSNotification *)notification;
-- (void)stop;
 
 @end
