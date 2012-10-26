@@ -64,7 +64,7 @@ AVPlayerItem *playerItem;
     playRow = -1;
     
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
-    toolbar.tintColor = [UIColor colorWithRed:0.145f green:0.145f blue:0.145f alpha:1.0];
+    toolbar.tintColor = BAR_TINT_COLOR;
     
     UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(close)];
     [toolbar setItems:[NSArray arrayWithObject:closeButton]];

@@ -53,6 +53,7 @@ NSMutableArray *optionArray;
         [alert show];
     }
     
+    self.navigationController.navigationBar.tintColor = BAR_TINT_COLOR;
     self.navigationController.navigationBarHidden = YES;
     self.navigationItem.title = @"Back";
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
@@ -147,8 +148,7 @@ NSMutableArray *optionArray;
     }
     else {
         CoverFlowVC *coverflow = [[CoverFlowVC alloc] init];
-        [coverflow setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-        [self.navigationController presentViewController:coverflow animated:YES completion:nil];
+        [self.navigationController pushViewController:coverflow animated:YES];
     }
 }
 

@@ -5,3 +5,5 @@
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
 #endif
+
+#define BAR_TINT_COLOR [UIColor colorWithRed:0.145f green:0.145f blue:0.145f alpha:1.0];

@@ -84,7 +84,6 @@ NSTimer *rotateImagesTimer;
 {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.145f green:0.145f blue:0.145f alpha:1.0];
     
     plRow = -1;
     plSection = -1;

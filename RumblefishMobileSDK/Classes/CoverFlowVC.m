@@ -59,7 +59,6 @@
     _playlist = value;
     self.image = nil;
     if (value.imageURL) {
-        NSLog(@"Will request image for playlist %@", value.imageURL);
         [self associateProducer:[[RFAPI singleton] getImageAtURL:value.imageURL] callback:^ void (id i) {
             self.image = (UIImage *)i;
         }];
@@ -91,17 +90,8 @@
 
 @end
 
-@interface NSObject (CoverFlowVCViewDelegate)
-
-- (void)backTapped;
-- (void)playlistTapped;
-
-@end
-
 @interface CoverFlowVCView : UIView
 
-@property (nonatomic, assign) id delegate;
-@property (nonatomic, strong) UIToolbar *toolbar;
 @property (nonatomic, strong) TKCoverflowView *coverFlowView;
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
@@ -110,25 +100,12 @@
 
 @implementation CoverFlowVCView
 
-@synthesize toolbar, coverFlowView, label, activityIndicator;
+@synthesize coverFlowView, label, activityIndicator;
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor blackColor];
-        
         self.coverFlowView = [[TKCoverflowView alloc] initWithFrame:CGRectZero];
         [self addSubview:coverFlowView];
-        
-        self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
-        toolbar.tintColor = [UIColor colorWithRed:0.145f green:0.145f blue:0.145f alpha:1.0];
-        UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(backTapped)];
-        UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        UIImageView *titleView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"friendlymusic_logo.png"]];
-        UIBarButtonItem *title = [[UIBarButtonItem alloc] initWithCustomView:titleView];
-        UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Playlist" style: UIBarButtonItemStyleBordered target:self action:@selector(playlistTapped)];
-        
-        toolbar.items = [NSArray arrayWithObjects:leftButton, space, title, space, rightButton, nil];
-        [self addSubview:toolbar];
         
         self.label = [[UILabel alloc] initWithFrame:CGRectZero];
         label.textColor = [UIColor whiteColor];
@@ -144,25 +121,12 @@
 }
 
 - (void)layoutSubviews {
-    [toolbar sizeToFit];
-    toolbar.frame = CGRectMake(0, 0, self.bounds.size.width, toolbar.frame.size.height);
-    NSLog(@"laid out toolbar at %@", NSStringFromCGRect(toolbar.frame));
-    
     [label sizeToFit];
     label.frame = CGRectMake(0, self.bounds.size.height - (label.frame.size.height + 20), self.bounds.size.width, label.font.lineHeight);
-    NSLog(@"laid out label at %@", NSStringFromCGRect(label.frame));
     
     activityIndicator.center = self.center;
     
     coverFlowView.frame = self.bounds;
-}
-
-- (void)backTapped {
-    [self.delegate backTapped];
-}
-
-- (void)playlistTapped {
-    [self.delegate playlistTapped];
 }
 
 @end
@@ -171,36 +135,48 @@
 
 @property (nonatomic, copy) NSArray *playlists;
 @property (nonatomic, strong) CoverFlowVCView *coverFlowVCView;
+@property (nonatomic, strong) PlaylistVC *playlistController;
 
 @end
 
 
 @implementation CoverFlowVC
 
-@synthesize coverFlowVCView, playlists;
+@synthesize coverFlowVCView, playlists, playlistController;
+
+- (id)init {
+    if (self = [super initWithNibName:nil bundle:nil]) {
+        self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"friendlymusic_logo.png"]];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Playlist" style: UIBarButtonItemStyleBordered target:self action:@selector(playlistTapped)];
+    }
+    return self;
+}
 
 - (void)loadView {
     self.coverFlowVCView = [[CoverFlowVCView alloc] initWithFrame:CGRectZero];
-    self.coverFlowVCView.delegate = self;
     self.coverFlowVCView.coverFlowView.coverflowDelegate = self;
     self.coverFlowVCView.coverFlowView.dataSource = self;
     self.view = self.coverFlowVCView;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self getPlaylistFromServer];
     [self.view layoutIfNeeded];
 }
 
-- (void)backTapped {
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void)playlistTapped {
+    self.playlistController = [[PlaylistVC alloc] init];
+    playlistController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(dismissPlaylist)];
+    [playlistController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:playlistController];
+    navigationController.navigationBar.tintColor = BAR_TINT_COLOR;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (void)playlistTapped {
-    PlaylistVC *playlistController = [[PlaylistVC alloc] init];
-    [playlistController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self presentViewController:playlistController animated:YES completion:nil];
+- (void)dismissPlaylist {
+    [playlistController dismissViewControllerAnimated:YES completion:nil];
+    self.playlistController = nil;
 }
 
 // Coverflow methods
@@ -222,7 +198,7 @@
 	return cover;
 }
 
-- (void) coverflowView:(TKCoverflowView*)coverflowView coverAtIndexWasTappedInFront:(int)index tapCount:(NSInteger)tapCount {
+- (void)coverflowView:(TKCoverflowView*)coverflowView coverAtIndexWasTappedInFront:(int)index tapCount:(NSInteger)tapCount {
     Playlist *playlist = (Playlist *)[playlists objectAtIndex:index];
     
 	AlbumLandscapeVC *albumController = [[AlbumLandscapeVC alloc] initWithPlaylist:playlist];
