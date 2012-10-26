@@ -187,21 +187,37 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
     }];
 }
 
-+ (Producer)apiWithEnvironment:(RFAPIEnv)environment version:(RFAPIVersion)version publicKey:(NSString *)publicKey password:(NSString *)password {
+- (Producer)getTokenForPublicKey:(NSString *)publicKey password:(NSString *)password {
+    NSMutableURLRequest *request = [self requestResource:RFAPIResourceAuthenticate withMethod:RFAPIMethodPOST andParameters:nil];
+    request.HTTPBody = [[NSString stringWithFormat:@"public_key=%@&password=%@", [publicKey stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] dataUsingEncoding:NSUTF8StringEncoding];
     
-    return [Async mapResultOfProducer:[self retrieveIPAddress] withSelector:^ (id result) {
-        RFAPI *api = [[RFAPI alloc] init];
-        api.environment = environment;
-        api.publicKey = publicKey;
-        api.password = password;
-        api.version = version;
+    return [SMWebRequest producerWithURLRequest:request dataParser:^id(NSData *result) {
+        NSDictionary *jsonResult = [result JSONValue];
+        if (![[jsonResult allKeys] containsObject:@"token"]) {
+            NSLog(@"There was an error retrieving the Rumblefish API token: %@", jsonResult);
+            return nil;
+        }
+        return [jsonResult objectForKey:@"token"];
+    }];
+}
+
++ (Producer)apiWithEnvironment:(RFAPIEnv)environment version:(RFAPIVersion)version publicKey:(NSString *)publicKey password:(NSString *)password {
+    __block RFAPI *api = [[RFAPI alloc] init];
+    api.environment = environment;
+    api.publicKey = publicKey;
+    api.password = password;
+    api.version = version;
+    
+    return [Async mapResultOfProducer:[Async continueAfterProducer:[self retrieveIPAddress] withSelector:^Producer(id result) {
         api.ipAddress = result;
+        return [api getTokenForPublicKey:publicKey password:password];
+    }] withSelector:^ (id result) {
+        api.accessToken = result;
         NSLog(@"Initialized RFAPI singleton for host %@, publicKey %@, and ipAddress %@", api.host, publicKey, api.ipAddress);
         return api;
     }];
     
 }
-
 
 + (void)rumbleWithEnvironment:(RFAPIEnv)env publicKey:(NSString *)publicKey password:(NSString *)password callback:(void (^)())callback {
     cancellation = [self apiWithEnvironment:env version:RFAPIVersion2 publicKey:publicKey password:password](^ (id api) {
@@ -286,9 +302,9 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
     if (!parameters) {
         parameters = [[NSMutableDictionary alloc] init];
     }
-
-    // ENFORCE IP ADDRESS
+    
     [parameters setValue:[self ipAddress] forKey:@"ip"];
+    [parameters setValue:[self accessToken] forKey:@"token"];
     
     NSMutableString *queryString = nil;
     NSArray *keys = [parameters allKeys];
@@ -334,15 +350,20 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
 
 #pragma mark Request building methods.
 
--(NSURLRequest *) requestWithURL:(NSURL *)url {
-    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:RFAPI_TIMEOUT];
+-(NSMutableURLRequest *) requestWithURL:(NSURL *)url method:(RFAPIMethod)method {
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:RFAPI_TIMEOUT];
+    if (method == RFAPIMethodPOST)
+        request.HTTPMethod = @"POST";
+    else if (method == RFAPIMethodGET)
+        request.HTTPMethod = @"GET";
+    
     return request;
 }
 
--(NSURLRequest *) requestResource:(RFAPIResource)resource withMethod:(RFAPIMethod)method andParameters:(NSDictionary *)parameters {
+-(NSMutableURLRequest *) requestResource:(RFAPIResource)resource withMethod:(RFAPIMethod)method andParameters:(NSDictionary *)parameters {
     NSURL *url = [NSURL URLWithString:[self urlStringForResource:resource withParameters:parameters]];
     
-    return [self requestWithURL:url];
+    return [self requestWithURL:url method:method];
 }
 
 

@@ -33,9 +33,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     // PLEASE SPECIFY A VALID public key and password. Contact developers@rumblefish.com for more info.
-    [RFAPI rumbleWithEnvironment:RFAPIEnvProduction 
-                       publicKey:@"PUBLIC_KEY" 
-                        password:@"PASSWORD"
+    [RFAPI rumbleWithEnvironment:RFAPIEnvSandbox
+                       publicKey:@"sandbox"
+                        password:@"sandbox"
                         callback:^ { button.enabled = TRUE; }];
 }
 
