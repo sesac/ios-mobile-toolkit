@@ -160,7 +160,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+    return interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
