@@ -100,7 +100,8 @@ NSTimer *rotateImagesTimer;
     self.navigationItem.rightBarButtonItem = rightButton;
     
     firstButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    firstButton.frame = CGRectMake(0, 0, 320, 35);
+    firstButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    firstButton.frame = CGRectMake(0, 0, scroller.bounds.size.width, 35);
     firstButton.alpha = 0;
     firstButton.titleLabel.font = [UIFont systemFontOfSize:32];
     [firstButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
@@ -241,8 +242,9 @@ NSTimer *rotateImagesTimer;
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = i;
-        button.frame = CGRectMake(0, 381+i*129, 320, 129);
+        button.frame = CGRectMake(0, scroller.frame.size.height + i*129, self.view.bounds.size.width, 129);
         button.alpha = 0;
+        button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         button.backgroundColor = secondLevelColor;
         button.titleLabel.font = [UIFont systemFontOfSize:100];
         button.titleLabel.adjustsFontSizeToFitWidth = YES;
@@ -257,7 +259,7 @@ NSTimer *rotateImagesTimer;
         [scroller addSubview:button];
         [secondButtons addObject:button];
     }
-    scroller.contentSize = CGSizeMake(320, children.count * 129);
+    scroller.contentSize = CGSizeMake(self.view.bounds.size.width, children.count * 129);
 }
 
 - (void)pushOccasion:(Occasion *)occasion {
@@ -268,7 +270,8 @@ NSTimer *rotateImagesTimer;
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = i;
-        button.frame = CGRectMake(0, 381+i*56, 320, 56);
+        button.frame = CGRectMake(0, 70 + scroller.bounds.size.height + i * 56, scroller.bounds.size.width, 56);
+        button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         button.backgroundColor = thirdLevelColor;
         button.titleLabel.font = [UIFont systemFontOfSize:50];
         button.titleLabel.adjustsFontSizeToFitWidth = YES;
@@ -284,7 +287,7 @@ NSTimer *rotateImagesTimer;
         [scroller addSubview:button];
         [thirdButtons addObject:button];
     }
-    scroller.contentSize = CGSizeMake(320, 35 + occasion.children.count * 56);
+    scroller.contentSize = CGSizeMake(scroller.bounds.size.width, 70 + occasion.children.count * 56);
 
 }
 
@@ -377,11 +380,11 @@ NSTimer *rotateImagesTimer;
             firstButton.alpha = 0;
             table.alpha = 0;
             for (UIButton *b in secondButtons) {
-                b.frame = CGRectMake(0, b.frame.origin.y+381, 320, 129);
+                b.frame = CGRectMake(0, b.frame.origin.y+scroller.bounds.size.height, scroller.bounds.size.width, 129);
                 b.alpha = 0;
             }
             for (UIButton *b in thirdButtons) {
-                b.frame = CGRectMake(0, b.frame.origin.y+346, 320, 56);
+                b.frame = CGRectMake(0, b.frame.origin.y+scroller.bounds.size.height, scroller.bounds.size.width, 56);
                 b.alpha = 0;
             }
         }        
@@ -451,7 +454,7 @@ NSTimer *rotateImagesTimer;
             firstButton.alpha = 1.0;
             for (UIButton *b in secondButtons) {
                 b.alpha = 1.0;
-                b.frame = CGRectMake(0, b.frame.origin.y-381, 320, 129);
+                b.frame = CGRectMake(0, b.frame.origin.y - scroller.frame.size.height + firstButton.frame.size.height, scroller.frame.size.width, 129);
             }
         }];
     }];
@@ -471,18 +474,18 @@ NSTimer *rotateImagesTimer;
         [UIView animateWithDuration:0.5 animations:^{
             //move
             secondRect = button.frame;
-            button.frame = CGRectMake(0, 0, 320, 35);
+            button.frame = CGRectMake(0, 35, scroller.bounds.size.width, 35);
             for (UIButton *b in secondButtons) {
                 if ([b tag] != tag) {
-                    b.frame = CGRectMake(0, b.frame.origin.y+381, 320, 129);
+                    b.frame = CGRectMake(0, b.frame.origin.y+scroller.bounds.size.height, scroller.bounds.size.width, 129);
                     b.alpha = 0;
                 }
             }
-        }completion:^(BOOL finished){
+        } completion:^(BOOL finished){
             [UIView animateWithDuration:0.5 animations:^{
                 for (UIButton *b in thirdButtons) {
                     b.alpha = 1.0;
-                    b.frame = CGRectMake(0, b.frame.origin.y-346, 320, 56);
+                    b.frame = CGRectMake(0, b.frame.origin.y-scroller.bounds.size.height, scroller.bounds.size.width, 56);
                 }
             }];
         }];
@@ -499,7 +502,7 @@ NSTimer *rotateImagesTimer;
             table.alpha = 0;
             for (UIButton *b in thirdButtons) {
                 b.alpha = 0;
-                b.frame = CGRectMake(0, b.frame.origin.y+346, 320, 56);
+                b.frame = CGRectMake(0, b.frame.origin.y+scroller.bounds.size.height, scroller.bounds.size.width, 56);
             }
         }
         completion:^(BOOL finished) {
@@ -508,14 +511,15 @@ NSTimer *rotateImagesTimer;
             }
             [UIView animateWithDuration:0.5 animations:^{
                 //move
-                button.frame = secondRect;
+                button.frame = CGRectMake(0, secondRect.origin.y, scroller.bounds.size.width, 129);
                 for (UIButton *b in secondButtons) {
                     if ([b tag] != tag) {
-                        b.frame = CGRectMake(0, b.frame.origin.y-381, 320, 129);
+                        int index = [secondButtons indexOfObject:b];
+                        b.frame = CGRectMake(0, 35 + index * 129, scroller.bounds.size.width, 129);
                         b.alpha = 1.0;
                     }
                 }
-                scroller.contentSize = CGSizeMake(320, [secondButtons count]*129);
+                scroller.contentSize = CGSizeMake(scroller.bounds.size.width, 35 + [secondButtons count] * 129);
             }];
             button.titleLabel.font = [UIFont systemFontOfSize:100];
             [table reloadData];
@@ -568,14 +572,14 @@ NSTimer *rotateImagesTimer;
         [UIView animateWithDuration:0.5 animations:^{
             //move
             thirdRect = button.frame;
-            button.frame = CGRectMake(0, 35, 320, 35);
+            button.frame = CGRectMake(0, 70, scroller.bounds.size.width, 35);
             for (UIButton *b in thirdButtons) {
                 if ([b tag] != tag) {
-                    b.frame = CGRectMake(0, b.frame.origin.y+346, 320, 56);
+                    b.frame = CGRectMake(0, b.frame.origin.y+scroller.bounds.size.height, scroller.bounds.size.width, 56);
                     b.alpha = 0;
                 }
             }
-            scroller.contentSize = CGSizeMake(320, 381);
+            scroller.contentSize = CGSizeMake(scroller.bounds.size.width, table.frame.size.height);
         }];
         level = 4;
     }
@@ -589,10 +593,11 @@ NSTimer *rotateImagesTimer;
         [UIView animateWithDuration:0.5 animations:^{
             table.alpha = 0;
             //move
-            button.frame = thirdRect;
+            button.frame = CGRectMake(0, thirdRect.origin.y, scroller.bounds.size.width, 56);
             for (UIButton *b in thirdButtons) {
                 if ([b tag] != tag) {
-                    b.frame = CGRectMake(0, b.frame.origin.y-346, 320, 56);
+                    int index = [thirdButtons indexOfObject:b];
+                    b.frame = CGRectMake(0, 70 + 56 * index, scroller.bounds.size.width, 56);
                     b.alpha = 1;
                 }
             }
@@ -601,7 +606,7 @@ NSTimer *rotateImagesTimer;
             self.displayedOccasion = nil;
             self.displayedPlaylists = nil;
             [table reloadData];
-            scroller.contentSize = CGSizeMake(320, 35+[thirdButtons count]*56);
+            scroller.contentSize = CGSizeMake(scroller.bounds.size.width, 70 + thirdButtons.count * 56);
         }];
         level = 3;
     }
