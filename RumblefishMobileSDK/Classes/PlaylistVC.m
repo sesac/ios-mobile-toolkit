@@ -67,12 +67,12 @@ bool isPlaying;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationLandscapeRight;
+    return YES;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     // force cells to re-layout
-    [self.tableView reloadData];
+    [self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0];
 }
 
 - (void)removeAll {
@@ -196,8 +196,8 @@ bool isPlaying;
         [(UIActivityIndicatorView *)[cell.contentView viewWithTag:6] stopAnimating];
     }
     
-    title.frame = CGRectMake(52, 0, self.view.bounds.size.width - 100, 44);
-    [cell.contentView viewWithTag:5].frame = CGRectMake(self.view.bounds.size.width - 44, 0, 44, 44);
+    title.frame = CGRectMake(52, 0, tableView.bounds.size.width - 100, 44);
+    [cell.contentView viewWithTag:5].frame = CGRectMake(tableView.bounds.size.width - 44, 0, 44, 44);
     
     CGRect horizontalLineFrame = [cell.contentView viewWithTag:1].frame;
     horizontalLineFrame.size.width = tableView.bounds.size.width;

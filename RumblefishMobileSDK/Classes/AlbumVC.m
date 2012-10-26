@@ -93,9 +93,14 @@ AVPlayerItem *playerItem;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return YES;
+}
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     // force cells to re-layout
-    [self.tableView reloadData];
+    [self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0];
 }
 
 #pragma mark - Table view data source

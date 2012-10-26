@@ -94,8 +94,12 @@ NSMutableArray *optionArray;
     }
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return YES;
+}
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [tabview reloadData];
+    [tabview performSelector:@selector(reloadData) withObject:nil afterDelay:0];
 }
 
 // Table methods

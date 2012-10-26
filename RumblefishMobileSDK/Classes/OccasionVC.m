@@ -188,12 +188,13 @@ NSTimer *rotateImagesTimer;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
+    return YES;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     // force cells to re-layout
-    [table reloadData];
+    
+    [table performSelector:@selector(reloadData) withObject:nil afterDelay:0];
 }
 
 - (void) saveOccasionImages {
