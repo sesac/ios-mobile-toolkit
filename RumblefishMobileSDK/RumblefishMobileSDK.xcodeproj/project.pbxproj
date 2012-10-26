@@ -12,7 +12,6 @@
 		413FD7DA1639AB2E002A9183 /* AlbumLandscapeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7B91639AB2E002A9183 /* AlbumLandscapeVC.m */; };
 		413FD7DB1639AB2E002A9183 /* Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BB1639AB2E002A9183 /* Async.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		413FD7DC1639AB2E002A9183 /* CoverFlowVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BD1639AB2E002A9183 /* CoverFlowVC.m */; };
-		413FD7DD1639AB2E002A9183 /* FilterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7BF1639AB2E002A9183 /* FilterVC.m */; };
 		413FD7DE1639AB2E002A9183 /* FriendlyMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C11639AB2E002A9183 /* FriendlyMusic.m */; };
 		413FD7DF1639AB2E002A9183 /* LocalPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C31639AB2E002A9183 /* LocalPlaylist.m */; };
 		413FD7E01639AB2E002A9183 /* MoodMapVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FD7C51639AB2E002A9183 /* MoodMapVC.m */; };
@@ -208,8 +207,6 @@
 		413FD7BB1639AB2E002A9183 /* Async.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Async.m; path = Classes/Async.m; sourceTree = SOURCE_ROOT; };
 		413FD7BC1639AB2E002A9183 /* CoverFlowVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoverFlowVC.h; path = Classes/CoverFlowVC.h; sourceTree = SOURCE_ROOT; };
 		413FD7BD1639AB2E002A9183 /* CoverFlowVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoverFlowVC.m; path = Classes/CoverFlowVC.m; sourceTree = SOURCE_ROOT; };
-		413FD7BE1639AB2E002A9183 /* FilterVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FilterVC.h; path = Classes/FilterVC.h; sourceTree = SOURCE_ROOT; };
-		413FD7BF1639AB2E002A9183 /* FilterVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FilterVC.m; path = Classes/FilterVC.m; sourceTree = SOURCE_ROOT; };
 		413FD7C01639AB2E002A9183 /* FriendlyMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendlyMusic.h; path = Classes/FriendlyMusic.h; sourceTree = SOURCE_ROOT; };
 		413FD7C11639AB2E002A9183 /* FriendlyMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendlyMusic.m; path = Classes/FriendlyMusic.m; sourceTree = SOURCE_ROOT; };
 		413FD7C21639AB2E002A9183 /* LocalPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalPlaylist.h; path = Classes/LocalPlaylist.h; sourceTree = SOURCE_ROOT; };
@@ -410,8 +407,6 @@
 				413FD7B91639AB2E002A9183 /* AlbumLandscapeVC.m */,
 				413FD7BC1639AB2E002A9183 /* CoverFlowVC.h */,
 				413FD7BD1639AB2E002A9183 /* CoverFlowVC.m */,
-				413FD7BE1639AB2E002A9183 /* FilterVC.h */,
-				413FD7BF1639AB2E002A9183 /* FilterVC.m */,
 				413FD7C41639AB2E002A9183 /* MoodMapVC.h */,
 				413FD7C51639AB2E002A9183 /* MoodMapVC.m */,
 				413FD7C81639AB2E002A9183 /* OccasionVC.h */,
@@ -790,7 +785,6 @@
 			files = (
 				413FD7DA1639AB2E002A9183 /* AlbumLandscapeVC.m in Sources */,
 				413FD7DC1639AB2E002A9183 /* CoverFlowVC.m in Sources */,
-				413FD7DD1639AB2E002A9183 /* FilterVC.m in Sources */,
 				413FD7DE1639AB2E002A9183 /* FriendlyMusic.m in Sources */,
 				413FD7DF1639AB2E002A9183 /* LocalPlaylist.m in Sources */,
 				413FD7E01639AB2E002A9183 /* MoodMapVC.m in Sources */,

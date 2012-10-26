@@ -24,7 +24,6 @@
 
 #import "MoodMapVC.h"
 #import "PlaylistVC.h"
-#import "FilterVC.h"
 #import "SBJson/SBJson.h"
 #import "NSObject+AssociateProducer.h"
 #import "LocalPlaylist.h"
@@ -49,7 +48,6 @@ NSMutableData *serverData;
 int playingRow;
 AVPlayer *audioPlayer;
 AVPlayerItem *playerItem;
-FilterVC *filter;
 bool isPlaying;
 bool playlistIsLoading;
 int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
@@ -80,7 +78,6 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     adjacentColors = [[NSMutableArray alloc] init];
     self.navigationItem.title = @"Back";
     self.navigationController.navigationBarHidden = YES;
-    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.45f green:0.45f blue:0.45f alpha:1.0f];
     tabView.separatorColor = [UIColor colorWithRed:0.08f green:0.08f blue:0.08f alpha:1.0f];
     glow.alpha = 0;
     ring.alpha = 0;
