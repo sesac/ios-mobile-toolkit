@@ -22,9 +22,9 @@ Build music licensing into your iOS apps! The RIT is configured to use Rumblefis
 
 ## Hacking on the code
 
-This repository uses git submodules to pull in its dependencies. **Make sure to perform a recursive submodule initializeation after cloning.**
+This repository uses git submodules to pull in its dependencies. **Make sure to perform a recursive submodule initialization after cloning.**
 
-    git@github.com:rumblefish/ios-mobile-toolkit.git
+    git clone git@github.com:rumblefish/ios-mobile-toolkit.git
     git submodule update --init --recursive
     
 
