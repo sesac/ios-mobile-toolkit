@@ -785,6 +785,11 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 // server API
 - (void)getPlaylistFromServer {
     Producer getMedia = [[RFAPI singleton] getPlaylist:playlistID + 187];
+    
+    [self stop];
+    self.playlist = nil;
+    [tabView reloadData];
+    
     [self.controllerView.activityIndicator startAnimating];
     [self associateProducer:getMedia callback:^ (id result) {
         self.playlist = (Playlist *)result;
