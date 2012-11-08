@@ -188,6 +188,9 @@
 // Coverflow methods
 
 - (void)coverflowView:(TKCoverflowView*)coverflowView coverAtIndexWasBroughtToFront:(int)index {
+    if (index == -1)
+        return;
+    
 	self.coverFlowVCView.label.text = ((Playlist *)[self.playlists objectAtIndex:index]).title;
 }
 
