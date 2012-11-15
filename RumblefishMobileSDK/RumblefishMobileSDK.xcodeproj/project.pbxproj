@@ -112,6 +112,8 @@
 		413FDA011639D828002A9183 /* themes.png in Resources */ = {isa = PBXBuildFile; fileRef = 413FD9B71639D7DA002A9183 /* themes.png */; };
 		413FDA021639D828002A9183 /* themes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 413FD9B81639D7DA002A9183 /* themes@2x.png */; };
 		413FDA051639DC49002A9183 /* UIImage+RumblefishSDKResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 413FDA041639DC49002A9183 /* UIImage+RumblefishSDKResources.m */; };
+		41DAA76C16547DCE001D6D8D /* homeHeaderBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 41DAA76516547D02001D6D8D /* homeHeaderBackground.png */; };
+		41DAA76D16547DCE001D6D8D /* homeHeaderBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 41DAA76616547D02001D6D8D /* homeHeaderBackground@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -322,6 +324,8 @@
 		413FD9B81639D7DA002A9183 /* themes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "themes@2x.png"; sourceTree = "<group>"; };
 		413FDA031639DC49002A9183 /* UIImage+RumblefishSDKResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+RumblefishSDKResources.h"; path = "Classes/UIImage+RumblefishSDKResources.h"; sourceTree = SOURCE_ROOT; };
 		413FDA041639DC49002A9183 /* UIImage+RumblefishSDKResources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+RumblefishSDKResources.m"; path = "Classes/UIImage+RumblefishSDKResources.m"; sourceTree = SOURCE_ROOT; };
+		41DAA76516547D02001D6D8D /* homeHeaderBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderBackground.png; sourceTree = "<group>"; };
+		41DAA76616547D02001D6D8D /* homeHeaderBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderBackground@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -533,6 +537,8 @@
 				413FD9961639D7DA002A9183 /* holiday@2x.png */,
 				413FD9971639D7DA002A9183 /* homeHeader.png */,
 				413FD9981639D7DA002A9183 /* homeHeader@2x.png */,
+				41DAA76516547D02001D6D8D /* homeHeaderBackground.png */,
+				41DAA76616547D02001D6D8D /* homeHeaderBackground@2x.png */,
 				413FD9991639D7DA002A9183 /* logo.png */,
 				413FD99A1639D7DA002A9183 /* logo@2x.png */,
 				413FD99B1639D7DA002A9183 /* mood.png */,
@@ -697,6 +703,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41DAA76C16547DCE001D6D8D /* homeHeaderBackground.png in Resources */,
+				41DAA76D16547DCE001D6D8D /* homeHeaderBackground@2x.png in Resources */,
 				411FCF3C163AD205000B1841 /* occasion_image_cache.plist in Resources */,
 				413FD9B91639D828002A9183 /* bg_surround.png in Resources */,
 				413FD9BA1639D828002A9183 /* bg_surround@2x.png in Resources */,

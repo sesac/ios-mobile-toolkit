@@ -54,9 +54,6 @@ NSMutableArray *optionArray;
     }
     
     UIImageView *headerImage = [self.view.subviews objectAtIndex:0];
-    headerImage.contentMode = UIViewContentModeScaleToFill;
-
-    headerImage.image = [headerImage.image resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, headerImage.image.size.width - 2)];
     
     self.navigationController.navigationBar.tintColor = BAR_TINT_COLOR;
     self.navigationController.navigationBarHidden = YES;
