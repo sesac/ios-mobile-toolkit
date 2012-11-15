@@ -472,7 +472,7 @@ static int RFAPI_TIMEOUT = 30.0; // request timeout
 
 - (Producer)getPlaylistsWithOffset:(NSInteger)offset {
     NSString *offsetString = [NSString stringWithFormat:@"%u", offset];
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:offsetString, @"start", nil];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:offsetString, @"start", @"all", @"filter", nil];
     NSURLRequest *request = [self requestResource:RFAPIResourcePlaylist withMethod:RFAPIMethodGET andParameters:params];
     
     return [SMWebRequest producerWithURLRequest:request dataParser:^ id (NSData *data) {
