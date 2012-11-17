@@ -29,6 +29,68 @@
 #import "NSBundle+RumblefishMobileSDKResources.h"
 #import "UIImage+RumblefishSDKResources.h"
 
+@interface FriendlyMusicCell : UITableViewCell
+
+@property (nonatomic, strong) UIImageView *titleImageView;
+@property (nonatomic, strong) UIImageView *separatorView;
+
+@end
+
+@implementation FriendlyMusicCell
+
+@synthesize titleImageView, separatorView;
+
+#define FriendlyMusicCellIdent @"FriendlyMusicCell"
+
+static NSDictionary *titleImages;
+
++ (void)initialize {
+    titleImages = @{
+    @"moodmap": [UIImage imageInResourceBundleNamed:@"moodmap_logo.png"],
+    @"occasion": [UIImage imageInResourceBundleNamed:@"occasion_logo.png"],
+    @"editorspicks": [UIImage imageInResourceBundleNamed:@"editorspick_logo.png"],
+    };
+}
+
++ (FriendlyMusicCell *)cellWithTitle:(NSString *)title forTableView:(UITableView *)tableView {
+    FriendlyMusicCell *cell = (FriendlyMusicCell *)[tableView dequeueReusableCellWithIdentifier:FriendlyMusicCellIdent];
+    
+    if (!cell)
+        cell = [[FriendlyMusicCell alloc] init];
+    
+    cell.titleImageView.image = titleImages[title];
+    [cell setNeedsLayout];
+    
+    return cell;
+}
+
+- (id)init {
+    if (self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FriendlyMusicCellIdent]) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        self.separatorView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"separator_horizontal.png"]];
+        [self addSubview:separatorView];
+        
+        self.titleImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [self.contentView addSubview:titleImageView];
+    }
+    return self;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    self.separatorView.frame = CGRectMake(0, 0, self.bounds.size.width, self.separatorView.frame.size.height);
+    [self.titleImageView sizeToFit];
+    self.titleImageView.frame = CGRectMake(
+        (self.contentView.bounds.size.width - self.titleImageView.frame.size.width) / 2,
+        (self.contentView.bounds.size.height - self.titleImageView.frame.size.height) / 2,
+        self.titleImageView.frame.size.width,
+        self.titleImageView.frame.size.height);
+}
+
+@end
+
 @implementation FriendlyMusic
 
 @synthesize FMMOODMAP, FMOCCASION, FMEDITORSPICKS;
@@ -52,8 +114,6 @@ NSMutableArray *optionArray;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No option is selected" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
     }
-    
-    UIImageView *headerImage = [self.view.subviews objectAtIndex:0];
     
     self.navigationController.navigationBar.tintColor = BAR_TINT_COLOR;
     self.navigationController.navigationBarHidden = YES;
@@ -95,10 +155,6 @@ NSMutableArray *optionArray;
     return YES;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [tabview performSelector:@selector(reloadData) withObject:nil afterDelay:0];
-}
-
 // Table methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -106,41 +162,7 @@ NSMutableArray *optionArray;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"HomeCell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                
-        UIImage *horImage = [UIImage imageInResourceBundleNamed:@"separator_horizontal.png"];
-        UIImageView *horSeparator = [[UIImageView alloc] initWithImage:horImage];
-        horSeparator.tag = 1;
-        
-        if ([[optionArray objectAtIndex:indexPath.row] isEqualToString:@"moodmap"]) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"moodmap_logo.png"]];
-            imageView.tag = 2;
-            [cell.contentView addSubview:imageView];
-        }
-        else if ([[optionArray objectAtIndex:indexPath.row] isEqualToString:@"occasion"]) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"occasion_logo.png"]];
-            imageView.tag = 2;
-            [cell.contentView addSubview:imageView];
-        }
-        else {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"editorspick_logo.png"]];
-            imageView.tag = 2;
-            [cell.contentView addSubview:imageView];
-        }
-    }
-    
-    CGRect horizontalLineFrame = [cell.contentView viewWithTag:1].frame;
-    horizontalLineFrame.size.width = tableView.bounds.size.width;
-    [cell.contentView viewWithTag:1].frame = horizontalLineFrame;
-    [cell.contentView viewWithTag:2].center = CGPointMake(tableView.bounds.size.width / 2, tableView.rowHeight / 2);
-    
-    return cell;
+    return [FriendlyMusicCell cellWithTitle:[optionArray objectAtIndex:indexPath.row] forTableView:tableView];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
