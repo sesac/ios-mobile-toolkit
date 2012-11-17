@@ -175,8 +175,6 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     [tabView performSelector:@selector(reloadData) withObject:nil afterDelay:0];
     
     [self updateStatusBarForOrientation:toInterfaceOrientation];
-    
-    BOOL isLandscape = UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
 }
 
 - (IBAction)doneButtonPressed {
