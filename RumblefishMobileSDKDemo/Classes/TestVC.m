@@ -33,8 +33,6 @@
 
 - (void)emailLinkClicked {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"mailto:%@?subject=%@", [@"info@rumblefish.com" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], [@"Friendly Music Info" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-    NSLog(@"%@", url);
-    NSLog(@"can = %d", [[UIApplication sharedApplication] canOpenURL:url]);
     [[UIApplication sharedApplication] openURL:url];
 }
 
