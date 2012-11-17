@@ -108,7 +108,6 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     ring.alpha = 0;
     selector.alpha = 0;
     playingRow = -1;
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isLandscape"];
     
     selectedColor = [[UIColor alloc] init];
     
@@ -143,9 +142,18 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     selectedColor = nil;
 }
 
+- (void)updateStatusBarForOrientation:(UIInterfaceOrientation)orientation {
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape(orientation);
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:isLandscape withAnimation:UIStatusBarAnimationFade];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    [self updateStatusBarForOrientation:self.interfaceOrientation];
+    
     
     NSString *imageName = [NSString stringWithFormat:@"btn_playlist_%@.png", [LocalPlaylist sharedPlaylist].count ? @"ON" : @"OFF"];
     
@@ -166,10 +174,9 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [tabView performSelector:@selector(reloadData) withObject:nil afterDelay:0];
     
-    BOOL isLandscape = UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+    [self updateStatusBarForOrientation:toInterfaceOrientation];
     
-    [[UIApplication sharedApplication] setStatusBarHidden:isLandscape withAnimation:UIStatusBarAnimationFade];
-    [[NSUserDefaults standardUserDefaults] setBool:isLandscape forKey:@"isLandscape"];
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
 }
 
 - (IBAction)doneButtonPressed {
@@ -331,7 +338,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     // if we're in landscape, we're not showing the 'index' box
     // and we only scoot the text over to display the spinner/stop button
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLandscape"]) {
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         if (indexPath.row == playingRow) {
             titleX = 44;
         }
@@ -345,7 +352,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     [cell.contentView viewWithTag:5].frame = CGRectMake(tableView.bounds.size.width - 44, 0, 44, 44);
     [cell.contentView viewWithTag:8].frame = CGRectMake(tableView.bounds.size.width - 33, 12, 22, 19);
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLandscape"]) {
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         [cell.contentView viewWithTag:1].hidden = YES;
         [cell.contentView viewWithTag:2].hidden = YES;
         [cell.contentView viewWithTag:3].hidden = YES;
@@ -378,7 +385,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
         }
     }
     else {
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isLandscape"]) {
+        if (!UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
             [cell.contentView viewWithTag:3].hidden = NO;
         }
         [cell.contentView viewWithTag:7].hidden = YES;
@@ -406,7 +413,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[selectedCell.contentView viewWithTag:6];
     [spinner stopAnimating];
     isPlaying = NO;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLandscape"]) {
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         [selectedCell.contentView viewWithTag:4].frame = CGRectMake(2, 0, 115, 44);
     }
 
@@ -415,7 +422,7 @@ int idArray[12][12] = {0,  0,  0,  1,  2,  3, 31, 32, 33,  0,  0,  0,
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     index = (UILabel *)[cell.contentView viewWithTag:3];
     index.hidden = YES;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isLandscape"]) {
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
         [cell.contentView viewWithTag:4].frame = CGRectMake(46, 0, 71, 44);
     }
     spinner = (UIActivityIndicatorView *)[cell.contentView viewWithTag:6];
