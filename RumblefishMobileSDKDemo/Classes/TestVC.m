@@ -31,6 +31,13 @@
     ((UIScrollView *)self.view.subviews[0]).contentSize = CGSizeMake(320, 480);
 }
 
+- (void)emailLinkClicked {
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"mailto:%@?subject=%@", [@"info@rumblefish.com" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], [@"Friendly Music Info" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+    NSLog(@"%@", url);
+    NSLog(@"can = %d", [[UIApplication sharedApplication] canOpenURL:url]);
+    [[UIApplication sharedApplication] openURL:url];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     // PLEASE SPECIFY A VALID public key and password. Contact developers@rumblefish.com for more info.
     [RFAPI rumbleWithEnvironment:RFAPIEnvSandbox

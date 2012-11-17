@@ -29,7 +29,7 @@
     IBOutlet UIButton *button;    
 }
 
-
 - (IBAction)start;
+- (IBAction)emailLinkClicked;
 
 @end
