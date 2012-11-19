@@ -30,16 +30,53 @@
 #import "Sequence.h"
 #import "UIImage+RumblefishSDKResources.h"
 #import "NSBundle+RumblefishMobileSDKResources.h"
+#import "Async.h"
+
+@interface SimpleImageCache : NSObject
+
+@property (nonatomic, strong) NSMutableDictionary *cache;
+
+@end
+
+@implementation SimpleImageCache
+
+@synthesize cache;
+
+- (id)init {
+    if (self = [super init]) {
+        self.cache = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
+
+- (Producer)getImageAtURL:(NSURL *)url {
+    if (self.cache[url])
+        return ^ CancelCallback (ResultCallback onResult, ErrorCallback onError) {
+            onResult(self.cache[url]);
+            return nil;
+        };
+    
+    return ^ CancelCallback (ResultCallback onResult, ErrorCallback onError) {
+        return [[RFAPI singleton] getImageAtURL:url](^ void (id x) {
+            [self cache][url] = x;
+            onResult(x);
+        }, onError);
+    };
+    
+}
+
+@end
 
 @interface CoverflowCoverView : TKCoverflowCoverView
 
 @property (nonatomic, strong) Playlist *playlist;
+@property (nonatomic, strong) SimpleImageCache *cache;
 
 @end
 
 @implementation CoverflowCoverView
 
-@synthesize playlist = _playlist;
+@synthesize playlist = _playlist, cache;
 
 - (void)setImage:(UIImage *)value {
     if (!value)
@@ -47,9 +84,10 @@
     [super setImage:value];
 }
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame cache:(SimpleImageCache *)leCache {
     if (self = [super initWithFrame:frame]) {
         self.image = nil; // force placeholder to appear
+        self.cache = leCache;
     }
     return self;
 }
@@ -59,7 +97,7 @@
     _playlist = value;
     self.image = nil;
     if (value.imageURL) {
-        [self associateProducer:[[RFAPI singleton] getImageAtURL:value.imageURL] callback:^ void (id i) {
+        [self associateProducer:[self.cache getImageAtURL:value.imageURL] callback:^ void (id i) {
             self.image = (UIImage *)i;
         }];
     }
@@ -136,18 +174,20 @@
 @property (nonatomic, copy) NSArray *playlists;
 @property (nonatomic, strong) CoverFlowVCView *coverFlowVCView;
 @property (nonatomic, strong) PlaylistVC *playlistController;
+@property (nonatomic, strong) SimpleImageCache *cache;
 
 @end
 
 
 @implementation CoverFlowVC
 
-@synthesize coverFlowVCView, playlists, playlistController;
+@synthesize coverFlowVCView, playlists, playlistController, cache;
 
 - (id)init {
     if (self = [super initWithNibName:nil bundle:nil]) {
         self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageInResourceBundleNamed:@"friendlymusic_logo.png"]];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Playlist" style: UIBarButtonItemStyleBordered target:self action:@selector(playlistTapped)];
+        self.cache = [[SimpleImageCache alloc] init];
     }
     return self;
 }
@@ -198,7 +238,7 @@
 	CoverflowCoverView *cover = (CoverflowCoverView *)[coverflowView dequeueReusableCoverView];
 	
 	if(cover == nil) {
-		cover = [[CoverflowCoverView alloc] initWithFrame:CGRectMake(0, 0, 224, 300)];
+		cover = [[CoverflowCoverView alloc] initWithFrame:CGRectMake(0, 0, 224, 300) cache:cache];
 		cover.baseline = 224;
 	}
     
