@@ -33,18 +33,167 @@
 #import "NSBundle+RumblefishMobileSDKResources.h"
 #import "UIImage+RumblefishSDKResources.h"
 
+@class OccasionControllerView;
+
+@interface NSObject (OccasionControllerViewDelegate)
+
+- (UIInterfaceOrientation)occasionControllerViewCurrentOrientation:(OccasionControllerView *)controllerView;
+- (void)occasionControllerView:(OccasionControllerView *)controllerView tappedHomeButtonAtIndex:(NSUInteger)index;
+
+@end
+
+@interface OccasionControllerView : UIView
+
+@property (nonatomic, weak) id delegate;
+@property (nonatomic, assign) BOOL buttonsHidden;
+@property (nonatomic, strong) NSArray *rootButtons;
+
+@end
+
+@implementation OccasionControllerView
+
+@synthesize delegate, buttonsHidden = _buttonsHidden, rootButtons;
+
+#define imageWidth 116
+#define imageHeight 115
+#define xInit 28
+#define yInit 13
+
+- (void)awakeFromNib {
+    self.rootButtons = [@[ @"mood.png", @"celebration.png", @"themes.png", @"currentevents.png", @"sports.png", @"holiday.png" ] map:^ id (id imageName) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setImage:[UIImage imageInResourceBundleNamed:imageName] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:button];
+        return button;
+    }];
+}
+
+- (void)makeRootButtonsVisible {
+    [rootButtons each:^(id x) {
+        UIView *b = (UIView *)x;
+        b.layer.rasterizationScale = 1.0;
+        b.alpha = 1.0;
+    }];
+}
+
+- (void)makeRootButtonsInvisible {
+    [rootButtons each:^(id x) {
+        UIView *b = (UIView *)x;
+        b.layer.rasterizationScale = .35;
+        b.layer.shouldRasterize = YES;
+        b.alpha = 0;
+    }];
+}
+
+- (void)layoutButtonsVisible {
+    CGFloat xInterval = 146;
+    CGFloat yInterval = 138;
+    
+    __block CGFloat x = xInit, y = yInit;
+    [rootButtons each:^(id i) {
+        if (x + xInterval > self.bounds.size.width) {
+            x = xInit;
+            y += yInterval;
+        }
+        UIView *b = (UIView *)i;
+        b.frame = CGRectMake(x, y, imageWidth, imageHeight);
+        x += xInterval;
+    }];
+}
+
+- (void)layoutButtonsInvisible {
+    [self layoutButtonsVisible];
+    
+    if (UIInterfaceOrientationIsPortrait([delegate occasionControllerViewCurrentOrientation:self])) {
+        for (int i = 0; i < rootButtons.count; i++) {
+            UIView *b = (UIView *)rootButtons[i];
+            
+            CGFloat y = b.frame.origin.y;
+            if (i < 2)
+                y = -imageHeight;
+            if (i > 3)
+                y = self.bounds.size.height;
+            
+            BOOL left = (i % 2) == 0;
+            b.frame = CGRectMake(left ? -imageWidth : self.bounds.size.width, y, imageWidth, imageHeight);
+        }
+    }
+    else {
+        for (int i = 0; i < rootButtons.count; i ++) {
+            UIView *b = (UIView *)rootButtons[i];
+            
+            CGFloat x = b.frame.origin.x;
+            
+            if (i == 0 || i == 3)
+                x = -imageWidth;
+            if (i == 2 || i == 5)
+                x = self.bounds.size.width;
+            
+            BOOL top = (i < 3);
+            b.frame = CGRectMake(x, top ? -imageHeight : self.bounds.size.height, imageWidth, imageHeight);
+        }
+    }
+}
+
+- (void)setDisplaysHomeButtons:(BOOL)value animated:(BOOL)animated {
+    if (value) {
+        if (animated) {
+            [UIView animateWithDuration:0.5f animations:^{
+                [self layoutButtonsVisible];
+                [self makeRootButtonsVisible];
+            }];
+        }
+        else {
+            [self layoutButtonsVisible];
+            [self makeRootButtonsVisible];
+        }
+    }
+    else {
+        if (animated) {
+            [UIView animateWithDuration:0.5f animations:^{
+                [self layoutButtonsInvisible];
+                [self makeRootButtonsInvisible];
+            }];
+        }
+        else {
+            [self layoutButtonsInvisible];
+            [self makeRootButtonsInvisible];            
+        }
+    }
+    _buttonsHidden = value;
+}
+
+- (void)layoutSubviews {
+    if (_buttonsHidden) {
+        [self layoutButtonsVisible];
+    }
+    else {
+        [self layoutButtonsInvisible];
+    }
+    [super layoutSubviews];
+}
+
+- (void)buttonTapped:(UIButton *)button {
+    [self.delegate occasionControllerView:self tappedHomeButtonAtIndex:[self.rootButtons indexOfObject:button]];
+}
+
+@end
+
 @interface OccasionVC ()
 
 @property (nonatomic, copy) NSArray *occasions;
 @property (nonatomic, strong) NSMutableArray *occasionStack;
 @property (nonatomic, strong) Occasion *displayedOccasion;
 @property (nonatomic, copy) NSArray *displayedPlaylists;
+@property (nonatomic, copy) NSArray *occasionImages;
+@property (nonatomic, strong) OccasionControllerView *controllerView;
 
 @end
 
 @implementation OccasionVC
 
-@synthesize displayedOccasion, displayedPlaylists, occasions, occasionStack;
+@synthesize displayedOccasion, displayedPlaylists, occasions, occasionStack, occasionImages, controllerView;
 
 NSMutableArray *secondButtons, *thirdButtons;
 int level, plRow, plSection;
@@ -71,17 +220,15 @@ NSTimer *rotateImagesTimer;
     return self;
 }
 
-- (void)setButtonsHidden:(BOOL)hidden {
-    moodButton.hidden = hidden;
-    celebButton.hidden = hidden;
-    themeButton.hidden = hidden;
-    eventButton.hidden = hidden;
-    sportButton.hidden = hidden;
-    holidayButton.hidden = hidden;
+- (OccasionControllerView *)controllerView {
+    return (OccasionControllerView *)self.view;
 }
 
 - (void)viewDidLoad
 {
+    self.controllerView.delegate = self;
+    [self.controllerView setDisplaysHomeButtons:NO animated:NO];
+    
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
@@ -131,27 +278,19 @@ NSTimer *rotateImagesTimer;
                         [NSNumber numberWithInt:RFOccasionHoliday], 
                         nil];
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    occasionImageCachePath = [documentsDirectory stringByAppendingPathComponent:OCCASION_IMAGE_CACHE_PATH];
-    occasionImageDict = [[NSMutableDictionary alloc] init];
-
-    // ensure we have arrays for each of the occasions
-    for (NSNumber *occasion in occasionKeys) {
-        NSArray *occasionArray = [[NSMutableArray alloc] init];
-        [occasionImageDict setObject:occasionArray forKey:occasion];
-    }
-
     [self loadOccasionImages];
-        
-    rotateImagesTimer = [NSTimer scheduledTimerWithTimeInterval:OCCASION_IMAGE_SWITCH_DELAY target:self selector:@selector(updateOccasionImage) userInfo:nil repeats:YES];
     
-    [self setButtonsHidden:YES];
+    for (int i = 0; i < occasionImages.count; i++)
+        [self updateBackgroundImageForButtonAtIndex:i];
+        
+    rotateImagesTimer = [NSTimer scheduledTimerWithTimeInterval:OCCASION_IMAGE_SWITCH_DELAY target:self selector:@selector(updateBackgroundImageForRandomButton) userInfo:nil repeats:YES];
+    
+    [self.controllerView setDisplaysHomeButtons:NO animated:NO];
     
     [self getOccasionsFromServer];
     
     // Registers this class as the delegate of the audio session.
-    [[AVAudioSession sharedInstance] setDelegate: self];    
+    [[AVAudioSession sharedInstance] setDelegate:self];    
     // Allow the app sound to continue to play when the screen is locked.
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 }
@@ -197,38 +336,10 @@ NSTimer *rotateImagesTimer;
     [table performSelector:@selector(reloadData) withObject:nil afterDelay:0];
 }
 
-- (void) saveOccasionImages {
-    // can't store NSNumbers, so convert them to strings before saving.
-    NSMutableDictionary *saveData = [[NSMutableDictionary alloc] init];
-    
-    for (NSNumber *key in [occasionImageDict allKeys]) {
-        [saveData setObject:[occasionImageDict objectForKey:key] forKey:[key stringValue]];
-    }
-    
-    [saveData writeToFile:occasionImageCachePath atomically:YES];
-}
-
-- (void) loadOccasionImages {
-    // first -- check to see if we have a locally saved cache.
-    NSDictionary *savedData = [NSDictionary dictionaryWithContentsOfFile:occasionImageCachePath];
-    
-    if (!savedData) {
-        // if not, load from the resource plist.
-        NSBundle* bundle = [NSBundle rumblefishResourcesBundle];
-        NSString* plistPath = [bundle pathForResource:@"occasion_image_cache" ofType:@"plist"];
-        NSLog(@"No saved data, attempting to load %@", plistPath);
-        savedData = [NSDictionary dictionaryWithContentsOfFile:plistPath];
-    }
-    
-    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-    [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    
-    for (NSString *key in [savedData allKeys]) {
-        NSMutableArray *imageData = [[NSMutableArray alloc] initWithArray:[savedData objectForKey:key]];
-        NSNumber *numericKey = [numberFormatter numberFromString:key];
-        [occasionImageDict setObject:imageData forKey:numericKey];
-        [self switchImageForOccasion:[numericKey intValue]];
-    }
+- (void)loadOccasionImages {
+    NSBundle *bundle = [NSBundle rumblefishResourcesBundle];
+    NSString *plistPath = [bundle pathForResource:@"occasion_image_cache" ofType:@"plist"];
+    self.occasionImages = [NSArray arrayWithContentsOfFile:plistPath];
 }
 
 - (void)goBack {
@@ -301,77 +412,78 @@ NSTimer *rotateImagesTimer;
     [self.occasionStack removeLastObject];
 }
 
-- (IBAction)loadSecondLevel:(UIButton *)button {
-    if (level == 1) {
-        switch ([button tag]) {
-            case 1:
-                firstLevelColor = [UIColor colorWithRed:0.55f green:0.32f blue:0.68f alpha:1.0f];
-                secondLevelColor = [UIColor colorWithRed:0.51f green:0.4f blue:0.58f alpha:1.0f];
-                thirdLevelColor = [[UIColor alloc] initWithRed:0.506f green:0.45f blue:0.53f alpha:1.0f];
-                secondFontColor = [UIColor colorWithRed:0.26f green:0.219f blue:0.278f alpha:1.0f];
-                thirdFontColor = [[UIColor alloc] initWithRed:0.26f green:0.223f blue:0.282f alpha:1.0f];
-                [firstButton setTitle:@"mood" forState:UIControlStateNormal];
-                [self pushOccasionNamed:@"Moods"];
-                break;
-                
-            case 2:
-                firstLevelColor = [UIColor colorWithRed:0.33f green:0.537f blue:0.156f alpha:1.0f];
-                secondLevelColor = [UIColor colorWithRed:0.455f green:0.6f blue:0.33f alpha:1.0f];
-                thirdLevelColor = [[UIColor alloc] initWithRed:0.474f green:0.537f blue:0.42f alpha:1.0f];
-                secondFontColor = [UIColor colorWithRed:0.235f green:0.337f blue:0.152f alpha:1.0f];
-                thirdFontColor = [[UIColor alloc] initWithRed:0.231f green:0.278f blue:0.192f alpha:1.0f];
-                [firstButton setTitle:@"celebration" forState:UIControlStateNormal];
-                [self pushOccasionNamed:@"Celebrations"];
-                break;
-                
-            case 3:
-                firstLevelColor = [UIColor colorWithRed:0.66f green:0.576f blue:0.157f alpha:1.0f];
-                secondLevelColor = [UIColor colorWithRed:0.71f green:0.64f blue:0.317f alpha:1.0f];
-                thirdLevelColor = [[UIColor alloc] initWithRed:0.74f green:0.686f blue:0.435f alpha:1.0f];
-                secondFontColor = [UIColor colorWithRed:0.455f green:0.4f blue:0.157f alpha:1.0f];
-                thirdFontColor = [[UIColor alloc] initWithRed:0.443f green:0.4f blue:0.21f alpha:1.0f];
-                [firstButton setTitle:@"themes" forState:UIControlStateNormal];
-                [self pushOccasionNamed:@"Themes"];
-                break;
-                
-            case 4:
-                firstLevelColor = [UIColor colorWithRed:0.243f green:0.654f blue:0.63f alpha:1.0f];
-                secondLevelColor = [UIColor colorWithRed:0.455f green:0.73f blue:0.713f alpha:1.0f];
-                thirdLevelColor = [[UIColor alloc] initWithRed:0.6f green:0.713f blue:0.706f alpha:1.0f];
-                secondFontColor = [UIColor colorWithRed:0.28f green:0.46f blue:0.455f alpha:1.0f];
-                thirdFontColor = [[UIColor alloc] initWithRed:0.35f green:0.44f blue:0.435f alpha:1.0f];
-                [firstButton setTitle:@"current events" forState:UIControlStateNormal];
-                [self pushOccasionNamed:@"Current Events"];
-                break;
-                
-            case 5:
-                firstLevelColor = [UIColor colorWithRed:0.192f green:0.388f blue:0.63f alpha:1.0f];
-                secondLevelColor = [UIColor colorWithRed:0.31f green:0.45f blue:0.627f alpha:1.0f];
-                thirdLevelColor = [[UIColor alloc] initWithRed:0.5f green:0.584f blue:0.69f alpha:1.0f];
-                secondFontColor = [UIColor colorWithRed:0.168f green:0.282f blue:0.427f alpha:1.0f];
-                thirdFontColor = [[UIColor alloc] initWithRed:0.274f green:0.34f blue:0.423f alpha:1.0f];
-                [firstButton setTitle:@"sports" forState:UIControlStateNormal];
-                [self pushOccasionNamed:@"Sports"];
-                break;
-                
-            case 6:
-                firstLevelColor = [UIColor colorWithRed:0.647f green:0.2f blue:0.2f alpha:1.0f];
-                secondLevelColor = [UIColor colorWithRed:0.745f green:0.32f blue:0.32f alpha:1.0f];
-                thirdLevelColor = [[UIColor alloc] initWithRed:0.75f green:0.455f blue:0.455f alpha:1.0f];
-                secondFontColor = [UIColor colorWithRed:0.51f green:0.172f blue:0.172f alpha:1.0f];
-                thirdFontColor = [[UIColor alloc] initWithRed:0.5f green:0.21f blue:0.21f alpha:1.0f];
-                [firstButton setTitle:@"holiday" forState:UIControlStateNormal];
-                [self pushOccasionNamed:@"Holidays"];
-                break;
-        }
-                
-        
-        firstButton.backgroundColor = firstLevelColor;
-        firstButton.titleLabel.textColor = [UIColor whiteColor];
-        [self showSecondLevel];
-    }
+- (UIInterfaceOrientation)occasionControllerViewCurrentOrientation:(OccasionControllerView *)controllerView {
+    return self.interfaceOrientation;
 }
 
+- (void)occasionControllerView:(OccasionControllerView *)controllerView tappedHomeButtonAtIndex:(NSUInteger)index {
+    switch (index) {
+        case 0:
+            firstLevelColor = [UIColor colorWithRed:0.55f green:0.32f blue:0.68f alpha:1.0f];
+            secondLevelColor = [UIColor colorWithRed:0.51f green:0.4f blue:0.58f alpha:1.0f];
+            thirdLevelColor = [[UIColor alloc] initWithRed:0.506f green:0.45f blue:0.53f alpha:1.0f];
+            secondFontColor = [UIColor colorWithRed:0.26f green:0.219f blue:0.278f alpha:1.0f];
+            thirdFontColor = [[UIColor alloc] initWithRed:0.26f green:0.223f blue:0.282f alpha:1.0f];
+            [firstButton setTitle:@"mood" forState:UIControlStateNormal];
+            [self pushOccasionNamed:@"Moods"];
+            break;
+            
+        case 1:
+            firstLevelColor = [UIColor colorWithRed:0.33f green:0.537f blue:0.156f alpha:1.0f];
+            secondLevelColor = [UIColor colorWithRed:0.455f green:0.6f blue:0.33f alpha:1.0f];
+            thirdLevelColor = [[UIColor alloc] initWithRed:0.474f green:0.537f blue:0.42f alpha:1.0f];
+            secondFontColor = [UIColor colorWithRed:0.235f green:0.337f blue:0.152f alpha:1.0f];
+            thirdFontColor = [[UIColor alloc] initWithRed:0.231f green:0.278f blue:0.192f alpha:1.0f];
+            [firstButton setTitle:@"celebration" forState:UIControlStateNormal];
+            [self pushOccasionNamed:@"Celebrations"];
+            break;
+            
+        case 2:
+            firstLevelColor = [UIColor colorWithRed:0.66f green:0.576f blue:0.157f alpha:1.0f];
+            secondLevelColor = [UIColor colorWithRed:0.71f green:0.64f blue:0.317f alpha:1.0f];
+            thirdLevelColor = [[UIColor alloc] initWithRed:0.74f green:0.686f blue:0.435f alpha:1.0f];
+            secondFontColor = [UIColor colorWithRed:0.455f green:0.4f blue:0.157f alpha:1.0f];
+            thirdFontColor = [[UIColor alloc] initWithRed:0.443f green:0.4f blue:0.21f alpha:1.0f];
+            [firstButton setTitle:@"themes" forState:UIControlStateNormal];
+            [self pushOccasionNamed:@"Themes"];
+            break;
+            
+        case 3:
+            firstLevelColor = [UIColor colorWithRed:0.243f green:0.654f blue:0.63f alpha:1.0f];
+            secondLevelColor = [UIColor colorWithRed:0.455f green:0.73f blue:0.713f alpha:1.0f];
+            thirdLevelColor = [[UIColor alloc] initWithRed:0.6f green:0.713f blue:0.706f alpha:1.0f];
+            secondFontColor = [UIColor colorWithRed:0.28f green:0.46f blue:0.455f alpha:1.0f];
+            thirdFontColor = [[UIColor alloc] initWithRed:0.35f green:0.44f blue:0.435f alpha:1.0f];
+            [firstButton setTitle:@"current events" forState:UIControlStateNormal];
+            [self pushOccasionNamed:@"Current Events"];
+            break;
+            
+        case 4:
+            firstLevelColor = [UIColor colorWithRed:0.192f green:0.388f blue:0.63f alpha:1.0f];
+            secondLevelColor = [UIColor colorWithRed:0.31f green:0.45f blue:0.627f alpha:1.0f];
+            thirdLevelColor = [[UIColor alloc] initWithRed:0.5f green:0.584f blue:0.69f alpha:1.0f];
+            secondFontColor = [UIColor colorWithRed:0.168f green:0.282f blue:0.427f alpha:1.0f];
+            thirdFontColor = [[UIColor alloc] initWithRed:0.274f green:0.34f blue:0.423f alpha:1.0f];
+            [firstButton setTitle:@"sports" forState:UIControlStateNormal];
+            [self pushOccasionNamed:@"Sports"];
+            break;
+            
+        case 5:
+            firstLevelColor = [UIColor colorWithRed:0.647f green:0.2f blue:0.2f alpha:1.0f];
+            secondLevelColor = [UIColor colorWithRed:0.745f green:0.32f blue:0.32f alpha:1.0f];
+            thirdLevelColor = [[UIColor alloc] initWithRed:0.75f green:0.455f blue:0.455f alpha:1.0f];
+            secondFontColor = [UIColor colorWithRed:0.51f green:0.172f blue:0.172f alpha:1.0f];
+            thirdFontColor = [[UIColor alloc] initWithRed:0.5f green:0.21f blue:0.21f alpha:1.0f];
+            [firstButton setTitle:@"holiday" forState:UIControlStateNormal];
+            [self pushOccasionNamed:@"Holidays"];
+            break;
+    }
+            
+    
+    firstButton.backgroundColor = firstLevelColor;
+    firstButton.titleLabel.textColor = [UIColor whiteColor];
+    [self showSecondLevel];
+}
 
 - (void)animateToHomeScreen {
     while (occasionStack.count)
@@ -396,28 +508,7 @@ NSTimer *rotateImagesTimer;
         }        
         completion:^(BOOL finished){
             scroller.hidden = YES;
-            [UIView animateWithDuration:0.5f animations:^{
-                //move
-                moodButton.frame = CGRectMake(29, 13, 116, 115);    
-                celebButton.frame = CGRectMake(175, 13, 116, 115);    
-                themeButton.frame = CGRectMake(29, 151, 116, 115);    
-                eventButton.frame = CGRectMake(175, 151, 116, 115);     
-                sportButton.frame = CGRectMake(29, 289, 116, 115);    
-                holidayButton.frame = CGRectMake(175, 289, 116, 115);   
-                //blur
-                [[moodButton layer] setRasterizationScale:1.0];
-                [[celebButton layer] setRasterizationScale:1.0];
-                [[themeButton layer] setRasterizationScale:1.0];
-                [[eventButton layer] setRasterizationScale:1.0];
-                [[sportButton layer] setRasterizationScale:1.0];
-                [[holidayButton layer] setRasterizationScale:1.0];
-                moodButton.alpha = 1;
-                celebButton.alpha = 1;
-                themeButton.alpha = 1;
-                eventButton.alpha = 1;
-                sportButton.alpha = 1;
-                holidayButton.alpha = 1;
-            }];
+            [self.controllerView setDisplaysHomeButtons:YES animated:YES];
             [thirdButtons removeAllObjects];
             [secondButtons removeAllObjects];
             [table reloadData];
@@ -425,44 +516,15 @@ NSTimer *rotateImagesTimer;
     level = 1;
 }
 
-
 - (void)showSecondLevel {
-    [UIView animateWithDuration:0.5f animations:^{
-        //move
-        moodButton.frame = CGRectMake(-117, -115, 116, 115);    
-        celebButton.frame = CGRectMake(320, -115, 116, 115);    
-        themeButton.frame = CGRectMake(-117, 151, 116, 115);    
-        eventButton.frame = CGRectMake(320, 151, 116, 115);     
-        sportButton.frame = CGRectMake(-117, 416, 116, 115);    
-        holidayButton.frame = CGRectMake(320, 416, 116, 115);   
-        //blur
-        [[moodButton layer] setRasterizationScale:0.35];
-        [[moodButton layer] setShouldRasterize:YES];
-        [[celebButton layer] setRasterizationScale:0.35];
-        [[celebButton layer] setShouldRasterize:YES];
-        [[themeButton layer] setRasterizationScale:0.35];
-        [[themeButton layer] setShouldRasterize:YES];
-        [[eventButton layer] setRasterizationScale:0.35];
-        [[eventButton layer] setShouldRasterize:YES];
-        [[sportButton layer] setRasterizationScale:0.35];
-        [[sportButton layer] setShouldRasterize:YES];
-        [[holidayButton layer] setRasterizationScale:0.35];
-        [[holidayButton layer] setShouldRasterize:YES];
-        moodButton.alpha = 0;
-        celebButton.alpha = 0;
-        themeButton.alpha = 0;
-        eventButton.alpha = 0;
-        sportButton.alpha = 0;
-        holidayButton.alpha = 0;
-    } completion:^(BOOL finished){
-        scroller.hidden = NO;
-        [UIView animateWithDuration:0.5 animations:^{
-            firstButton.alpha = 1.0;
-            for (UIButton *b in secondButtons) {
-                b.alpha = 1.0;
-                b.frame = CGRectMake(0, b.frame.origin.y - scroller.frame.size.height + firstButton.frame.size.height, scroller.frame.size.width, 129);
-            }
-        }];
+    [self.controllerView setDisplaysHomeButtons:NO animated:YES];
+    scroller.hidden = NO;
+    [UIView animateWithDuration:0.5 animations:^{
+        firstButton.alpha = 1.0;
+        for (UIButton *b in secondButtons) {
+            b.alpha = 1.0;
+            b.frame = CGRectMake(0, b.frame.origin.y - scroller.frame.size.height + firstButton.frame.size.height, scroller.frame.size.width, 129);
+        }
     }];
     level = 2;
 }
@@ -562,8 +624,6 @@ NSTimer *rotateImagesTimer;
     }];
 }
 
-
-
 - (void)loadPlaylist:(UIButton *)button {
     thirdButton = button;
     int tag = [button tag];
@@ -651,53 +711,15 @@ NSTimer *rotateImagesTimer;
     [self.navigationController pushViewController:playlist animated:YES];
 }
 
-
-- (UIButton *)buttonForOccasion:(RFOccasion)occasion {
-    UIButton *targetButton;
-    
-    switch (occasion) {
-        case RFOccasionMood:
-            targetButton = moodButton;
-            break;
-        case RFOccasionCelebration:
-            targetButton = celebButton;
-            break;
-        case RFOccasionThemes:
-            targetButton = themeButton;
-            break;
-        case RFOccasionCurrentEvents:
-            targetButton = eventButton;
-            break;
-        case RFOccasionSports:
-            targetButton = sportButton;
-            break;
-        case RFOccasionHoliday:
-            targetButton = holidayButton;
-            break;
-    }
-
-    return targetButton;
+- (void)updateBackgroundImageForButtonAtIndex:(NSUInteger)index {
+    NSUInteger randomIndex = arc4random() % ((NSArray *)self.occasionImages[index]).count;
+    UIButton *button = self.controllerView.rootButtons[index];
+    [button setBackgroundImage:[UIImage imageWithData:self.occasionImages[index][randomIndex]] forState:UIControlStateNormal];
 }
 
-- (void)switchImageForOccasion:(RFOccasion)occasion {
-    UIButton *targetButton = [self buttonForOccasion:occasion];
-    NSArray *occasionImages = [occasionImageDict objectForKey:[NSNumber numberWithInt:occasion]];
-
-    if ([occasionImages count] > 0) {
-        // select a random index from the images available for this occasion
-        NSUInteger randomIndex = arc4random() % [occasionImages count];
-        
-        // assign the image to the button.
-        [targetButton setBackgroundImage:[UIImage imageWithData:[occasionImages objectAtIndex:randomIndex]] forState:UIControlStateNormal];
-    }
-}
-
-- (void)updateOccasionImage {
-    // select a random occasion
-    NSUInteger randomIndex = arc4random() % [occasionKeys count];
-    
-    // update the image for the occasion
-    [self switchImageForOccasion:[[occasionKeys objectAtIndex:randomIndex] intValue]];
+- (void)updateBackgroundImageForRandomButton {
+    NSUInteger randomIndex = arc4random() % self.controllerView.rootButtons.count;
+    [self updateBackgroundImageForButtonAtIndex:randomIndex];
 }
 
 - (void)getOccasionsFromServer {
@@ -714,10 +736,9 @@ NSTimer *rotateImagesTimer;
         }];
         
         [loadingIndicator stopAnimating];
-        [self setButtonsHidden:NO];
+        [self.controllerView setDisplaysHomeButtons:YES animated:YES];
     }];
 }
-
 
 #pragma mark - TableView methods
 

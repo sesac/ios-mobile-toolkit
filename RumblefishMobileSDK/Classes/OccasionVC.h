@@ -39,41 +39,20 @@ typedef enum RFOccasion {
 } RFOccasion;
 
 @interface OccasionVC : UIViewController<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate, AVAudioPlayerDelegate> {
-    IBOutlet UIButton *moodButton, *celebButton, *themeButton, *eventButton, *sportButton, *holidayButton;
     UIColor *firstLevelColor, *secondLevelColor, *thirdLevelColor, *secondFontColor, *thirdFontColor;
     UIButton *firstButton, *thirdButton;
     IBOutlet UIScrollView *scroller;
     IBOutlet UITableView *table;
     IBOutlet UIActivityIndicatorView *loadingIndicator;
     
-    NSArray *occasionKeys;
-    NSMutableDictionary *occasionData;
-    NSMutableDictionary *occasionImageDict;
+    NSArray *occasionImages;
     NSTimer *rotateImagesTimer;
     IBOutlet UIActivityIndicatorView *bigSpinner;
-    
-    NSString *occasionImageCachePath;
     
     NSArray *occasions;
     NSMutableArray *occasionStack;
     Occasion *displayedOccasion;
     NSArray *displayedPlaylists;
-    
 }
-
-- (IBAction)loadSecondLevel:(UIButton *)button;
-- (void)showSecondLevel;
-- (void)getOccasionsFromServer;
-- (void)showThirdLevel:(UIButton *)button;
-- (void)gotoPlaylist;
-- (void)stop;
-- (void)goBack;
-
-- (void)loadOccasionImages;
-- (void)saveOccasionImages;
-
-- (void)updateOccasionImage;
-- (void)switchImageForOccasion:(RFOccasion)occasion;
-- (UIButton *)buttonForOccasion:(RFOccasion)occasion;
 
 @end
