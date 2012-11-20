@@ -206,7 +206,6 @@ PlaylistVC *playlist;
 CGRect thirdRect, secondRect;
 bool replaySong;
 
-NSArray *occasionKeys;
 NSMutableDictionary *allImagesDict;
 NSTimer *rotateImagesTimer;
 
@@ -268,15 +267,6 @@ NSTimer *rotateImagesTimer;
     UIWindow *topWindow = [[UIApplication sharedApplication] keyWindow];
     bigSpinner.center = topWindow.center;
     [topWindow addSubview:bigSpinner];
-    
-    occasionKeys = [NSArray arrayWithObjects: 
-                        [NSNumber numberWithInt:RFOccasionMood],
-                        [NSNumber numberWithInt:RFOccasionCelebration],
-                        [NSNumber numberWithInt:RFOccasionThemes],
-                        [NSNumber numberWithInt:RFOccasionCurrentEvents],
-                        [NSNumber numberWithInt:RFOccasionSports],
-                        [NSNumber numberWithInt:RFOccasionHoliday], 
-                        nil];
     
     [self loadOccasionImages];
     

@@ -29,15 +29,6 @@
 #define OCCASION_IMAGE_DEPTH 4
 #define OCCASION_IMAGE_SWITCH_DELAY 2.0 // seconds
 
-typedef enum RFOccasion {
-    RFOccasionMood = 0,
-    RFOccasionCelebration,
-    RFOccasionThemes,
-    RFOccasionCurrentEvents,
-    RFOccasionSports,
-    RFOccasionHoliday
-} RFOccasion;
-
 @interface OccasionVC : UIViewController<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate, AVAudioPlayerDelegate> {
     UIColor *firstLevelColor, *secondLevelColor, *thirdLevelColor, *secondFontColor, *thirdFontColor;
     UIButton *firstButton, *thirdButton;
