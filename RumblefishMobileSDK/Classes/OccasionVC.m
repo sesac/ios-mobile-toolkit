@@ -56,8 +56,7 @@
 
 #define imageWidth 116
 #define imageHeight 115
-#define xInit 28
-#define yInit 13
+#define imageMargin 6
 
 - (void)awakeFromNib {
     self.rootButtons = [@[ @"mood.png", @"celebration.png", @"themes.png", @"currentevents.png", @"sports.png", @"holiday.png" ] map:^ id (id imageName) {
@@ -80,15 +79,32 @@
 - (void)makeRootButtonsInvisible {
     [rootButtons each:^(id x) {
         UIView *b = (UIView *)x;
-        b.layer.rasterizationScale = .35;
+        b.layer.rasterizationScale = 1.0;
         b.layer.shouldRasterize = YES;
         b.alpha = 0;
     }];
 }
 
 - (void)layoutButtonsVisible {
-    CGFloat xInterval = 146;
-    CGFloat yInterval = 138;
+    
+    CGFloat itemWidth = imageWidth + imageMargin * 2;
+    CGFloat itemsFittingH = MIN(3, floorf(self.bounds.size.width / itemWidth));
+    
+    CGFloat itemHeight = imageHeight + imageMargin * 2;
+    CGFloat itemsFittingV = MIN(3, floorf(self.bounds.size.height / itemHeight));
+    
+    itemWidth = self.bounds.size.width / itemsFittingH;
+    CGFloat calculatedXmargin = (self.bounds.size.width - (imageWidth * itemsFittingH)) / (itemsFittingH * 2 + 2);
+    
+    itemHeight = self.bounds.size.height / itemsFittingV;
+    CGFloat calculatedYmargin = (self.bounds.size.height - (imageHeight * itemsFittingV)) / (itemsFittingV * 2 + 2);
+    
+    CGFloat xInit = calculatedXmargin;
+    CGFloat yInit = calculatedYmargin;
+    CGFloat xInterval = imageWidth + calculatedXmargin * 2;
+    CGFloat yInterval = imageHeight + calculatedYmargin * 2;
+    
+    NSLog(@"xInit = %f, yInit = %f, xInterval = %f, yInterval = %f", xInit, yInit, xInterval, yInterval);
     
     __block CGFloat x = xInit, y = yInit;
     [rootButtons each:^(id i) {
@@ -97,7 +113,7 @@
             y += yInterval;
         }
         UIView *b = (UIView *)i;
-        b.frame = CGRectMake(x, y, imageWidth, imageHeight);
+        b.frame = CGRectMake(x + calculatedXmargin, y + imageMargin, imageWidth, imageHeight);
         x += xInterval;
     }];
 }
